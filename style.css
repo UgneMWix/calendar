@@ -1,39 +1,45 @@
-body{
+body {
     font-family: "Montserrat", sans-serif;
     height: 100vh;
     display: flex;
     flex-direction: column;
 }
-.page-header{
+
+.page-header {
     display: flex;
     height: 80px;
     align-items: center;
     padding: 10px 20px 10px 20px;
     border-bottom: #e3e6e7 solid;
 }
-.header-buttons{
+
+.header-buttons {
     border-radius: 100%;
     width: 2.5vw;
-    height:2.5vw;
+    height: 2.5vw;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: transparent;
     margin-right: 10px;
 }
-.menu-button-image{
+
+.menu-button-image {
     width: 1vw;
     height: 1vw;
 }
-span{
+
+span {
     color: gray;
 }
-.header-title{
+
+.header-title {
     font-size: 25px;
     margin-right: 60px;
     font-weight: 500;
 }
-.today-button{
+
+.today-button {
     background-color: transparent;
     font-size: 15px;
     border-radius: 5%;
@@ -44,19 +50,23 @@ span{
     font-weight: 500;
     margin-right: 20px;
 }
-.arrow-image-1{
+
+.arrow-image-1 {
     width: 0.5vw;
     height: 0.5vw;
     transform: rotate(180deg);
 }
-.arrow-image-2{
+
+.arrow-image-2 {
     width: 0.5vw;
     height: 0.5vw;
 }
-.mon-year-text{
+
+.mon-year-text {
     font-size: 25px;
 }
-.week-menu-button{
+
+.week-menu-button {
     background-color: transparent;
     font-size: 15px;
     border-radius: 5%;
@@ -68,12 +78,14 @@ span{
     margin-left: auto;
     margin-right: 10px;
 }
-main{
+
+main {
     display: flex;
     flex-grow: 1;
     flex-direction: row;
 }
-aside{
+
+aside {
     width: 15vw;
     padding: 10px 20px 10px 20px;
     display: flex;
@@ -81,7 +93,8 @@ aside{
     align-items: flex-start;
     flex-direction: column;
 }
-.event-button{
+
+.event-button {
     padding: 15px;
     border-radius: 35px;
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
@@ -90,12 +103,14 @@ aside{
     font-weight: 500;
     margin: 10px;
 }
-.calendar-base{
+
+.calendar-base {
     height: 30vh;
     background-color: transparent;
     margin: 10px;
 }
-.calendar-header{
+
+.calendar-header {
     display: flex;
     flex-direction: row;
     width: 12vw;
@@ -103,19 +118,23 @@ aside{
     align-items: center;
     margin-bottom: 10px;
 }
-.calendar-button-group{
+
+.calendar-button-group {
     background-color: transparent;
     display: flex;
     justify-content: flex-end;
     align-items: center;
 }
-.calendar-text{
+
+.calendar-text {
     color: gray;
     font-weight: 500;
-    font-size: 18px;;
+    font-size: 18px;
+    ;
 }
-.calendar-buttons{
-    width:1.5vw;
+
+.calendar-buttons {
+    width: 1.5vw;
     height: 1.5vw;
     background-color: transparent;
     margin-right: 8px;
@@ -123,29 +142,35 @@ aside{
     justify-self: flex-end;
     border-radius: 100%;
 }
-.calendar-arrow-1{
-    width:0.5vw;
-    height: 0.5vw;   
+
+.calendar-arrow-1 {
+    width: 0.5vw;
+    height: 0.5vw;
     transform: rotate(180deg);
 }
-.calendar-arrow-2{
-    width:0.5vw;
+
+.calendar-arrow-2 {
+    width: 0.5vw;
     height: 0.5vw;
 }
-ol{
+
+ol {
     list-style: none;
     margin: 0;
     padding: 0;
     text-align: center;
 }
-li{
+
+li {
     padding: 2px;
 }
-.calendar{
+
+.calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
 }
-.day-name{
+
+.day-name {
     color: gray;
     font-weight: 500;
     border-radius: 100%;
@@ -155,69 +180,119 @@ li{
     width: 1.5em;
     height: 1.5em;
 }
-.day{
+
+.day {
     color: black;
     border-radius: 100%;
     width: 1.5em;
     height: 1.5em;
 }
-.other-day{
-    color:gray;
+
+.other-day {
+    color: gray;
     border-radius: 100%;
     width: 1.5em;
     height: 1.5em;
 }
-.main-calendar{
+
+.main-calendar {
     padding: 30px;
-    display:flex;
+    display: flex;
     flex-grow: 1;
     flex-direction: column;
     justify-content: space-evenly;
     text-align: center;
 }
-.main-calendar-header{
+
+.main-calendar-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     align-items: center;
+    padding-left: 40px;
 }
-.main-calendar-day{
+
+.main-calendar-day {
     padding: 15px;
     color: gray;
     border-right: 3px solid;
-    border-image: 
-    linear-gradient(
-      to top, 
-      #e3e6e7 30%, 
-      rgba(0, 0, 0, 0) 30%
-    ) 1 100%;
+    border-image:
+        linear-gradient(to top,
+            #e3e6e7 30%,
+            rgba(0, 0, 0, 0) 30%) 1 100%;
 }
-.last-day{
+
+.last-day {
     border: none;
 }
-.main-calendar-day-name{
+
+.main-calendar-day-name {
     font-size: 10px;
 }
-.main-calendar-number{
+
+.main-calendar-number {
     font-weight: 500;
     font-size: 30px;
 }
-.time-table{
+
+.time-table {
     background-color: red;
     flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(24, 1fr);
+    height: 100%;
 }
-.calendar-square{
+
+.calendar-square {
     background-color: rgb(242, 237, 237);
-    background-image: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255, 255, 255, 0.593) 3px, rgba(255,255,255,.5) 6px);
-    border-right: 3px #e3e6e7  solid;
-    border-top: 3px #e3e6e7  solid;;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255, 255, 255, 0.593) 3px, rgba(255, 255, 255, .5) 6px);
+    border-right: 3px #e3e6e7 solid;
+    border-top: 3px #e3e6e7 solid;
+    ;
 }
-.calendar-square:nth-child(7n){
-    border-right:none;
+
+.calendar-square:nth-child(7n) {
+    border-right: one;
 }
-.header-buttons:hover, .today-button:hover, .week-menu-button:hover, .event-button:hover, .calendar-buttons:hover, .day:hover, .other-day:hover{
+
+.header-buttons:hover,
+.today-button:hover,
+.week-menu-button:hover,
+.event-button:hover,
+.calendar-buttons:hover,
+.day:hover,
+.other-day:hover {
     background-color: #d0d4d7;
     cursor: pointer;
+}
+
+.calendar-time-line-and-squares {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    height: 100%;
+}
+
+.time-line {
+    height: 100%;
+    justify-content: space-between;
+    padding-right: 10px;
+    width: 40px;
+}
+
+.calendar-time {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 10px;
+    height: 20px;
+    text-align: top;
+}
+
+.label {
+    font-size: 10px;
+    color: gray;
+    margin-bottom: 5px;
+    position: absolute;
+    margin-top: -5px;
 }
