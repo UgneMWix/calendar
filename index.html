@@ -30,6 +30,38 @@
         <button class="week-menu-button">Week ▾</button>
     </header>
     <main>
+        <section class="modal hidden">
+            <header class="modal-header">
+                <button class="modal-close-button">✕</button>
+            </header>
+            <main class="modal-main">
+                <div class="input-container">
+                    <input placeholder="Enter Title" class="input-field" type="text">
+                    <label for="input-field" class="input-label">Enter <Title></Title></label>
+                    <span class="input-highlight"></span>
+                </div>
+                <section class="modal-time-flex-box">
+                    <img src="images/clock.png" alt="clock icon" class="modal-icons">
+                    <p class="modal-time-date">Thursday, July 2024</p>
+                    <p class="modal-time-start">5:00PM</p>
+                    <p>-</p>
+                    <p class="modal-time-end">5:30PM</p>
+                </section>
+                <section class="modal-location-flex-box">
+                    <img src="images/location.png" alt="Location pin icon" class="modal-icons">
+                    <input placeholder="Add location" class="modal-location-text">
+                </section>
+                <section class="modal-description-flex-box">
+                    <img src="images/left-align.png" alt="left-aligned text icon" class="modal-icons">
+                    <input class="modal-description-text" placeholder="Add description">
+                </section>
+            </main>
+
+            <footer class="modal-footer">
+                <button class="modal-save-button">Save</button>
+            </footer>
+        </section>
+        <div class="overlay hidden"></div>
         <aside>
             <button class="event-button">Create Event</button>
             <section class="calendar-base">
