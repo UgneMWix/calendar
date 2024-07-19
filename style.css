@@ -225,8 +225,7 @@ aside {
     font-size: 30px;
 }
 
-.time-table {
-    background-color: red;
+#time-table {
     flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
