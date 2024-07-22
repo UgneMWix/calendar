@@ -23,6 +23,7 @@ function main() {
     openCreationModal();
     closeCreationModal();
     saveEvent();
+    openCreationModalFromCalendar();
 }
 function generateMiniCalendar(today, year, month, currentDate, day, months, weekDays) {
     const firstDay = new Date(year, month, 1).getDay();
@@ -200,4 +201,13 @@ function validateTimeInput() {
         return false;
     }
     return true;
+}
+function openCreationModalFromCalendar() {
+    const timeTable = document.getElementById('time-table');
+    const modal = document.querySelector('.modal');
+    const overlay = document.querySelector('.overlay');
+    timeTable.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        overlay.classList.remove('hidden');
+    });
 }
