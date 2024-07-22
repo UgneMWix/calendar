@@ -41,13 +41,16 @@
                     <label for="input-field" class="input-label">Enter <Title></Title></label>
                     <span class="input-highlight"></span>
                 </div>
+                <alert class="alert hidden" id="title-alert">Please enter a title</alert>
                 <section class="modal-time-flex-box">
                     <img src="images/clock.png" alt="clock icon" class="modal-icons">
-                    <p class="modal-time-date">Thursday, July 2024</p>
-                    <p class="modal-time-start">5:00PM</p>
+                    <input class="modal-time-date" type="date" id="date-input"></p>
+                    <input class="modal-time-start" type="time" id="start-input"></p>
                     <p>-</p>
-                    <p class="modal-time-end">5:30PM</p>
+                    <input class="modal-time-end" type="time" id="end-input"></p>
                 </section>
+                <alert class="alert hidden" id="time-alert">Start time must come before the end time and must not be
+                    empty</alert>
                 <section class="modal-location-flex-box">
                     <img src="images/location.png" alt="Location pin icon" class="modal-icons">
                     <input placeholder="Add location" class="modal-location-text">
@@ -67,175 +70,28 @@
             <button class="event-button">Create Event</button>
             <section class="calendar-base">
                 <header class="calendar-header">
-                    <p class="calendar-text">July 2024</p>
+                    <p class="calendar-text"></p>
                     <section class="calendar-button-group">
-                        <button class="calendar-buttons">
+                        <button class="calendar-buttons" id="arrow-prev">
                             <img src="images/arrow.png" alt="arrow back in calendar" class="calendar-arrow-1">
                         </button>
-                        <button class="calendar-buttons">
+                        <button class="calendar-buttons" id="arrow-next">
                             <img src="images/arrow.png" alt="arrow forward in calendar" class="calendar-arrow-2">
                         </button>
                     </section>
-
                 </header>
-                <div class="calendar">
-                    <div class="day-name">S</div>
-                    <div class="day-name">M</div>
-                    <div class="day-name">T</div>
-                    <div class="day-name">W</div>
-                    <div class="day-name">T</div>
-                    <div class="day-name">F</div>
-                    <div class="day-name">S</div>
-
-                    <div class="other-day">30</div>
-                    <div class="day">1</div>
-                    <div class="day">2</div>
-                    <div class="day">3</div>
-                    <div class="day">4</div>
-                    <div class="day">5</div>
-                    <div class="day">6</div>
-                    <div class="day">7</div>
-                    <div class="day">8</div>
-                    <div class="day">9</div>
-                    <div class="day">10</div>
-                    <div class="day">11</div>
-                    <div class="day">12</div>
-                    <div class="day">13</div>
-                    <div class="day">14</div>
-                    <div class="day">15</div>
-                    <div class="day">16</div>
-                    <div class="day">17</div>
-                    <div class="day">18</div>
-                    <div class="day">19</div>
-                    <div class="day">20</div>
-                    <div class="day">21</div>
-                    <div class="day">22</div>
-                    <div class="day">23</div>
-                    <div class="day">24</div>
-                    <div class="day">25</div>
-                    <div class="day">26</div>
-                    <div class="day">27</div>
-                    <div class="day">28</div>
-                    <div class="day">29</div>
-                    <div class="day">30</div>
-                    <div class="day">31</div>
-                    <div class="other-day">1</div>
-                    <div class="other-day">2</div>
-                    <div class="other-day">3</div>
-                </div>
+                <div class="calendar"></div>
             </section>
         </aside>
         <section class="main-calendar">
-            <header class="main-calendar-header">
-                <section class="main-calendar-day">
-                    <p class="main-calendar-day-name">SUN</p>
-                    <p class="main-calendar-number" data-day="0">7</p>
-                </section>
-                <section class="main-calendar-day">
-                    <p class="main-calendar-day-name">MON</p>
-                    <p class="main-calendar-number" data-day="1">8</p>
-                </section>
-                <section class="main-calendar-day">
-                    <p class="main-calendar-day-name">TUE</p>
-                    <p class="main-calendar-number" data-day="2">9</p>
-                </section>
-                <section class="main-calendar-day">
-                    <p class="main-calendar-day-name">WED</p>
-                    <p class="main-calendar-number" data-day="3">10</p>
-                </section>
-                <section class="main-calendar-day">
-                    <p class="main-calendar-day-name">THU</p>
-                    <p class="main-calendar-number" data-day="4">11</p>
-                </section>
-                <section class="main-calendar-day">
-                    <p class="main-calendar-day-name">FRI</p>
-                    <p class="main-calendar-number" data-day="5">12</p>
-                </section>
-                <section class="main-calendar-day last-day">
-                    <p class="main-calendar-day-name">SAT</p>
-                    <p class="main-calendar-number" data-day="6">13</p>
-                </section>
-            </header>
+            <header class="main-calendar-header"></header>
             <section class="calendar-time-line-and-squares">
-                <section class="time-line">
-                    <div class="calendar-time">
-                        <p class="label">00:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">01:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">02:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">03:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">04:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">05:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">06:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">07:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">08:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">09:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">10:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">11:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">12:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">13:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">14:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">15:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">16:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">17:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">18:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">19:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">20:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">21:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">22:00</p>
-                    </div>
-                    <div class="calendar-time">
-                        <p class="label">23:00</p>
-                    </div>
-                </section>
-
+                <section class="time-line"></section>
                 <section id="time-table">
 
                 </section>
             </section>
+            <section class="event"></section>
         </section>
     </main>
 </body>

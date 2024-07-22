@@ -106,6 +106,7 @@ aside {
 
 .calendar-base {
     height: 30vh;
+    width: 13vw;
     background-color: transparent;
     margin: 10px;
 }
@@ -113,7 +114,7 @@ aside {
 .calendar-header {
     display: flex;
     flex-direction: row;
-    width: 12vw;
+    width: 13vw;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
@@ -238,7 +239,6 @@ aside {
     background-image: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(255, 255, 255, 0.593) 3px, rgba(255, 255, 255, .5) 6px);
     border-right: 3px #e3e6e7 solid;
     border-top: 3px #e3e6e7 solid;
-    ;
 }
 
 .calendar-square:nth-child(7n) {
@@ -289,7 +289,7 @@ aside {
     display: flex;
     flex-direction: column;
     width: 45vw;
-    height: 35vh;
+    height: 40vh;
     position: fixed;
     top: 35vh;
     left: 30vw;
@@ -473,4 +473,32 @@ aside {
 .modal-icons {
     width: 1vw;
     height: 1vw;
+}
+
+.current-day {
+    background-color: #4A7FB5;
+    color: white;
+}
+
+.main-calendar-today {
+    background-color: #4A7FB5;
+    color: white;
+}
+
+.alert {
+    color: red;
+    font-size: 12px;
+}
+
+.event {
+    background-color: #4A7FB5;
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0px;
+    position: absolute;
+    width: 200px;
+    height: 200px;
 }
