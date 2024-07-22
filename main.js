@@ -10,10 +10,10 @@ function main() {
     const arrowIcons = document.querySelectorAll(".calendar-buttons");
     const mainCalendarHeader = document.querySelector(".main-calendar-header");
     const timeLine = document.querySelector(".time-line");
-    console.log(arrowIcons);
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const weekDays = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
     const week = getWeek(todayConstant);
+    const weekDaysNumbers = getWeekDays(todayConstant);
 
     generateMiniCalendar(today, year, month, currentDate, day, months, weekDays);
     attachClickToArrows(arrowIcons, month, year, today, currentDate, day, months, weekDays);
@@ -23,8 +23,8 @@ function main() {
     generateWeekViewSquares();
     openCreationModal();
     closeCreationModal();
-    saveEvent();
-    openCreationModalFromCalendar(week);
+    openCreationModalFromCalendar(week, weekDaysNumbers);
+
 }
 function generateMiniCalendar(today, year, month, currentDate, day, months, weekDays) {
     const firstDay = new Date(year, month, 1).getDay();
@@ -98,6 +98,14 @@ function getWeek(fromDate) {
     }
     return result;
 }
+function getWeekDays(fromDate) {
+    const sunday = new Date(fromDate.setDate(fromDate.getDate() - fromDate.getDay()))
+        , result = [new Date(sunday).getDate()];
+    while (sunday.setDate(sunday.getDate() + 1) && sunday.getDay() !== 0) {
+        result.push(new Date(sunday).getDate());
+    }
+    return result;
+}
 function generateWeekTitles(week) {
     let elem = document.querySelectorAll('[data-day]');
     for (let i = 0; i < elem.length; i++) {
@@ -160,30 +168,6 @@ function closeCreationModal() {
         document.getElementById('time-alert').classList.add('hidden');
     });
 }
-function saveEvent() {
-    const button = document.querySelector('.modal-save-button');
-    button.addEventListener('click', () => {
-        if (!validateTitleInput() || !validateTimeInput()) {
-            return;
-        }
-        const titleAlert = document.getElementById('title-alert');
-        const timeAlert = document.getElementById('time-alert');
-        titleAlert.classList.add('hidden');
-        timeAlert.classList.add('hidden');
-        const modal = document.querySelector('.modal');
-        const overlay = document.querySelector('.overlay');
-        modal.classList.add('hidden');
-        overlay.classList.add('hidden');
-        const title = document.querySelector('.input-field');
-        title.value = '';
-        const dateInput = document.getElementById('date-input');
-        dateInput.value = '';
-        const startInput = document.getElementById('start-input');
-        const endInput = document.getElementById('end-input');
-        startInput.value = '';
-        endInput.value = '';
-    });
-}
 function validateTitleInput() {
     const title = document.querySelector('.input-field');
     if (title.value.length <= 0) {
@@ -204,29 +188,103 @@ function validateTimeInput() {
     }
     return true;
 }
-function openCreationModalFromCalendar(week) {
+function openCreationModalFromCalendar(week, weekDaysNumbers) {
     const timeTable = document.getElementById('time-table');
     const modal = document.querySelector('.modal');
     const overlay = document.querySelector('.overlay');
+
+    const button = document.querySelector('.modal-save-button');
+    const closeButton = document.querySelector('.modal-close-button');
+
     timeTable.addEventListener('click', (e) => {
         modal.classList.remove('hidden');
         overlay.classList.remove('hidden');
         const dateInput = document.getElementById('date-input');
         const startInput = document.getElementById('start-input');
         const endInput = document.getElementById('end-input');
-        if (e.target.dataset.day < 10) {
-            dateInput.value = `${week[parseInt(e.target.dataset.day)].getFullYear()}-0${week[parseInt(e.target.dataset.day)].getMonth() + 1}-${week[parseInt(e.target.dataset.day)].getDate()}`;
+        const timeString = e.target.dataset.hour.padStart(2, '0');
+        const monthString = (week[parseInt(e.target.dataset.day)].getMonth() + 1).toString().padStart(2, '0');
+        const dayString = week[parseInt(e.target.dataset.day)].getDate().toString().padStart(2, '0');
+        dateInput.value = `${week[parseInt(e.target.dataset.day)].getFullYear()}-${monthString}-${dayString}`;
+        startInput.value = `${timeString}:00`;
+        endInput.value = `${timeString}:30`;
+
+        button.addEventListener('click', onSaveHandler);
+        closeButton.addEventListener('click', onCloseHandler);
+
+        function onSaveHandler() {
+            if (!validateTitleInput() || !validateTimeInput()) {
+                return;
+            }
+
+            generateEvent(e.target, weekDaysNumbers);
+            resetAndCloseModal();
+            cleanup();
         }
-        else {
-            dateInput.value = `${week[parseInt(e.target.dataset.day)].getFullYear()}-${week[parseInt(e.target.dataset.day)].getMonth() + 1}-${week[parseInt(e.target.dataset.day)].getDate()}`;
+
+        function onCloseHandler() {
+            console.log('close');
+            resetAndCloseModal();
+            cleanup();
         }
-        if (e.target.dataset.hour < 10) {
-            startInput.value = `0${e.target.dataset.hour}:00`;
-            endInput.value = `0${e.target.dataset.hour}:30`;
-        }
-        else {
-            startInput.value = `${e.target.dataset.hour}:00`;
-            endInput.value = `${e.target.dataset.hour}:30`;
+
+        function cleanup() {
+            button.removeEventListener('click', onSaveHandler);
+            closeButton.removeEventListener('click', onCloseHandler);
         }
     });
 }
+function generateEvent(eventTarget, weekDaysNumbers) {
+    const timeTable = document.getElementById('time-table');
+    const dateInput = document.getElementById('date-input');
+    const startInput = document.getElementById('start-input');
+    const endInput = document.getElementById('end-input');
+    const event = document.createElement('div');
+    event.classList.add('event');
+
+    const square = document.querySelector(
+        `[data-day="${weekDaysNumbers.indexOf(+(dateInput.value.split('-')[2]))}"][data-hour="${+(startInput.value.split(':')[0])}"]`);
+
+    let rect = square.getBoundingClientRect();
+    const squareHeight = rect['height'] * endInput.value.split(':')[1] / 60
+        + rect['height'] * (endInput.value.split(':')[0] - startInput.value.split(':')[0])
+        - rect['height'] * startInput.value.split(':')[1] / 60;
+
+    const squareTop = rect['top'] + rect['height'] * startInput.value.split(':')[1] / 60;
+
+    const squareLeft = rect['left'];
+
+    event.style.setProperty('--event-top', squareTop + 'px');
+    event.style.setProperty('--event-left', squareLeft + 'px');
+    event.style.setProperty('--event-width', rect['width'] + 'px');
+    event.style.setProperty('--event-height', squareHeight + 'px');
+    event.innerText = document.querySelector('.input-field').value;
+    timeTable.appendChild(event);
+}
+
+function resetAndCloseModal() {
+    const dateInput = document.getElementById('date-input');
+    dateInput.value = '';
+    const startInput = document.getElementById('start-input');
+    const endInput = document.getElementById('end-input');
+    startInput.value = '';
+    endInput.value = '';
+    const modal = document.querySelector('.modal');
+    const overlay = document.querySelector('.overlay');
+    document.querySelector('.input-field').value = '';
+    modal.classList.add('hidden');
+    overlay.classList.add('hidden');
+    document.getElementById('title-alert').classList.add('hidden');
+    document.getElementById('time-alert').classList.add('hidden');
+}
+
+/*
+    1. Create function that accepts event data and renders all event on the grid
+    2. When saving event, extract all data from elements and convert it to serializable object
+    3. Save all events in local storage
+    4. Trigger rerender with #1
+
+    After load:
+        1. Get data from localStorate
+        2. Render all events with #1
+*/
