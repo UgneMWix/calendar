@@ -13,6 +13,7 @@ function main() {
     console.log(arrowIcons);
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const weekDays = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+    const week = getWeek(todayConstant);
 
     generateMiniCalendar(today, year, month, currentDate, day, months, weekDays);
     attachClickToArrows(arrowIcons, month, year, today, currentDate, day, months, weekDays);
@@ -23,7 +24,7 @@ function main() {
     openCreationModal();
     closeCreationModal();
     saveEvent();
-    openCreationModalFromCalendar();
+    openCreationModalFromCalendar(week);
 }
 function generateMiniCalendar(today, year, month, currentDate, day, months, weekDays) {
     const firstDay = new Date(year, month, 1).getDay();
@@ -109,12 +110,13 @@ function generateWeekTitles(week) {
 }
 function generateWeekViewSquares() {
     const gridCells = [];
-    for (let i = 0; i < 7; i++) {
-        for (let j = 0; j < 24; j++) {
+    for (let i = 0; i < 24; i++) {
+        for (let j = 0; j < 7; j++) {
             const cell = document.createElement('div');
             cell.classList.add('calendar-square');
+            cell.dataset.hour = i;
+            cell.dataset.day = j;
             gridCells.push(cell);
-            cell.innerHTML = '';
         }
     }
     const container = document.getElementById('time-table');
@@ -202,12 +204,29 @@ function validateTimeInput() {
     }
     return true;
 }
-function openCreationModalFromCalendar() {
+function openCreationModalFromCalendar(week) {
     const timeTable = document.getElementById('time-table');
     const modal = document.querySelector('.modal');
     const overlay = document.querySelector('.overlay');
-    timeTable.addEventListener('click', () => {
+    timeTable.addEventListener('click', (e) => {
         modal.classList.remove('hidden');
         overlay.classList.remove('hidden');
+        const dateInput = document.getElementById('date-input');
+        const startInput = document.getElementById('start-input');
+        const endInput = document.getElementById('end-input');
+        if (e.target.dataset.day < 10) {
+            dateInput.value = `${week[parseInt(e.target.dataset.day)].getFullYear()}-0${week[parseInt(e.target.dataset.day)].getMonth() + 1}-${week[parseInt(e.target.dataset.day)].getDate()}`;
+        }
+        else {
+            dateInput.value = `${week[parseInt(e.target.dataset.day)].getFullYear()}-${week[parseInt(e.target.dataset.day)].getMonth() + 1}-${week[parseInt(e.target.dataset.day)].getDate()}`;
+        }
+        if (e.target.dataset.hour < 10) {
+            startInput.value = `0${e.target.dataset.hour}:00`;
+            endInput.value = `0${e.target.dataset.hour}:30`;
+        }
+        else {
+            startInput.value = `${e.target.dataset.hour}:00`;
+            endInput.value = `${e.target.dataset.hour}:30`;
+        }
     });
 }
