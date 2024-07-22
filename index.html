@@ -15,6 +15,42 @@
 </head>
 
 <body>
+    <section class="modal hidden">
+        <header class="modal-header">
+            <button class="modal-close-button">✕</button>
+        </header>
+        <main class="modal-main">
+            <div class="input-container">
+                <input placeholder="Enter Title" class="input-field" type="text">
+                <label for="input-field" class="input-label">Enter <Title></Title></label>
+                <span class="input-highlight"></span>
+            </div>
+            <alert class="alert hidden" id="title-alert">Please enter a title</alert>
+            <section class="modal-time-flex-box">
+                <img src="images/clock.png" alt="clock icon" class="modal-icons">
+                <input class="modal-time-date" type="date" id="date-input"></p>
+                <input class="modal-time-start" type="time" id="start-input"></p>
+                <p>-</p>
+                <input class="modal-time-end" type="time" id="end-input"></p>
+            </section>
+            <alert class="alert hidden" id="time-alert">Start time must come before the end time and must not be
+                empty</alert>
+            <section class="modal-location-flex-box">
+                <img src="images/location.png" alt="Location pin icon" class="modal-icons">
+                <input placeholder="Add location" class="modal-location-text">
+            </section>
+            <section class="modal-description-flex-box">
+                <img src="images/left-align.png" alt="left-aligned text icon" class="modal-icons">
+                <input class="modal-description-text" placeholder="Add description">
+            </section>
+        </main>
+
+        <footer class="modal-footer">
+            <button class="modal-save-button">Save</button>
+        </footer>
+    </section>
+    <div class="overlay hidden"></div>
+
     <header class="page-header">
         <button class="header-buttons">
             <img src="images/menu-dashes.png" class="menu-button-image">
@@ -31,41 +67,7 @@
         <button class="week-menu-button">Week ▾</button>
     </header>
     <main>
-        <section class="modal hidden">
-            <header class="modal-header">
-                <button class="modal-close-button">✕</button>
-            </header>
-            <main class="modal-main">
-                <div class="input-container">
-                    <input placeholder="Enter Title" class="input-field" type="text">
-                    <label for="input-field" class="input-label">Enter <Title></Title></label>
-                    <span class="input-highlight"></span>
-                </div>
-                <alert class="alert hidden" id="title-alert">Please enter a title</alert>
-                <section class="modal-time-flex-box">
-                    <img src="images/clock.png" alt="clock icon" class="modal-icons">
-                    <input class="modal-time-date" type="date" id="date-input"></p>
-                    <input class="modal-time-start" type="time" id="start-input"></p>
-                    <p>-</p>
-                    <input class="modal-time-end" type="time" id="end-input"></p>
-                </section>
-                <alert class="alert hidden" id="time-alert">Start time must come before the end time and must not be
-                    empty</alert>
-                <section class="modal-location-flex-box">
-                    <img src="images/location.png" alt="Location pin icon" class="modal-icons">
-                    <input placeholder="Add location" class="modal-location-text">
-                </section>
-                <section class="modal-description-flex-box">
-                    <img src="images/left-align.png" alt="left-aligned text icon" class="modal-icons">
-                    <input class="modal-description-text" placeholder="Add description">
-                </section>
-            </main>
 
-            <footer class="modal-footer">
-                <button class="modal-save-button">Save</button>
-            </footer>
-        </section>
-        <div class="overlay hidden"></div>
         <aside>
             <button class="event-button">Create Event</button>
             <section class="calendar-base">

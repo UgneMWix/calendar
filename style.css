@@ -499,4 +499,8 @@ aside {
     font-weight: 500;
     margin: 0px;
     position: absolute;
+    width: var(--event-width);
+    height: var(--event-height);
+    top: var(--event-top);
+    left: var(--event-left);
 }
