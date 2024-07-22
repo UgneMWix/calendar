@@ -13,7 +13,7 @@ function main() {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const weekDays = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
     const week = getWeek(todayConstant);
-    // let eventTarget = { target: null };
+    const weekDaysNumbers = getWeekDays(todayConstant);
 
     generateMiniCalendar(today, year, month, currentDate, day, months, weekDays);
     attachClickToArrows(arrowIcons, month, year, today, currentDate, day, months, weekDays);
@@ -23,8 +23,8 @@ function main() {
     generateWeekViewSquares();
     openCreationModal();
     closeCreationModal();
-    openCreationModalFromCalendar(week);
-    // saveEvent(eventTarget);
+    openCreationModalFromCalendar(week, weekDaysNumbers);
+
 }
 function generateMiniCalendar(today, year, month, currentDate, day, months, weekDays) {
     const firstDay = new Date(year, month, 1).getDay();
@@ -95,6 +95,14 @@ function getWeek(fromDate) {
         , result = [new Date(sunday)];
     while (sunday.setDate(sunday.getDate() + 1) && sunday.getDay() !== 0) {
         result.push(new Date(sunday));
+    }
+    return result;
+}
+function getWeekDays(fromDate) {
+    const sunday = new Date(fromDate.setDate(fromDate.getDate() - fromDate.getDay()))
+        , result = [new Date(sunday).getDate()];
+    while (sunday.setDate(sunday.getDate() + 1) && sunday.getDay() !== 0) {
+        result.push(new Date(sunday).getDate());
     }
     return result;
 }
@@ -180,7 +188,7 @@ function validateTimeInput() {
     }
     return true;
 }
-function openCreationModalFromCalendar(week) {
+function openCreationModalFromCalendar(week, weekDaysNumbers) {
     const timeTable = document.getElementById('time-table');
     const modal = document.querySelector('.modal');
     const overlay = document.querySelector('.overlay');
@@ -209,7 +217,7 @@ function openCreationModalFromCalendar(week) {
                 return;
             }
 
-            generateEvent(e.target);
+            generateEvent(e.target, weekDaysNumbers);
             resetAndCloseModal();
             cleanup();
         }
@@ -226,19 +234,31 @@ function openCreationModalFromCalendar(week) {
         }
     });
 }
-function generateEvent(eventTarget) {
+function generateEvent(eventTarget, weekDaysNumbers) {
     const timeTable = document.getElementById('time-table');
+    const dateInput = document.getElementById('date-input');
+    const startInput = document.getElementById('start-input');
+    const endInput = document.getElementById('end-input');
     const event = document.createElement('div');
-    let rect = eventTarget.getBoundingClientRect();
     event.classList.add('event');
 
-    const squareHeight = rect['height'];
+    const square = document.querySelector(
+        `[data-day="${weekDaysNumbers.indexOf(+(dateInput.value.split('-')[2]))}"][data-hour="${+(startInput.value.split(':')[0])}"]`);
 
-    event.style.setProperty('--event-top', rect['top'] + 'px');
-    event.style.setProperty('--event-left', rect['left'] + 'px');
+    let rect = square.getBoundingClientRect();
+    const squareHeight = rect['height'] * endInput.value.split(':')[1] / 60
+        + rect['height'] * (endInput.value.split(':')[0] - startInput.value.split(':')[0])
+        - rect['height'] * startInput.value.split(':')[1] / 60;
+
+    const squareTop = rect['top'] + rect['height'] * startInput.value.split(':')[1] / 60;
+
+    const squareLeft = rect['left'];
+
+    event.style.setProperty('--event-top', squareTop + 'px');
+    event.style.setProperty('--event-left', squareLeft + 'px');
     event.style.setProperty('--event-width', rect['width'] + 'px');
     event.style.setProperty('--event-height', squareHeight + 'px');
-    console.log(rect);
+    event.innerText = document.querySelector('.input-field').value;
     timeTable.appendChild(event);
 }
 
@@ -257,3 +277,14 @@ function resetAndCloseModal() {
     document.getElementById('title-alert').classList.add('hidden');
     document.getElementById('time-alert').classList.add('hidden');
 }
+
+/*
+    1. Create function that accepts event data and renders all event on the grid
+    2. When saving event, extract all data from elements and convert it to serializable object
+    3. Save all events in local storage
+    4. Trigger rerender with #1
+
+    After load:
+        1. Get data from localStorate
+        2. Render all events with #1
+*/
