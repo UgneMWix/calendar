@@ -21,10 +21,11 @@ function main() {
     generateWeekTitles(getWeek(new Date()));
     generateTimeLine(timeLine);
     generateWeekViewSquares();
+    renderFromStorage();
     openCreationModal();
     closeCreationModal();
     openCreationModalFromCalendar(week, weekDaysNumbers);
-
+    // clearLocalStorage();
 }
 function generateMiniCalendar(today, year, month, currentDate, day, months, weekDays) {
     const firstDay = new Date(year, month, 1).getDay();
@@ -218,6 +219,7 @@ function openCreationModalFromCalendar(week, weekDaysNumbers) {
             }
 
             generateEvent(e.target, weekDaysNumbers);
+            saveToLocalStorage();
             resetAndCloseModal();
             cleanup();
         }
@@ -288,3 +290,44 @@ function resetAndCloseModal() {
         1. Get data from localStorate
         2. Render all events with #1
 */
+function saveToLocalStorage() {
+    const events = document.querySelectorAll('.event');
+    let eventArray = [];
+    let instance = {};
+    events.forEach(event => {
+        instance = {
+            top: event.style.getPropertyValue('--event-top'),
+            left: event.style.getPropertyValue('--event-left'),
+            width: event.style.getPropertyValue('--event-width'),
+            height: event.style.getPropertyValue('--event-height'),
+            title: event.innerText,
+            date: document.getElementById('date-input').value,
+            startTime: document.getElementById('start-input').value,
+            endTime: document.getElementById('end-input').value,
+        };
+        eventArray.push(instance);
+    });
+    localStorage.setItem('events', JSON.stringify(eventArray));
+    const test = localStorage.getItem('events');
+    console.log(test);
+}
+function renderFromStorage() {
+    const events = JSON.parse(localStorage.getItem('events'));
+    if (events === null) {
+        return;
+    }
+    events.forEach(event => {
+        const timeTable = document.getElementById('time-table');
+        const eventElement = document.createElement('div');
+        eventElement.classList.add('event');
+        eventElement.style.setProperty('--event-top', event.top);
+        eventElement.style.setProperty('--event-left', event.left);
+        eventElement.style.setProperty('--event-width', event.width);
+        eventElement.style.setProperty('--event-height', event.height);
+        eventElement.innerText = event.title;
+        timeTable.appendChild(eventElement);
+    });
+}
+function clearLocalStorage() {
+    localStorage.clear();
+}   
