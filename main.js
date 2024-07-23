@@ -330,4 +330,5 @@ function renderFromStorage() {
 }
 function clearLocalStorage() {
     localStorage.clear();
+    location.reload();
 }   
