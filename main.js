@@ -25,7 +25,7 @@ function main() {
     openCreationModal();
     closeCreationModal();
     openCreationModalFromCalendar(week, weekDaysNumbers);
-    // clearLocalStorage();
+    clearLocalStorage();
 }
 function generateMiniCalendar(today, year, month, currentDate, day, months, weekDays) {
     const firstDay = new Date(year, month, 1).getDay();
@@ -220,6 +220,7 @@ function openCreationModalFromCalendar(week, weekDaysNumbers) {
 
             generateEvent(e.target, weekDaysNumbers);
             saveToLocalStorage();
+            renderFromStorage();
             resetAndCloseModal();
             cleanup();
         }
@@ -280,16 +281,6 @@ function resetAndCloseModal() {
     document.getElementById('time-alert').classList.add('hidden');
 }
 
-/*
-    1. Create function that accepts event data and renders all event on the grid
-    2. When saving event, extract all data from elements and convert it to serializable object
-    3. Save all events in local storage
-    4. Trigger rerender with #1
-
-    After load:
-        1. Get data from localStorate
-        2. Render all events with #1
-*/
 function saveToLocalStorage() {
     const events = document.querySelectorAll('.event');
     let eventArray = [];
@@ -329,6 +320,9 @@ function renderFromStorage() {
     });
 }
 function clearLocalStorage() {
-    localStorage.clear();
-    location.reload();
+    const button = document.querySelector('.today-button');
+    button.addEventListener('click', () => {
+        localStorage.clear();
+        location.reload();
+    });
 }   
