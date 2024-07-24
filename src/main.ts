@@ -1,4 +1,4 @@
-"use strict";
+// @ts-nocheck
 main();
 function main() {
     let today = new Date();
