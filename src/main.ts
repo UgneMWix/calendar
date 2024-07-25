@@ -8,13 +8,56 @@ interface Event {
     startTime: string;
     endTime: string;
 }
+
+enum CssVariable {
+    Top = '--event-top',
+    Left = '--event-left',
+    Width = '--event-width',
+    Height = '--event-height'
+}
+enum Selector {
+    TimeTable = '#time-table',
+    DateInput = '#date-input',
+    StartInput = '#start-input',
+    EndInput = '#end-input',
+    InputField = '.input-field',
+    TitleAlert = '#title-alert',
+    TimeAlert = '#time-alert',
+    Modal = '.modal',
+    Overlay = '.overlay',
+    TodayButton = '.today-button',
+    EventButton = '.event-button',
+    Calendar = '.calendar',
+    CalendarText = '.calendar-text',
+    MainCalendarHeader = '.main-calendar-header',
+    TimeLine = '.time-line',
+    CalendarButtons = '.calendar-buttons',
+    ArrowPrev = '#arrow-prev',
+    ArrowNext = '#arrow-next',
+    CalendarSquare = '.calendar-square',
+    CalendarTime = '.calendar-time',
+    MainCalendarDay = '.main-calendar-day',
+    MainCalendarDayName = '.main-calendar-day-name',
+    MainCalendarNumber = '.main-calendar-number',
+    LastDay = '.last-day',
+    MainCalendarToday = '.main-calendar-today',
+    Day = '.day',
+    OtherDay = '.other-day',
+    CurrentDay = '.current-day',
+    ModalSaveButton = '.modal-save-button',
+    ModalCloseButton = '.modal-close-button',
+    Hidden = 'hidden',
+    Event = '.event'
+}
+
+
 main();
 function main() {
-    const timeLine = getElementBySelector(".time-line", HTMLElement);
-    const mainCalendarHeader = getElementBySelector('.main-calendar-header', HTMLElement);
-    const day = getElementBySelector(".calendar", HTMLElement);
-    const currentDate = getElementBySelector(".calendar-text", HTMLElement);
-    const arrowIcons = checkIfNull(document.querySelectorAll(".calendar-buttons"));
+    const timeLine = getElementBySelector(Selector.TimeLine, HTMLElement);
+    const mainCalendarHeader = getElementBySelector(Selector.MainCalendarHeader, HTMLElement);
+    const day = getElementBySelector(Selector.Calendar, HTMLElement);
+    const currentDate = getElementBySelector(Selector.CalendarText, HTMLElement);
+    const arrowIcons = checkIfNull(document.querySelectorAll(Selector.CalendarButtons));
 
     const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -43,19 +86,19 @@ function generateWeekViewSquares() {
     for (let i = 0; i < 24; i++) {
         for (let j = 0; j < 7; j++) {
             const cell = document.createElement('div');
-            cell.classList.add('calendar-square');
+            cell.classList.add(Selector.CalendarSquare);
             cell.dataset.hour = i.toString();
             cell.dataset.day = j.toString();
             gridCells.push(cell);
         }
     }
-    let container = getElementBySelector('#time-table', HTMLElement);
+    let container = getElementBySelector(Selector.TimeTable, HTMLElement);
     container.replaceChildren(...gridCells);
 }
 function generateTimeLine(timeLine: Element) {
     for (let i = 0; i < 24; i++) {
         const zero = i < 10 ? '0' : '';
-        const cell = createHTMLElement('div', ['calendar-time'], '');
+        const cell = createHTMLElement('div', [Selector.CalendarTime], '');
         const paragraph = createHTMLElement('p', ['label'], `${zero}${i}:00`);
         cell.appendChild(paragraph);
         timeLine.appendChild(cell);
@@ -64,15 +107,15 @@ function generateTimeLine(timeLine: Element) {
 
 function generateMainCalendarHeader(weekDays: Array<string>, mainCalendarHeader: Element) {
     for (let i = 0; i < weekDays.length; i++) {
-        const cell = createHTMLElement('div', ['main-calendar-day'], '');
-        const paragraph = createHTMLElement('p', ['main-calendar-day-name'], weekDays[i].substring(0, 3));
+        const cell = createHTMLElement('div', [Selector.MainCalendarDay], '');
+        const paragraph = createHTMLElement('p', [Selector.MainCalendarDayName], weekDays[i].substring(0, 3));
         const number = document.createElement('p');
-        number.classList.add('main-calendar-number');
+        number.classList.add(Selector.MainCalendarNumber);
         number.dataset.day = i.toString();
         cell.appendChild(paragraph);
         cell.appendChild(number);
         if (i === 0) {
-            cell.classList.add('last-day');
+            cell.classList.add(Selector.LastDay);
         }
         mainCalendarHeader.appendChild(cell);
     }
@@ -94,11 +137,11 @@ function getWeekDays(fromDate: Date) {
     return result;
 }
 function generateWeekTitles(week: Array<Date>) {
-    let elem = document.querySelectorAll('.main-calendar-number');
+    let elem = document.querySelectorAll(Selector.MainCalendarNumber);
     for (let i = 0; i < elem.length; i++) {
         elem[i].textContent = week[i].getDate().toString();
         (week[i].getDate() == new Date().getDate())
-            ? elem[i].classList.add('main-calendar-today')
+            ? elem[i].classList.add(Selector.MainCalendarToday)
             : '';
     }
 }
@@ -110,22 +153,22 @@ function generateMiniCalendar(year: number, month: number, currentDate: Element,
     const prevMonthLastDate = new Date(year, month, 0).getDate();
     currentDate.innerHTML = `${months[month]} ${year}`;
     for (let i = 0; i < weekDays.length; i++) {
-        let cell = createHTMLElement('div', ['day'], weekDays[i].substring(0, 1));
+        let cell = createHTMLElement('div', [Selector.Day], weekDays[i].substring(0, 1));
         day.appendChild(cell);
     }
     for (let i = firstDay; i > 0; i--) {
-        let cell = createHTMLElement('div', ['other-day'], (prevMonthLastDate - i + 1).toString());
+        let cell = createHTMLElement('div', [Selector.OtherDay], (prevMonthLastDate - i + 1).toString());
         day.appendChild(cell);
     }
     for (let i = 1; i <= lastDate; i++) {
-        let cell = createHTMLElement('div', ['day'], i.toString());
+        let cell = createHTMLElement('div', [Selector.Day], i.toString());
         if (i === new Date().getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
-            cell.classList.add('current-day');
+            cell.classList.add(Selector.CurrentDay);
         }
         day.appendChild(cell);
     }
     for (let i = lastDay; i < 6; i++) {
-        let cell = createHTMLElement('div', ['other-day'], (i - lastDay + 1).toString());
+        let cell = createHTMLElement('div', [Selector.OtherDay], (i - lastDay + 1).toString());
         day.appendChild(cell);
     }
 }
@@ -146,19 +189,19 @@ function attachClickToArrows(arrowIcons: NodeListOf<Element>, month: number, yea
     });
 }
 function openCreationModal(week: Array<Date>, weekDaysNumbers: Array<number>) {
-    const timeTable = getElementBySelector('#time-table', HTMLElement);
-    const modal = getElementBySelector('.modal', HTMLElement);
-    const overlay = getElementBySelector('.overlay', HTMLElement);
+    const timeTable = getElementBySelector(Selector.TimeTable, HTMLElement);
+    const modal = getElementBySelector(Selector.Modal, HTMLElement);
+    const overlay = getElementBySelector(Selector.Overlay, HTMLElement);
 
-    const button = getElementBySelector('.modal-save-button', HTMLButtonElement);
-    const closeButton = getElementBySelector('.modal-close-button', HTMLButtonElement);
+    const button = getElementBySelector(Selector.ModalSaveButton, HTMLButtonElement);
+    const closeButton = getElementBySelector(Selector.ModalCloseButton, HTMLButtonElement);
 
     timeTable.addEventListener('click', (e) => {
-        modal.classList.remove('hidden');
-        overlay.classList.remove('hidden');
-        const dateInput = getElementBySelector('#date-input', HTMLInputElement);
-        const startInput = getElementBySelector('#start-input', HTMLInputElement);
-        const endInput = getElementBySelector('#end-input', HTMLInputElement);
+        modal.classList.remove(Selector.Hidden);
+        overlay.classList.remove(Selector.Hidden);
+        const dateInput = getElementBySelector(Selector.DateInput, HTMLInputElement);
+        const startInput = getElementBySelector(Selector.StartInput, HTMLInputElement);
+        const endInput = getElementBySelector(Selector.EndInput, HTMLInputElement);
         const timeString = ensureHtmlElement(e.target, HTMLElement).dataset.hour!.padStart(2, '0');
         const monthString = (week[parseInt(ensureHtmlElement(e.target, HTMLElement).dataset.day!)].getMonth() + 1).toString().padStart(2, '0');
         const dayString = week[parseInt(ensureHtmlElement(e.target, HTMLElement).dataset.day!)].getDate().toString().padStart(2, '0');
@@ -171,10 +214,10 @@ function openCreationModal(week: Array<Date>, weekDaysNumbers: Array<number>) {
 
 
     });
-    const eventButton = getElementBySelector('.event-button', HTMLButtonElement);
+    const eventButton = getElementBySelector(Selector.EventButton, HTMLButtonElement);
     eventButton.addEventListener('click', (e) => {
-        modal.classList.remove('hidden');
-        overlay.classList.remove('hidden');
+        modal.classList.remove(Selector.Hidden);
+        overlay.classList.remove(Selector.Hidden);
         button.addEventListener('click', onSaveHandler);
         closeButton.addEventListener('click', onCloseHandler);
     });
@@ -230,10 +273,10 @@ function ensureHtmlElement<T extends typeof HTMLElement>(element: unknown, eleme
 }
 
 function generateEvent(eventTarget: EventTarget, weekDaysNumbers: Array<number>) {
-    const timeTable = getElementBySelector('#time-table', HTMLElement);
-    const dateInput = getElementBySelector('#date-input', HTMLInputElement);
-    const startInput = getElementBySelector('#start-input', HTMLInputElement);
-    const endInput = getElementBySelector('#end-input', HTMLInputElement);
+    const timeTable = getElementBySelector(Selector.TimeTable, HTMLElement);
+    const dateInput = getElementBySelector(Selector.DateInput, HTMLInputElement);
+    const startInput = getElementBySelector(Selector.StartInput, HTMLInputElement);
+    const endInput = getElementBySelector(Selector.EndInput, HTMLInputElement);
     const event = document.createElement('div');
     event.classList.add('event');
     const square = getElementBySelector(
@@ -250,47 +293,47 @@ function generateEvent(eventTarget: EventTarget, weekDaysNumbers: Array<number>)
 
     const squareLeft = rect['left'];
 
-    event.style.setProperty('--event-top', squareTop + 'px');
-    event.style.setProperty('--event-left', squareLeft + 'px');
-    event.style.setProperty('--event-width', rect['width'] + 'px');
-    event.style.setProperty('--event-height', squareHeight + 'px');
-    event.innerText = getElementBySelector('.input-field', HTMLInputElement).value;
+    event.style.setProperty(CssVariable.Top, squareTop + 'px');
+    event.style.setProperty(CssVariable.Left, squareLeft + 'px');
+    event.style.setProperty(CssVariable.Width, rect['width'] + 'px');
+    event.style.setProperty(CssVariable.Height, squareHeight + 'px');
+    event.innerText = getElementBySelector(Selector.InputField, HTMLInputElement).value;
     timeTable.appendChild(event);
 }
 function validateTitleInput() {
-    const title = document.querySelector('.input-field') as HTMLInputElement;
+    const title = document.querySelector(Selector.InputField) as HTMLInputElement;
     if (title?.value === '') {
-        const alert = getElementBySelector('#title-alert', HTMLElement);
-        alert.classList.remove('hidden');
+        const alert = getElementBySelector(Selector.TitleAlert, HTMLElement);
+        alert.classList.remove(Selector.Hidden);
         return false;
     }
     return true;
 }
 function validateTimeInput() {
-    const startInput = getElementBySelector('#start-input', HTMLInputElement);
-    const endInput = getElementBySelector('#end-input', HTMLInputElement);
-    const dateInput = getElementBySelector('#date-input', HTMLInputElement);
+    const startInput = getElementBySelector(Selector.StartInput, HTMLInputElement);
+    const endInput = getElementBySelector(Selector.EndInput, HTMLInputElement);
+    const dateInput = getElementBySelector(Selector.DateInput, HTMLInputElement);
     if (startInput.value === '' || endInput.value === '' || dateInput.value === '' || startInput.value >= endInput.value) {
-        const alert = getElementBySelector('#time-alert', HTMLElement);
-        alert.classList.remove('hidden');
+        const alert = getElementBySelector(Selector.TimeAlert, HTMLElement);
+        alert.classList.remove(Selector.Hidden);
         return false;
     }
     return true;
 }
 function saveToLocalStorage() {
     clearLocalStorage();
-    const events = document.querySelectorAll('.event');
+    const events = document.querySelectorAll(Selector.Event);
     let eventArray: Array<{}> = [];
     events.forEach(event => {
         let instance = {
-            top: (event as HTMLElement).style.getPropertyValue('--event-top'),
-            left: (event as HTMLElement).style.getPropertyValue('--event-left'),
-            width: (event as HTMLElement).style.getPropertyValue('--event-width'),
-            height: (event as HTMLElement).style.getPropertyValue('--event-height'),
+            top: (event as HTMLElement).style.getPropertyValue(CssVariable.Top),
+            left: (event as HTMLElement).style.getPropertyValue(CssVariable.Left),
+            width: (event as HTMLElement).style.getPropertyValue(CssVariable.Width),
+            height: (event as HTMLElement).style.getPropertyValue(CssVariable.Height),
             title: event.textContent,
-            date: getElementBySelector('#date-input', HTMLInputElement).value,
-            startTime: getElementBySelector('#start-input', HTMLInputElement).value,
-            endTime: getElementBySelector('#end-input', HTMLInputElement).value,
+            date: getElementBySelector(Selector.DateInput, HTMLInputElement).value,
+            startTime: getElementBySelector(Selector.StartInput, HTMLInputElement).value,
+            endTime: getElementBySelector(Selector.EndInput, HTMLInputElement).value,
         };
         eventArray.push(instance);
     });
@@ -298,26 +341,26 @@ function saveToLocalStorage() {
     localStorage.setItem('events', JSON.stringify(eventArray));
 }
 function renderFromStorage() {
-    document.querySelectorAll('.event').forEach(event => event.remove());
+    document.querySelectorAll(Selector.Event).forEach(event => event.remove());
 
     const events = JSON.parse(localStorage.getItem('events') ?? 'null');
     if (events === null) {
         return;
     }
     events.forEach((event: Event) => {
-        const timeTable = getElementBySelector('#time-table', HTMLElement);
+        const timeTable = getElementBySelector(Selector.TimeTable, HTMLElement);
         const eventElement = document.createElement('div');
         eventElement.classList.add('event');
-        eventElement.style.setProperty('--event-top', event.top);
-        eventElement.style.setProperty('--event-left', event.left);
-        eventElement.style.setProperty('--event-width', event.width);
-        eventElement.style.setProperty('--event-height', event.height);
+        eventElement.style.setProperty(CssVariable.Top, event.top);
+        eventElement.style.setProperty(CssVariable.Left, event.left);
+        eventElement.style.setProperty(CssVariable.Width, event.width);
+        eventElement.style.setProperty(CssVariable.Height, event.height);
         eventElement.innerText = event.title;
         timeTable.appendChild(eventElement);
     });
 }
 function clearLocalStorage() {
-    const button = getElementBySelector('.today-button', HTMLButtonElement);
+    const button = getElementBySelector(Selector.TodayButton, HTMLButtonElement);
     button.addEventListener('click', () => {
         localStorage.clear();
         location.reload();
@@ -325,17 +368,17 @@ function clearLocalStorage() {
 }
 
 function resetAndCloseModal() {
-    const dateInput = getElementBySelector('#date-input', HTMLInputElement);
+    const dateInput = getElementBySelector(Selector.DateInput, HTMLInputElement);
     dateInput.value = '';
-    const startInput = getElementBySelector('#start-input', HTMLInputElement);
-    const endInput = getElementBySelector('#end-input', HTMLInputElement);
+    const startInput = getElementBySelector(Selector.StartInput, HTMLInputElement);
+    const endInput = getElementBySelector(Selector.EndInput, HTMLInputElement);
     startInput.value = '';
     endInput.value = '';
-    const modal = getElementBySelector('.modal', HTMLElement);
-    const overlay = getElementBySelector('.overlay', HTMLElement);
-    getElementBySelector('.input-field', HTMLInputElement).value = '';
-    modal.classList.add('hidden');
-    overlay.classList.add('hidden');
-    getElementBySelector('#title-alert', HTMLElement).classList.add('hidden');
-    getElementBySelector('#time-alert', HTMLElement).classList.add('hidden');
+    const modal = getElementBySelector(Selector.Modal, HTMLElement);
+    const overlay = getElementBySelector(Selector.Overlay, HTMLElement);
+    getElementBySelector(Selector.InputField, HTMLInputElement).value = '';
+    modal.classList.add(Selector.Hidden);
+    overlay.classList.add(Selector.Hidden);
+    getElementBySelector(Selector.TitleAlert, HTMLElement).classList.add(Selector.Hidden);
+    getElementBySelector(Selector.TimeAlert, HTMLElement).classList.add(Selector.Hidden);
 }
