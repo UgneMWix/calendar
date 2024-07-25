@@ -1,0 +1,15 @@
+{
+  "name": "calendar",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}
