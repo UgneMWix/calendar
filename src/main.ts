@@ -34,16 +34,16 @@ enum Selector {
     CalendarButtons = '.calendar-buttons',
     ArrowPrev = '#arrow-prev',
     ArrowNext = '#arrow-next',
-    CalendarSquare = '.calendar-square',
+    CalendarSquare = 'calendar-square',
     CalendarTime = '.calendar-time',
-    MainCalendarDay = '.main-calendar-day',
-    MainCalendarDayName = '.main-calendar-day-name',
-    MainCalendarNumber = '.main-calendar-number',
+    MainCalendarDay = 'main-calendar-day',
+    MainCalendarDayName = 'main-calendar-day-name',
+    MainCalendarNumber = 'main-calendar-number',
     LastDay = '.last-day',
-    MainCalendarToday = '.main-calendar-today',
-    Day = '.day',
-    OtherDay = '.other-day',
-    CurrentDay = '.current-day',
+    MainCalendarToday = 'main-calendar-today',
+    Day = 'day',
+    OtherDay = 'other-day',
+    CurrentDay = 'current-day',
     ModalSaveButton = '.modal-save-button',
     ModalCloseButton = '.modal-close-button',
     Hidden = 'hidden',
@@ -67,8 +67,6 @@ function main() {
     const weekDaysNumbers = getWeekDays(todayConstant);
     let year = today.getFullYear();
     let month = today.getMonth();
-
-
 
     generateMainCalendarHeader(weekDays, mainCalendarHeader);
     generateTimeLine(timeLine);
@@ -137,7 +135,7 @@ function getWeekDays(fromDate: Date) {
     return result;
 }
 function generateWeekTitles(week: Array<Date>) {
-    let elem = document.querySelectorAll(Selector.MainCalendarNumber);
+    let elem = document.querySelectorAll('.' + Selector.MainCalendarNumber);
     for (let i = 0; i < elem.length; i++) {
         elem[i].textContent = week[i].getDate().toString();
         (week[i].getDate() == new Date().getDate())
