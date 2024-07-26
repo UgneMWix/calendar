@@ -1,4 +1,4 @@
-interface Event {
+interface interfaceEvent {
     top: string;
     left: string;
     width: string;
@@ -8,7 +8,6 @@ interface Event {
     startTime: string;
     endTime: string;
 }
-
 enum CssVariable {
     Top = '--event-top',
     Left = '--event-left',
@@ -218,14 +217,14 @@ function openCreationModal(week: Array<Date>, weekDaysNumbers: Array<number>) {
         button.addEventListener('click', onSaveHandler);
         closeButton.addEventListener('click', onCloseHandler);
     });
-    function onSaveHandler(e: Event) {
+    async function onSaveHandler(e: Event) {
         if (!validateTitleInput() || !validateTimeInput()) {
             return;
         }
 
-        generateEvent(e.target!, weekDaysNumbers);
+        await saveToServer(generateEvent(e.target!, weekDaysNumbers));
         // saveToLocalStorage();
-        saveToServer();
+        // saveToServer();
         renderFromStorage();
         resetAndCloseModal();
         cleanup();
@@ -295,6 +294,8 @@ function generateEvent(eventTarget: EventTarget, weekDaysNumbers: Array<number>)
     event.style.setProperty(CssVariable.Height, squareHeight + 'px');
     event.innerText = getElementBySelector(Selector.InputField, HTMLInputElement).value;
     timeTable.appendChild(event);
+    // saveToServer(event);
+    return event;
 }
 function validateTitleInput() {
     const title = document.querySelector(Selector.InputField) as HTMLInputElement;
@@ -316,29 +317,24 @@ function validateTimeInput() {
     }
     return true;
 }
-function saveToServer() {
-    clearServer();
-    const events = document.querySelectorAll(Selector.Event);
-    console.log(events);
-    // let eventArray: Array<{}> = [];
-    events.forEach(event => {
-        let instance = {
-            top: (event as HTMLElement).style.getPropertyValue(CssVariable.Top),
-            left: (event as HTMLElement).style.getPropertyValue(CssVariable.Left),
-            width: (event as HTMLElement).style.getPropertyValue(CssVariable.Width),
-            height: (event as HTMLElement).style.getPropertyValue(CssVariable.Height),
-            title: event.textContent,
-            date: getElementBySelector(Selector.DateInput, HTMLInputElement).value,
-            startTime: getElementBySelector(Selector.StartInput, HTMLInputElement).value,
-            endTime: getElementBySelector(Selector.EndInput, HTMLInputElement).value,
-        };
-        fetch('http://localhost:3000/events', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(instance)
-        });
+function saveToServer(event: HTMLElement) {
+    // console.log(event);
+    let instance: interfaceEvent = {
+        top: (event as HTMLElement).style.getPropertyValue(CssVariable.Top),
+        left: (event as HTMLElement).style.getPropertyValue(CssVariable.Left),
+        width: (event as HTMLElement).style.getPropertyValue(CssVariable.Width),
+        height: (event as HTMLElement).style.getPropertyValue(CssVariable.Height),
+        title: event?.textContent ?? '', //add the event interface,
+        date: getElementBySelector(Selector.DateInput, HTMLInputElement).value,
+        startTime: getElementBySelector(Selector.StartInput, HTMLInputElement).value,
+        endTime: getElementBySelector(Selector.EndInput, HTMLInputElement).value,
+    };
+    return fetch('http://localhost:3000/events', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(instance)
     });
 }
 function saveToLocalStorage() {
@@ -361,7 +357,8 @@ function saveToLocalStorage() {
     });
     console.log(eventArray);
     localStorage.setItem('events', JSON.stringify(eventArray));
-} function renderFromStorage() {
+}
+function renderFromStorage() {
     // console.log(document.querySelectorAll('.event'));
     document.querySelectorAll('.event').forEach(event => event.remove());
 
@@ -373,11 +370,12 @@ function saveToLocalStorage() {
     }
     );
     const events = eventsFetch.then(response => response.json());
+    console.log(events);
     events.then((events) => {
         if (events === null) {
             return;
         }
-        events.forEach((event: Event) => {
+        events.forEach((event: interfaceEvent) => {
             const timeTable = getElementBySelector(Selector.TimeTable, HTMLElement);
             const eventElement = document.createElement('div');
             eventElement.classList.add('event');
@@ -401,18 +399,21 @@ function clearLocalStorage() {
 function clearServer() {
     const button = getElementBySelector(Selector.TodayButton, HTMLButtonElement);
     button.addEventListener('click', async () => {
-        const response = await fetch(`http://localhost:3000/events`);
-        const entries = await response.json();
-        for (let entry of entries) {
-            fetch(`http://localhost:3000/events/${entry.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-        }
-
+        await clearData();
+        renderFromStorage();
     });
+}
+async function clearData() {
+    const response = await fetch(`http://localhost:3000/events`);
+    const entries = await response.json();
+    for (let entry of entries) {
+        await fetch(`http://localhost:3000/events/${entry.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
 }
 function resetAndCloseModal() {
     const dateInput = getElementBySelector(Selector.DateInput, HTMLInputElement);
