@@ -1,0 +1,26 @@
+{
+    "events": [
+        {
+            "id": "61f1",
+            "top": "460px",
+            "left": "384.40625px",
+            "width": "132.765625px",
+            "height": "16.96875px",
+            "title": "dawd",
+            "date": "2024-07-22",
+            "startTime": "08:00",
+            "endTime": "08:30"
+        },
+        {
+            "id": "e36e",
+            "top": "460px",
+            "left": "649.9375px",
+            "width": "132.765625px",
+            "height": "16.96875px",
+            "title": "awdd",
+            "date": "2024-07-24",
+            "startTime": "08:00",
+            "endTime": "08:30"
+        }
+    ]
+}
