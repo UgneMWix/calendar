@@ -1,4 +1,4 @@
-interface Event {
+interface interfaceEvent {
     top: string;
     left: string;
     width: string;
@@ -8,7 +8,6 @@ interface Event {
     startTime: string;
     endTime: string;
 }
-
 enum CssVariable {
     Top = '--event-top',
     Left = '--event-left',
@@ -76,9 +75,9 @@ function main() {
     attachClickToArrows(arrowIcons, month, year, today, currentDate, day, months, weekDays);
     openCreationModal(week, weekDaysNumbers);
     renderFromStorage();
-    clearLocalStorage();
+    // clearLocalStorage();
+    clearServer();
 }
-
 function generateWeekViewSquares() {
     const gridCells = [];
     for (let i = 0; i < 24; i++) {
@@ -102,7 +101,6 @@ function generateTimeLine(timeLine: Element) {
         timeLine.appendChild(cell);
     }
 }
-
 function generateMainCalendarHeader(weekDays: Array<string>, mainCalendarHeader: Element) {
     for (let i = 0; i < weekDays.length; i++) {
         const cell = createHTMLElement('div', [Selector.MainCalendarDay], '');
@@ -219,13 +217,14 @@ function openCreationModal(week: Array<Date>, weekDaysNumbers: Array<number>) {
         button.addEventListener('click', onSaveHandler);
         closeButton.addEventListener('click', onCloseHandler);
     });
-    function onSaveHandler(e: Event) {
+    async function onSaveHandler(e: Event) {
         if (!validateTitleInput() || !validateTimeInput()) {
             return;
         }
 
-        generateEvent(e.target!, weekDaysNumbers);
-        saveToLocalStorage();
+        await saveToServer(generateEvent(e.target!, weekDaysNumbers));
+        // saveToLocalStorage();
+        // saveToServer();
         renderFromStorage();
         resetAndCloseModal();
         cleanup();
@@ -247,7 +246,6 @@ function createHTMLElement(tag: string, classNames: Array<string>, textContent: 
     element.textContent = textContent;
     return element;
 }
-
 function checkIfNull<T>(value: T | null): T {
     if (value === null) {
         throw new Error('Value is null');
@@ -269,7 +267,6 @@ function ensureHtmlElement<T extends typeof HTMLElement>(element: unknown, eleme
 
     return element as InstanceType<typeof elementDefinition>;
 }
-
 function generateEvent(eventTarget: EventTarget, weekDaysNumbers: Array<number>) {
     const timeTable = getElementBySelector(Selector.TimeTable, HTMLElement);
     const dateInput = getElementBySelector(Selector.DateInput, HTMLInputElement);
@@ -297,6 +294,8 @@ function generateEvent(eventTarget: EventTarget, weekDaysNumbers: Array<number>)
     event.style.setProperty(CssVariable.Height, squareHeight + 'px');
     event.innerText = getElementBySelector(Selector.InputField, HTMLInputElement).value;
     timeTable.appendChild(event);
+    // saveToServer(event);
+    return event;
 }
 function validateTitleInput() {
     const title = document.querySelector(Selector.InputField) as HTMLInputElement;
@@ -318,8 +317,29 @@ function validateTimeInput() {
     }
     return true;
 }
+function saveToServer(event: HTMLElement) {
+    // console.log(event);
+    let instance: interfaceEvent = {
+        top: (event as HTMLElement).style.getPropertyValue(CssVariable.Top),
+        left: (event as HTMLElement).style.getPropertyValue(CssVariable.Left),
+        width: (event as HTMLElement).style.getPropertyValue(CssVariable.Width),
+        height: (event as HTMLElement).style.getPropertyValue(CssVariable.Height),
+        title: event?.textContent ?? '', //add the event interface,
+        date: getElementBySelector(Selector.DateInput, HTMLInputElement).value,
+        startTime: getElementBySelector(Selector.StartInput, HTMLInputElement).value,
+        endTime: getElementBySelector(Selector.EndInput, HTMLInputElement).value,
+    };
+    return fetch('http://localhost:3000/events', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(instance)
+    });
+}
 function saveToLocalStorage() {
     clearLocalStorage();
+    // clearServer();
     const events = document.querySelectorAll(Selector.Event);
     let eventArray: Array<{}> = [];
     events.forEach(event => {
@@ -339,22 +359,34 @@ function saveToLocalStorage() {
     localStorage.setItem('events', JSON.stringify(eventArray));
 }
 function renderFromStorage() {
-    document.querySelectorAll(Selector.Event).forEach(event => event.remove());
+    // console.log(document.querySelectorAll('.event'));
+    document.querySelectorAll('.event').forEach(event => event.remove());
 
-    const events = JSON.parse(localStorage.getItem('events') ?? 'null');
-    if (events === null) {
-        return;
+    const eventsFetch = fetch('http://localhost:3000/events', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     }
-    events.forEach((event: Event) => {
-        const timeTable = getElementBySelector(Selector.TimeTable, HTMLElement);
-        const eventElement = document.createElement('div');
-        eventElement.classList.add('event');
-        eventElement.style.setProperty(CssVariable.Top, event.top);
-        eventElement.style.setProperty(CssVariable.Left, event.left);
-        eventElement.style.setProperty(CssVariable.Width, event.width);
-        eventElement.style.setProperty(CssVariable.Height, event.height);
-        eventElement.innerText = event.title;
-        timeTable.appendChild(eventElement);
+    );
+    const events = eventsFetch.then(response => response.json());
+    console.log(events);
+    events.then((events) => {
+        if (events === null) {
+            return;
+        }
+        events.forEach((event: interfaceEvent) => {
+            const timeTable = getElementBySelector(Selector.TimeTable, HTMLElement);
+            const eventElement = document.createElement('div');
+            eventElement.classList.add('event');
+            eventElement.style.setProperty(CssVariable.Top, event.top);
+            eventElement.style.setProperty(CssVariable.Left, event.left);
+            eventElement.style.setProperty(CssVariable.Width, event.width);
+            eventElement.style.setProperty(CssVariable.Height, event.height);
+            eventElement.innerText = event.title;
+            timeTable.appendChild(eventElement);
+        });
+        // console.log(events);
     });
 }
 function clearLocalStorage() {
@@ -364,7 +396,25 @@ function clearLocalStorage() {
         location.reload();
     });
 }
-
+function clearServer() {
+    const button = getElementBySelector(Selector.TodayButton, HTMLButtonElement);
+    button.addEventListener('click', async () => {
+        await clearData();
+        renderFromStorage();
+    });
+}
+async function clearData() {
+    const response = await fetch(`http://localhost:3000/events`);
+    const entries = await response.json();
+    for (let entry of entries) {
+        await fetch(`http://localhost:3000/events/${entry.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+}
 function resetAndCloseModal() {
     const dateInput = getElementBySelector(Selector.DateInput, HTMLInputElement);
     dateInput.value = '';
