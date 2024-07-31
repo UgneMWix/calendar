@@ -72,3 +72,16 @@
   position: relative;
   margin-top: -2.2vh;
 }
+.main-calendar-day-name {
+  font-size: 10px;
+}
+
+.main-calendar-number {
+  font-weight: 500;
+  font-size: 30px;
+}
+
+.main-calendar-today {
+  background-color: #4a7fb5;
+  color: white;
+}

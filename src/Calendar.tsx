@@ -1,5 +1,4 @@
 import styles from './stylesheets/Calendar.module.css';
-import GenerateWeekTitle from './GenerateWeekTitle';
 
 function Calendar() {
   function generateSquare(i: string, j: string, k: number) {
@@ -31,11 +30,22 @@ function Calendar() {
     }
     return timeline;
   }
+  function GenerateWeekTitle(date: Date) {
+    if (date.getDate() === new Date().getDate()) {
+      return (
+        <p className={`${styles['main-calendar-number']} ${styles['main-calendar-today']}`}>
+          {date.getDate().toString()}
+        </p>
+      );
+    } else {
+      return <p className={styles['main-calendar-number']}>{date.getDate().toString()}</p>;
+    }
+  }
   function generateHeaderElement(day: string, i: number) {
     return (
       <div className={styles['main-calendar-day']} key={i}>
         <p className={styles['main-calendar-day-name']}>{day.substring(0, 3)}</p>
-        <GenerateWeekTitle date={getWeek(new Date())[i]} />
+        {GenerateWeekTitle(getWeek(new Date())[i])}
       </div>
     );
   }
@@ -55,14 +65,6 @@ function Calendar() {
     }
     return result;
   }
-  //   function getWeekDays(fromDate: Date) {
-  //     const sunday = new Date(fromDate.setDate(fromDate.getDate() - fromDate.getDay())),
-  //       result = [new Date(sunday).getDate()];
-  //     while (sunday.setDate(sunday.getDate() + 1) && sunday.getDay() !== 0) {
-  //       result.push(new Date(sunday).getDate());
-  //     }
-  //     return result;
-  //   }
 
   return (
     <section className={styles['main-calendar']}>
