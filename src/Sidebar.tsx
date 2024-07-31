@@ -8,10 +8,10 @@ function SideBar() {
           <header className={styles['calendar-header']}>
             <p className={styles['calendar-text']}></p>
             <section className={styles['calendar-button-group']}>
-              <button className={styles['calendar-buttons']} id="arrow-prev">
+              <button className={(styles['calendar-buttons'], styles['arrow-prev'])}>
                 <img src="public/arrow.png" alt="arrow back in calendar" className={styles['calendar-arrow-1']} />
               </button>
-              <button className={styles['calendar-buttons']} id="arrow-next">
+              <button className={(styles['calendar-buttons'], styles['arrow-next'])}>
                 <img src="public/arrow.png" alt="arrow forward in calendar" className={styles['calendar-arrow-2']} />
               </button>
             </section>

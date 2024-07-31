@@ -2,6 +2,8 @@
 // import styles from './App.module.css';
 import Header from './Header';
 import MainScreen from './MainScreen';
+import './reset.css';
+import './global.css';
 function App() {
   return (
     <>
