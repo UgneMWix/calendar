@@ -1,4 +1,4 @@
-import styles from './App.module.css';
+import styles from './stylesheets/GenerateWeekTitle.module.css';
 function GenerateWeekTitle({ date }: { date: Date }) {
   if (date.getDate() === new Date().getDate()) {
     return (

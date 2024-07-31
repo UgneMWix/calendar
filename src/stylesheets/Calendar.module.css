@@ -1,0 +1,74 @@
+.main-calendar {
+  padding: 30px;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
+.main-calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: center;
+  padding-left: 40px;
+}
+
+.main-calendar-day {
+  padding: 15px;
+  color: gray;
+  border-right: 3px solid;
+  border-image: linear-gradient(to top, #e3e6e7 30%, rgba(0, 0, 0, 0) 30%) 1 100%;
+}
+
+.last-day {
+  border: none;
+}
+
+.time-table {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(24, 1fr);
+  height: 100%;
+}
+
+.calendar-square {
+  background-color: rgb(242, 237, 237);
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 3px,
+    rgba(255, 255, 255, 0.593) 3px,
+    rgba(255, 255, 255, 0.5) 6px
+  );
+  border-right: 3px #e3e6e7 solid;
+  border-top: 3px #e3e6e7 solid;
+}
+
+.calendar-square:nth-child(7n) {
+  border-right: one;
+}
+.calendar-time-line-and-squares {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  height: 100%;
+}
+
+.time-line {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding-right: 10px;
+  width: 40px;
+  flex-direction: column;
+}
+.label {
+  text-align: right;
+  font-size: 10px;
+  color: gray;
+  position: relative;
+  margin-top: -2.2vh;
+}
