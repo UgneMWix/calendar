@@ -1,20 +1,21 @@
+import styles from './App.module.css';
 function Header() {
   return (
     <>
-      <header className="page-header">
-        <button className="header-buttons">
-          <img src="public/menu-dashes.png" className="menu-button-image" />
+      <header className={styles['page-header']}>
+        <button className={styles['header-buttons']}>
+          <img src="public/menu-dashes.png" className={styles['menu-button-image']} />
         </button>
-        <span className="header-title">Calendar</span>
-        <button className="today-button"> Clear</button>
-        <button className="header-buttons">
-          <img src="public/arrow.png" alt="arrow to the left" className="arrow-image-1" />
+        <span className={styles['header-title']}>Calendar</span>
+        <button className={styles['today-button']}> Clear</button>
+        <button className={styles['header-buttons']}>
+          <img src="public/arrow.png" alt="arrow to the left" className={styles['arrow-image-1']} />
         </button>
-        <button className="header-buttons">
-          <img src="public/arrow.png" alt="arrow to the right" className="arrow-image-2" />
+        <button className={styles['header-buttons']}>
+          <img src="public/arrow.png" alt="arrow to the right" className={styles['arrow-image-2']} />
         </button>
-        <span className="mon-year-text">May 2024</span>
-        <button className="week-menu-button">Week ▾</button>
+        <span className={styles['mon-year-text']}>May 2024</span>
+        <button className={styles['week-menu-button']}>Week ▾</button>
       </header>
     </>
   );
