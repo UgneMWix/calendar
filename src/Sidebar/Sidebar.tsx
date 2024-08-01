@@ -1,5 +1,5 @@
 import styles from './Sidebar.module.css';
-import MiniCalendar from '../MiniCalendar';
+import { MiniCalendar } from '../MiniCalendar/MiniCalendar';
 function Sidebar() {
   return (
     <aside>
