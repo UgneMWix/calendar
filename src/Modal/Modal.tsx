@@ -1,5 +1,33 @@
+import { Alert } from './Alert/Alert';
 import styles from './Modal.module.css';
+import { useState } from 'react';
 export function Modal({ callback }: { callback: () => void }) {
+  const [eventTitle, setEventTitle] = useState('');
+  const [alertIsOpen, setAlertIsOpen] = useState(false);
+  const [startInput, setStartInput] = useState('');
+  const [endInput, setEndInput] = useState('');
+  const [dateInput, setDateInput] = useState('');
+  function openAlerts() {
+    setAlertIsOpen(true);
+  }
+  function validateTitleInput() {
+    if (eventTitle === '') {
+      openAlerts();
+      return false;
+    } else {
+      return true;
+    }
+  }
+  function validateTimeInput() {
+    if (startInput === '' || endInput === '' || dateInput === '' || startInput >= endInput) {
+      openAlerts();
+      return false;
+    }
+    return true;
+  }
+  function handleClick() {
+    validateTitleInput() && validateTimeInput() ? callback() : null;
+  }
   return (
     <div>
       <section className={styles.modal}>
@@ -10,17 +38,45 @@ export function Modal({ callback }: { callback: () => void }) {
         </header>
         <main className={styles['modal-main']}>
           <div className={styles['input-container']}>
-            <input placeholder="Enter Title" className={styles['input-field']} type="text" />
+            <input
+              placeholder="Enter Title"
+              className={styles['input-field']}
+              type="text"
+              value={eventTitle}
+              onChange={(e) => setEventTitle(e.target.value)}
+            />
             <label className={styles['input-label']}>Enter</label>
             <span className={styles['input-highlight']}></span>
           </div>
+          {alertIsOpen && <Alert text="Please enter a title" />}
           <section className={styles['modal-time-flex-box']}>
             <img src="/clock.png" alt="clock icon" className={styles['modal-icons']} />
-            <input className={styles['modal-time-date']} type="date" id="date-input" />
-            <input className={styles['modal-time-start']} type="time" id="start-input" />
+            <input
+              className={styles['modal-time-date']}
+              type="date"
+              id="date-input"
+              onChange={(e) => setDateInput(e.target.value)}
+            />
+            <input
+              className={styles['modal-time-start']}
+              type="time"
+              id="start-input"
+              onChange={(e) => setStartInput(e.target.value)}
+            />
             <p>-</p>
-            <input className={styles['modal-time-end']} type="time" id="end-input" />
+            <input
+              className={styles['modal-time-end']}
+              type="time"
+              id="end-input"
+              onChange={(e) => setEndInput(e.target.value)}
+            />
           </section>
+          {alertIsOpen && (
+            <Alert
+              text="Start time must come before the end time and must not be
+                empty"
+            />
+          )}
           <section className={styles['modal-location-flex-box']}>
             <img src="/location.png" alt="Location pin icon" className={styles['modal-icons']} />
             <input placeholder="Add location" className={styles['modal-location-text']} />
@@ -32,7 +88,9 @@ export function Modal({ callback }: { callback: () => void }) {
         </main>
 
         <footer className={styles['modal-footer']}>
-          <button className={styles['modal-save-button']}>Save</button>
+          <button className={styles['modal-save-button']} onClick={handleClick}>
+            Save
+          </button>
         </footer>
       </section>
       <div className={styles['overlay']}></div>
