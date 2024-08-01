@@ -4,7 +4,7 @@ function MainScreen({ callback }: { callback: () => void }) {
   return (
     <main>
       <Sidebar callback={callback} />
-      <Calendar />
+      <Calendar callback={callback} />
     </main>
   );
 }

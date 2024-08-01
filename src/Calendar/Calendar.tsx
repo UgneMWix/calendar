@@ -4,7 +4,13 @@ import { generateHoursOfTheDay, generateWeek, getFirstDayOfWeek } from '../utils
 import { Header } from './Header/Header';
 import { TimeLine } from './TimeLine/TimeLine';
 
-export function Calendar() {
+export function Calendar({ callback }: { callback: () => void }) {
+  function handleClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+    callback();
+    const target = e.target as HTMLElement;
+    console.log(target.dataset.day);
+  }
+
   return (
     <section className={styles['main-calendar']}>
       <Header />
@@ -12,11 +18,11 @@ export function Calendar() {
         <section className={styles['time-line']}>
           <TimeLine />
         </section>
-        <section className={styles['time-table']}>
+        <section className={styles['time-table']} onClick={(e) => handleClick(e)}>
           {generateWeek(getFirstDayOfWeek(new Date().toISOString()))
             .flatMap((value) => generateHoursOfTheDay(value))
             .map((value) => (
-              <Square key={value} />
+              <Square data={value} key={value} />
             ))}
         </section>
       </section>
@@ -24,6 +30,6 @@ export function Calendar() {
   );
 }
 
-function Square() {
-  return <div className={styles['calendar-square']}></div>;
+function Square({ data }: { data: string }) {
+  return <div className={styles['calendar-square']} data-day={data}></div>;
 }
