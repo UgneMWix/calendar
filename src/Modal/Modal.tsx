@@ -1,10 +1,12 @@
 import styles from './Modal.module.css';
-export function Modal() {
+export function Modal({ callback }: { callback: () => void }) {
   return (
     <div>
       <section className={styles.modal}>
         <header className={styles['modal-header']}>
-          <button className={styles['modal-close-button']}>✕</button>
+          <button className={styles['modal-close-button']} onClick={callback}>
+            ✕
+          </button>
         </header>
         <main className={styles['modal-main']}>
           <div className={styles['input-container']}>

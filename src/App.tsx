@@ -7,13 +7,13 @@ import { Modal } from './Modal/Modal';
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   function openCloseModal() {
-    setIsOpen(true);
+    setIsOpen(!isOpen);
   }
   return (
     <>
       <Header />
       <MainScreen callback={openCloseModal} />
-      {isOpen && <Modal />}
+      {isOpen && <Modal callback={openCloseModal} />}
     </>
   );
 }
