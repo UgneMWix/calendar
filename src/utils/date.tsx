@@ -32,7 +32,6 @@ export function getFirstDayOfTheMonth(dateISO: string) {
 
 export function getMonthFromDate(dateISO: string) {
   const date = new Date(dateISO);
-  date.setUTCMonth(date.getUTCMonth() - 1);
   return date.toLocaleDateString(undefined, { month: 'long' });
 }
 export function getYearFromDate(dateISO: string) {
