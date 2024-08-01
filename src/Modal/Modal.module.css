@@ -1,0 +1,180 @@
+.modal {
+  display: flex;
+  flex-direction: column;
+  width: 45vw;
+  height: 40vh;
+  position: fixed;
+  top: 35vh;
+  left: 30vw;
+  background-color: white;
+  border-radius: 15px;
+  z-index: 2;
+}
+.modal-header {
+  height: 3.5vh;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 15px;
+  align-items: center;
+}
+.modal-close-button {
+  background-color: transparent;
+  padding: 5px;
+  width: 1.5vw;
+  height: 1.5vw;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-main {
+  display: flex;
+  flex-direction: column;
+  padding-left: 40px;
+  padding-right: 40px;
+  gap: 20px;
+}
+.input-container {
+  position: relative;
+  margin-top: 20px;
+}
+.input-field {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  outline: none;
+  background-color: transparent;
+}
+.input-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 16px;
+  color: rgba(204, 204, 204, 0);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+.input-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background-color: #007bff;
+  transition: all 0.3s ease;
+}
+
+.input-field:focus + .input-label {
+  top: -20px;
+  font-size: 12px;
+  color: #007bff;
+}
+
+.input-field:focus + .input-label + .input-highlight {
+  width: 100%;
+}
+
+.modal-time-flex-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-time-date {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.modal-time-start {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.modal-time-end {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.modal-location-flex-box {
+  width: 100%;
+}
+
+.modal-location-text {
+  color: #242424;
+  padding: 0.15rem 0.5rem;
+  height: 40px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  line-height: 1.15;
+  box-shadow: 0px 10px 20px -18px;
+  margin-left: 10px;
+}
+
+.modal-location-text:focus {
+  border-bottom: 2px solid #5b5fc7;
+  border-radius: 4px 4px 2px 2px;
+}
+
+.modal-description-text {
+  color: #242424;
+  padding: 0.15rem 0.5rem;
+  height: 40px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  line-height: 1.15;
+  box-shadow: 0px 10px 20px -18px;
+  margin-left: 10px;
+}
+
+.modal-description-text:focus {
+  border-bottom: 2px solid #5b5fc7;
+  border-radius: 4px 4px 2px 2px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.modal-save-button {
+  background-color: #4a7fb5;
+  padding: 10px 20px 10px 20px;
+  border-radius: 10px;
+  color: white;
+}
+
+.modal-save-button:hover {
+  background-color: #3a6fa5;
+  cursor: pointer;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1px);
+  z-index: 1;
+}
+
+.modal-icons {
+  width: 1vw;
+  height: 1vw;
+}
+.modal-close-button:hover {
+  background-color: #d0d4d7;
+  cursor: pointer;
+}

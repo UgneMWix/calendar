@@ -3,6 +3,7 @@ import MainScreen from './MainScreen/MainScreen';
 import './stylesheets/reset.css';
 import './stylesheets/global.css';
 import { useState } from 'react';
+import { Modal } from './Modal/Modal';
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   function openCloseModal() {
@@ -12,7 +13,7 @@ function App() {
     <>
       <Header />
       <MainScreen callback={openCloseModal} />
-      {isOpen && <div>Modal</div>}
+      {isOpen && <Modal />}
     </>
   );
 }
