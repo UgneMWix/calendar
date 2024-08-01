@@ -1,9 +1,9 @@
 import Sidebar from '../Sidebar/Sidebar';
 import { Calendar } from '../Calendar/Calendar';
-function MainScreen() {
+function MainScreen({ callback }: { callback: () => void }) {
   return (
     <main>
-      <Sidebar />
+      <Sidebar callback={callback} />
       <Calendar />
     </main>
   );

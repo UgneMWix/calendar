@@ -1,9 +1,11 @@
 import styles from './Sidebar.module.css';
 import { MiniCalendar } from '../MiniCalendar/MiniCalendar';
-function Sidebar() {
+function Sidebar({ callback }: { callback: () => void }) {
   return (
     <aside>
-      <button className={styles['event-button']}>Create Event</button>
+      <button className={styles['event-button']} onClick={callback}>
+        Create Event
+      </button>
       <MiniCalendar />
     </aside>
   );

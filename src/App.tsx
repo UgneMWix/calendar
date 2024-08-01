@@ -5,10 +5,13 @@ import './stylesheets/global.css';
 import { useState } from 'react';
 function App() {
   const [isOpen, setIsOpen] = useState(false);
+  function openCloseModal() {
+    setIsOpen(true);
+  }
   return (
     <>
       <Header />
-      <MainScreen />
+      <MainScreen callback={openCloseModal} />
       {isOpen && <div>Modal</div>}
     </>
   );
