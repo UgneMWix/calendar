@@ -1,10 +1,11 @@
 import { Alert } from './Alert/Alert';
 import styles from './Modal.module.css';
 import { useState } from 'react';
-
+import dbObject from '../dbObject';
 interface props {
   toggleModal: () => void;
   eventDate?: string;
+  saveToStorage: (newEvent: dbObject) => void;
 }
 
 export function Modal(props: props) {
@@ -22,6 +23,8 @@ export function Modal(props: props) {
     if (props.eventDate) return `${props.eventDate.substring(0, 10)}`;
     return '';
   });
+  const [descriptionInput, setDescriptionInput] = useState('');
+  const [locationInput, setLocationInput] = useState('');
   function openAlerts() {
     setAlertIsOpen(true);
   }
@@ -39,7 +42,29 @@ export function Modal(props: props) {
     return true;
   }
   function handleClick() {
-    validateTitleInput() && validateTimeInput() ? props.toggleModal() : openAlerts();
+    // validateTitleInput() && validateTimeInput() ? props.toggleModal() : openAlerts();
+    if (!validateTitleInput() || !validateTimeInput()) {
+      openAlerts();
+      return;
+    }
+    const startDate = new Date(dateInput);
+    startDate.setUTCHours(parseInt(startInput.substring(0, 2)), parseInt(startInput.substring(3, 5)), 0, 0);
+    const endDate = new Date(dateInput);
+    endDate.setUTCHours(parseInt(endInput.substring(0, 2)), parseInt(endInput.substring(3, 5)), 0, 0); //sudeti i utils
+    console.log(endDate);
+    // console.log(startDate);
+    const newEvent: dbObject = {
+      title: eventTitle,
+      date: dateInput,
+      eventStart: startDate.toISOString(),
+      eventEnd: endDate.toISOString(),
+      startTime: startInput,
+      endTime: endInput,
+      description: descriptionInput,
+      location: locationInput,
+    };
+    props.saveToStorage(newEvent);
+    props.toggleModal();
   }
   return (
     <div>
@@ -95,11 +120,21 @@ export function Modal(props: props) {
           )}
           <section className={styles['modal-location-flex-box']}>
             <img src="/location.png" alt="Location pin icon" className={styles['modal-icons']} />
-            <input placeholder="Add location" className={styles['modal-location-text']} />
+            <input
+              placeholder="Add location"
+              className={styles['modal-location-text']}
+              value={locationInput}
+              onChange={(e) => setLocationInput(e.target.value)}
+            />
           </section>
           <section className={styles['modal-description-flex-box']}>
             <img src="/left-align.png" alt="left-aligned text icon" className={styles['modal-icons']} />
-            <input className={styles['modal-description-text']} placeholder="Add description" />
+            <input
+              className={styles['modal-description-text']}
+              placeholder="Add description"
+              value={descriptionInput}
+              onChange={(e) => setDescriptionInput(e.target.value)}
+            />
           </section>
         </main>
 

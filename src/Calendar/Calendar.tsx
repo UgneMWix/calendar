@@ -4,45 +4,13 @@ import { generateHoursOfTheDay, generateWeek, getFirstDayOfWeek } from '../utils
 import { Header } from './Header/Header';
 import { TimeLine } from './TimeLine/TimeLine';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
-
+import EventObject from '../dbObject';
 interface SquareData {
   htmlElement: HTMLDivElement;
   date: string;
 }
 
-export function Calendar({ openModal }: { openModal: (dateISO?: string) => void }) {
-  const [events, setEvents] = useState([
-    {
-      title: 'a',
-      date: '2024-08-01',
-      eventStart: '2024-08-01T02:00:00.000Z',
-      eventEnd: '2024-08-01T03:00:00.000Z',
-      startTime: '08:00',
-      endTime: '09:00',
-      description: '',
-      location: '',
-    },
-    {
-      title: 'b',
-      date: '2024-08-02',
-      eventStart: '2024-08-02T10:00:00.000Z',
-      eventEnd: '2024-08-02T11:30:00.000Z',
-      startTime: '08:00',
-      endTime: '09:30',
-      description: '',
-      location: '',
-    },
-    {
-      title: 'c',
-      date: '2024-07-31',
-      eventStart: '2024-08-03T13:30:00.000Z',
-      eventEnd: '2024-08-03T17:45:00.000Z',
-      startTime: '08:20',
-      endTime: '09:30',
-      description: '',
-      location: '',
-    },
-  ]);
+export function Calendar({ openModal, events }: { openModal: (dateISO?: string) => void; events: EventObject[] }) {
   const squareRefs = useRef<SquareData[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -104,7 +72,7 @@ export function Calendar({ openModal }: { openModal: (dateISO?: string) => void 
 
           return (
             <Event
-              key={value.eventStart}
+              key={value.id}
               square={square}
               text={value.title}
               startDateISO={value.eventStart}
