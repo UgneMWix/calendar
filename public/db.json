@@ -1,37 +1,3 @@
 {
-  "events": [
-    {
-      "id": "5c79",
-      "title": "awd",
-      "date": "2024-07-31",
-      "eventStart": "2024-07-31T07:00:00.000Z",
-      "eventEnd": "2024-07-31T07:30:00.000Z",
-      "startTime": "07:00",
-      "endTime": "07:30",
-      "description": "",
-      "location": ""
-    },
-    {
-      "id": "9b1b",
-      "title": "adawd",
-      "date": "2024-07-30",
-      "eventStart": "2024-07-30T11:00:00.000Z",
-      "eventEnd": "2024-07-30T11:30:00.000Z",
-      "startTime": "11:00",
-      "endTime": "11:30",
-      "description": "",
-      "location": ""
-    },
-    {
-      "id": "a798",
-      "title": "aerher",
-      "date": "2024-08-03",
-      "eventStart": "2024-08-03T13:00:00.000Z",
-      "eventEnd": "2024-08-03T17:30:00.000Z",
-      "startTime": "13:00",
-      "endTime": "17:30",
-      "description": "",
-      "location": ""
-    }
-  ]
+  "events": []
 }

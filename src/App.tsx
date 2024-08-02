@@ -26,9 +26,13 @@ function App() {
     getEvents().then((events) => setEvents(events));
   }, []);
 
+  const clearServer = useCallback(() => {
+    clearEvents();
+    setEvents([]);
+  }, []);
   return (
     <>
-      <Header />
+      <Header clearEvents={clearServer} />
       <MainScreen openModal={openModal} toggleModal={toggleModal} events={events} />
       {isOpen && <Modal toggleModal={toggleModal} eventDate={refDateISO} saveToStorage={saveToStorage} />}
     </>
@@ -54,4 +58,15 @@ function saveEvent(newEvent: EventObject) {
     },
     body: JSON.stringify(newEvent),
   });
+}
+async function clearEvents() {
+  const events = await getEvents();
+  for (const entry of events) {
+    await fetch(`http://localhost:3000/events/${entry.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
 }

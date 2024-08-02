@@ -1,12 +1,15 @@
 import styles from './Header.module.css';
-function Header() {
+function Header({ clearEvents }: { clearEvents: () => void }) {
   return (
     <header className={styles['page-header']}>
       <button className={styles['header-buttons']}>
         <img src="/menu-dashes.png" className={styles['menu-button-image']} />
       </button>
       <span className={styles['header-title']}>Calendar</span>
-      <button className={styles['today-button']}> Clear</button>
+      <button className={styles['today-button']} onClick={clearEvents}>
+        {' '}
+        Clear
+      </button>
       <button className={styles['header-buttons']}>
         <img src="/arrow.png" alt="arrow to the left" className={styles['arrow-image-1']} />
       </button>
