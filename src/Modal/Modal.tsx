@@ -1,18 +1,32 @@
 import { Alert } from './Alert/Alert';
 import styles from './Modal.module.css';
 import { useState } from 'react';
-export function Modal({ callback }: { callback: () => void }) {
+
+interface props {
+  toggleModal: () => void;
+  eventDate?: string;
+}
+
+export function Modal(props: props) {
   const [eventTitle, setEventTitle] = useState('');
   const [alertIsOpen, setAlertIsOpen] = useState(false);
-  const [startInput, setStartInput] = useState('');
-  const [endInput, setEndInput] = useState('');
-  const [dateInput, setDateInput] = useState('');
+  const [startInput, setStartInput] = useState(() => {
+    if (props.eventDate) return `${new Date(props.eventDate).getUTCHours().toString().padStart(2, '0')}:00`;
+    return '';
+  });
+  const [endInput, setEndInput] = useState(() => {
+    if (props.eventDate) return `${startInput.substring(0, 2)}:30`;
+    return '';
+  });
+  const [dateInput, setDateInput] = useState(() => {
+    if (props.eventDate) return `${props.eventDate.substring(0, 10)}`;
+    return '';
+  });
   function openAlerts() {
     setAlertIsOpen(true);
   }
   function validateTitleInput() {
     if (eventTitle === '') {
-      openAlerts();
       return false;
     } else {
       return true;
@@ -20,19 +34,18 @@ export function Modal({ callback }: { callback: () => void }) {
   }
   function validateTimeInput() {
     if (startInput === '' || endInput === '' || dateInput === '' || startInput >= endInput) {
-      openAlerts();
       return false;
     }
     return true;
   }
   function handleClick() {
-    validateTitleInput() && validateTimeInput() ? callback() : null;
+    validateTitleInput() && validateTimeInput() ? props.toggleModal() : openAlerts();
   }
   return (
     <div>
       <section className={styles.modal}>
         <header className={styles['modal-header']}>
-          <button className={styles['modal-close-button']} onClick={callback}>
+          <button className={styles['modal-close-button']} onClick={props.toggleModal}>
             ✕
           </button>
         </header>
@@ -55,12 +68,14 @@ export function Modal({ callback }: { callback: () => void }) {
               className={styles['modal-time-date']}
               type="date"
               id="date-input"
+              value={dateInput}
               onChange={(e) => setDateInput(e.target.value)}
             />
             <input
               className={styles['modal-time-start']}
               type="time"
               id="start-input"
+              value={startInput}
               onChange={(e) => setStartInput(e.target.value)}
             />
             <p>-</p>
@@ -68,6 +83,7 @@ export function Modal({ callback }: { callback: () => void }) {
               className={styles['modal-time-end']}
               type="time"
               id="end-input"
+              value={endInput}
               onChange={(e) => setEndInput(e.target.value)}
             />
           </section>

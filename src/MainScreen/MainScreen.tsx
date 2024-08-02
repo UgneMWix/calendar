@@ -1,10 +1,11 @@
 import Sidebar from '../Sidebar/Sidebar';
 import { Calendar } from '../Calendar/Calendar';
-function MainScreen({ callback }: { callback: () => void }) {
+function MainScreen({ openModal, toggleModal }: { openModal: (dateISO?: string) => void; toggleModal: () => void }) {
   return (
+    //remove togglemodal
     <main>
-      <Sidebar callback={callback} />
-      <Calendar callback={callback} />
+      <Sidebar toggleModal={toggleModal} />
+      <Calendar openModal={openModal} />
     </main>
   );
 }

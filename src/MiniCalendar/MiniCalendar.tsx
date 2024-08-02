@@ -22,7 +22,6 @@ export function MiniCalendar() {
     <div>
       <header className={styles['calendar-header']}>
         <p className={styles['calendar-text']}>
-          {' '}
           {getMonthFromDate(refDate)} {getYearFromDate(refDate)}
         </p>
         <section className={styles['calendar-button-group']}>
