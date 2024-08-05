@@ -1,101 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="./src/reset.css">
-    <link rel="stylesheet" href="./src/style.css">
-
-</head>
-
-<body>
-    <section class="modal hidden">
-        <header class="modal-header">
-            <button class="modal-close-button">✕</button>
-        </header>
-        <main class="modal-main">
-            <div class="input-container">
-                <input placeholder="Enter Title" class="input-field" type="text">
-                <label for="input-field" class="input-label">Enter <Title></Title></label>
-                <span class="input-highlight"></span>
-            </div>
-            <alert class="alert hidden" id="title-alert">Please enter a title</alert>
-            <section class="modal-time-flex-box">
-                <img src="images/clock.png" alt="clock icon" class="modal-icons">
-                <input class="modal-time-date" type="date" id="date-input"></p>
-                <input class="modal-time-start" type="time" id="start-input"></p>
-                <p>-</p>
-                <input class="modal-time-end" type="time" id="end-input"></p>
-            </section>
-            <alert class="alert hidden" id="time-alert">Start time must come before the end time and must not be
-                empty</alert>
-            <section class="modal-location-flex-box">
-                <img src="images/location.png" alt="Location pin icon" class="modal-icons">
-                <input placeholder="Add location" class="modal-location-text">
-            </section>
-            <section class="modal-description-flex-box">
-                <img src="images/left-align.png" alt="left-aligned text icon" class="modal-icons">
-                <input class="modal-description-text" placeholder="Add description">
-            </section>
-        </main>
-
-        <footer class="modal-footer">
-            <button class="modal-save-button">Save</button>
-        </footer>
-    </section>
-    <div class="overlay hidden"></div>
-
-    <header class="page-header">
-        <button class="header-buttons">
-            <img src="images/menu-dashes.png" class="menu-button-image">
-        </button>
-        <span class="header-title">Calendar</span>
-        <button class="today-button"> Clear</button>
-        <button class="header-buttons">
-            <img src="images/arrow.png" alt="arrow to the left" class="arrow-image-1">
-        </button>
-        <button class="header-buttons">
-            <img src="images/arrow.png" alt="arrow to the right" class="arrow-image-2">
-        </button>
-        <span class="mon-year-text">May 2024</span>
-        <button class="week-menu-button">Week ▾</button>
-    </header>
-    <main>
-
-        <aside>
-            <button class="event-button">Create Event</button>
-            <section class="calendar-base">
-                <header class="calendar-header">
-                    <p class="calendar-text"></p>
-                    <section class="calendar-button-group">
-                        <button class="calendar-buttons" id="arrow-prev">
-                            <img src="images/arrow.png" alt="arrow back in calendar" class="calendar-arrow-1">
-                        </button>
-                        <button class="calendar-buttons" id="arrow-next">
-                            <img src="images/arrow.png" alt="arrow forward in calendar" class="calendar-arrow-2">
-                        </button>
-                    </section>
-                </header>
-                <div class="calendar"></div>
-            </section>
-        </aside>
-        <section class="main-calendar">
-            <header class="main-calendar-header"></header>
-            <section class="calendar-time-line-and-squares">
-                <section class="time-line"></section>
-                <section id="time-table">
-
-                </section>
-            </section>
-        </section>
-    </main>
-    <script src="./dist/main.js" type="module"></script>
-</body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
