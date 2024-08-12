@@ -1,11 +1,12 @@
 import Header from './Header/Header';
-import MainScreen from './MainScreen/MainScreen';
 import './stylesheets/reset.css';
 import './stylesheets/global.css';
 import { useCallback, useEffect, useState } from 'react';
 import { Modal } from './Modal/Modal';
 import EventObject from './dbObject';
 import { isInChosenWeek, getFirstDayOfWeek } from './utils/date';
+import Sidebar from './Sidebar/Sidebar';
+import { Calendar } from './Calendar/Calendar';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,20 +32,22 @@ function App() {
     clearEvents();
     setEvents([]);
   }, []);
+
   return (
     <>
       <Header clearEvents={clearServer} chosenDay={chosenDay} setChosenDay={setChosenDay} />
-      <MainScreen
-        openModal={openModal}
-        toggleModal={toggleModal}
-        events={events.filter(
-          (event) =>
-            isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventStart) ||
-            isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventEnd),
-        )}
-        chosenDay={chosenDay}
-        setChosenDay={setChosenDay}
-      />
+      <main>
+        <Sidebar toggleModal={toggleModal} setChosenDay={setChosenDay} />
+        <Calendar
+          openModal={openModal}
+          events={events.filter(
+            (event) =>
+              isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventStart) ||
+              isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventEnd),
+          )}
+          chosenDay={chosenDay}
+        />
+      </main>
       {isOpen && <Modal toggleModal={toggleModal} eventDate={refDateISO} saveToStorage={saveToStorage} />}
     </>
   );

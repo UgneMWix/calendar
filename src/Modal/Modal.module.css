@@ -6,7 +6,7 @@
   position: fixed;
   top: 35vh;
   left: 30vw;
-  background-color: white;
+  background-color: var(--modal-bg-color);
   border-radius: 15px;
   z-index: 2;
 }
@@ -52,7 +52,7 @@
   top: 0;
   left: 0;
   font-size: 16px;
-  color: rgba(204, 204, 204, 0);
+  color: var(--label-font-color);
   pointer-events: none;
   transition: all 0.3s ease;
 }
@@ -86,16 +86,22 @@
 .modal-time-date {
   padding: 10px;
   border-radius: 10px;
+  background-color: transparent;
+  color: var(--font-color);
 }
 
 .modal-time-start {
   padding: 10px;
   border-radius: 10px;
+  background-color: transparent;
+  color: var(--font-color);
 }
 
 .modal-time-end {
   padding: 10px;
   border-radius: 10px;
+  background-color: transparent;
+  color: var(--font-color);
 }
 
 .modal-location-flex-box {
@@ -103,7 +109,7 @@
 }
 
 .modal-location-text {
-  color: #242424;
+  color: var(--modal-font-color);
   padding: 0.15rem 0.5rem;
   height: 40px;
   border-radius: 4px;
@@ -112,15 +118,19 @@
   line-height: 1.15;
   box-shadow: 0px 10px 20px -18px;
   margin-left: 10px;
+  background-color: transparent;
+  color: var(--font-color);
 }
 
 .modal-location-text:focus {
   border-bottom: 2px solid #5b5fc7;
   border-radius: 4px 4px 2px 2px;
+  background-color: transparent;
+  color: var(--font-color);
 }
 
 .modal-description-text {
-  color: #242424;
+  color: var(--modal-font-color);
   padding: 0.15rem 0.5rem;
   height: 40px;
   border-radius: 4px;
@@ -129,11 +139,15 @@
   line-height: 1.15;
   box-shadow: 0px 10px 20px -18px;
   margin-left: 10px;
+  background-color: transparent;
+  color: var(--font-color);
 }
 
 .modal-description-text:focus {
   border-bottom: 2px solid #5b5fc7;
   border-radius: 4px 4px 2px 2px;
+  background-color: transparent;
+  color: var(--font-color);
 }
 
 .modal-footer {
@@ -146,14 +160,14 @@
 }
 
 .modal-save-button {
-  background-color: #4a7fb5;
+  background-color: var(--bg-color-div);
   padding: 10px 20px 10px 20px;
   border-radius: 10px;
   color: white;
 }
 
 .modal-save-button:hover {
-  background-color: #3a6fa5;
+  background-color: var(--bg-color-div-hover);
   cursor: pointer;
 }
 
@@ -175,6 +189,6 @@
   height: 1vw;
 }
 .modal-close-button:hover {
-  background-color: #d0d4d7;
+  background-color: var(--bg-color-hover);
   cursor: pointer;
 }

@@ -1,9 +1,29 @@
-#root {
+.root {
   font-family: 'Montserrat', sans-serif;
   height: 100vh;
   display: flex;
   flex-direction: column;
   /* background-color: blue; */
+  --bg-color-hover: #d0d4d7;
+  --font-color: gray;
+  --bg-color-div: #4a7fb5;
+  --bg-color-div-hover: #3a6fa5;
+  --modal-font-color: #242424;
+  --label-font-color: rgba(204, 204, 204, 0);
+  --modal-bg-color: white;
+  --font-color-secondary: black;
+  --soft-font-color: #e3e6e7;
+  --calander-square-bg: rgb(242, 237, 237);
+  --calendar-square-primary: rgba(255, 255, 255, 0.593);
+  --calendar-square-secondary: rgba(255, 255, 255, 0.5);
+  --button-border: transparent;
+  --button-bg: transparent;
+}
+.darkmode {
+  background-color: black;
+  --button-border: gray;
+  --bg-color-hover: whitesmoke;
+  --button-bg: #54a0ec;
 }
 span {
   color: gray;

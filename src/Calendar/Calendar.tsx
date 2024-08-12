@@ -35,6 +35,7 @@ export function Calendar({
   useEffect(() => {
     setIsLoaded(true);
   }, [chosenDay]);
+
   return (
     <section className={styles['main-calendar']}>
       <Header chosenDay={chosenDay} />
@@ -77,6 +78,7 @@ export function Calendar({
             const hourSquare = dateSquare.getUTCHours();
             return year === yearSquare && month === monthSquare && day === daySquare && hour === hourSquare;
           });
+          console.log(!!square);
           if (!square) return null;
 
           return (
@@ -114,15 +116,16 @@ function Event({
   endDateISO: string;
   weekList: Array<string>;
 }) {
-  let position = {};
+  // let position = {};
   const rect = square.htmlElement.getBoundingClientRect();
   const startDate = new Date(startDateISO);
   const endDate = new Date(endDateISO);
-  let days = Math.abs(startDate.getUTCDate() - endDate.getUTCDate()) + 1;
+  let days = Math.abs(startDate.getUTCDate() - endDate.getUTCDate()) + 1; //what is month different
   if (endDate > new Date(weekList[weekList.length - 1]))
     days -= Math.abs(new Date(weekList[weekList.length - 1]).getDate() - endDate.getDate()) + 1;
   let tempTop = rect['top'] + (rect['height'] * startDate.getUTCMinutes()) / 60;
   if (startDate.toLocaleDateString() !== endDate.toLocaleDateString()) {
+    //fix locale string
     let tempEndDate = new Date(endDate);
     tempEndDate.setUTCHours(23, 59, 0, 0);
     let tempStartDate = new Date(startDate);
@@ -135,7 +138,7 @@ function Event({
       if (i === 0) {
         tempStartDate = new Date(startDate);
       }
-      position = Position(rect['height'], rect['width'], tempTop, leftMargin, tempStartDate, tempEndDate);
+      const position = getPosition(rect['height'], rect['width'], tempTop, leftMargin, tempStartDate, tempEndDate);
       leftMargin += rect['width'];
       tempEndDate.setUTCDate(startDate.getUTCDate() + i + 1);
       tempStartDate.setUTCDate(startDate.getUTCDate() + i + 1);
@@ -149,7 +152,7 @@ function Event({
     });
     return eventSquares;
   } else {
-    position = Position(rect['height'], rect['width'], rect['top'], rect['left'], startDate, endDate);
+    const position = getPosition(rect['height'], rect['width'], rect['top'], rect['left'], startDate, endDate);
     return (
       <div className={style.event} style={position}>
         {text}
@@ -157,7 +160,7 @@ function Event({
     );
   }
 }
-function Position(
+function getPosition(
   rectHeight: number,
   rectWidth: number,
   rectTop: number,
