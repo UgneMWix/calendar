@@ -9,7 +9,7 @@ import {
   getYearFromDate,
 } from '../utils/date';
 import { useState } from 'react';
-export function MiniCalendar() {
+export function MiniCalendar({ setChosenDay }: { setChosenDay: (date: string) => void }) {
   const [refDate, setRefDate] = useState(new Date().toISOString());
   const firstDayOfWeek = getFirstDayOfWeek(getFirstDayOfTheMonth(new Date(refDate).toISOString()));
 
@@ -55,6 +55,7 @@ export function MiniCalendar() {
                 [styles['other-day']]: month !== new Date(refDate).getUTCMonth(),
               })}
               key={dayISO}
+              onClick={() => setChosenDay(dayISO)}
             >
               {day}
             </div>

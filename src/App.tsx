@@ -43,6 +43,7 @@ function App() {
             isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventEnd),
         )}
         chosenDay={chosenDay}
+        setChosenDay={setChosenDay}
       />
       {isOpen && <Modal toggleModal={toggleModal} eventDate={refDateISO} saveToStorage={saveToStorage} />}
     </>
