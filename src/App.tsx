@@ -5,12 +5,13 @@ import './stylesheets/global.css';
 import { useCallback, useEffect, useState } from 'react';
 import { Modal } from './Modal/Modal';
 import EventObject from './dbObject';
+import { isInChosenWeek, getFirstDayOfWeek } from './utils/date';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [refDateISO, setRefDateISO] = useState<string | undefined>();
   const [events, setEvents] = useState<EventObject[]>([]);
-
+  const [chosenDay, setChosenDay] = useState(new Date().toISOString());
   const toggleModal = useCallback(() => {
     setIsOpen((currentValue) => !currentValue);
   }, []);
@@ -24,7 +25,7 @@ function App() {
   }, []);
   useEffect(() => {
     getEvents().then((events) => setEvents(events));
-  }, []);
+  }, [chosenDay]);
 
   const clearServer = useCallback(() => {
     clearEvents();
@@ -32,8 +33,17 @@ function App() {
   }, []);
   return (
     <>
-      <Header clearEvents={clearServer} />
-      <MainScreen openModal={openModal} toggleModal={toggleModal} events={events} />
+      <Header clearEvents={clearServer} chosenDay={chosenDay} setChosenDay={setChosenDay} />
+      <MainScreen
+        openModal={openModal}
+        toggleModal={toggleModal}
+        events={events.filter(
+          (event) =>
+            isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventStart) ||
+            isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventEnd),
+        )}
+        chosenDay={chosenDay}
+      />
       {isOpen && <Modal toggleModal={toggleModal} eventDate={refDateISO} saveToStorage={saveToStorage} />}
     </>
   );

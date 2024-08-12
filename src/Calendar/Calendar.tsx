@@ -10,25 +10,34 @@ interface SquareData {
   date: string;
 }
 
-export function Calendar({ openModal, events }: { openModal: (dateISO?: string) => void; events: EventObject[] }) {
+export function Calendar({
+  openModal,
+  events,
+  chosenDay,
+}: {
+  openModal: (dateISO?: string) => void;
+  events: EventObject[];
+  chosenDay: string;
+}) {
   const squareRefs = useRef<SquareData[]>([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const dateList = useMemo(() => {
-    const initialDate = new Date();
+    const initialDate = new Date(chosenDay);
+    console.log(initialDate);
     initialDate.setUTCHours(0, 0, 0, 0);
     return generateWeek(getFirstDayOfWeek(initialDate.toISOString())).flatMap((value) => generateHoursOfTheDay(value));
-  }, []);
+  }, [chosenDay]);
   const onSquareClick = (dateISO: string) => {
     openModal(dateISO);
   };
 
   useEffect(() => {
     setIsLoaded(true);
-  }, []);
+  }, [chosenDay]);
   return (
     <section className={styles['main-calendar']}>
-      <Header />
+      <Header chosenDay={chosenDay} />
       <section className={styles['calendar-time-line-and-squares']}>
         <section className={styles['time-line']}>
           <TimeLine />
@@ -130,7 +139,7 @@ function Event({
       leftMargin += rect['width'];
       tempEndDate.setUTCDate(startDate.getUTCDate() + i + 1);
       tempStartDate.setUTCDate(startDate.getUTCDate() + i + 1);
-      tempStartDate.setUTCHours(0, 1, 0, 0);
+      tempStartDate.setUTCHours(0, 0, 0, 0);
       tempTop = rect['top'] - startDate.getUTCHours() * rect['height'];
       return (
         <div className={style.event} style={position} key={i}>
