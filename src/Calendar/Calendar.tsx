@@ -77,6 +77,7 @@ export function Calendar({ openModal, events }: { openModal: (dateISO?: string) 
               text={value.title}
               startDateISO={value.eventStart}
               endDateISO={value.eventEnd}
+              weekList={dateList}
             />
           );
         })}
@@ -96,27 +97,72 @@ function Event({
   text,
   startDateISO,
   endDateISO,
+  weekList,
 }: {
   square: SquareData;
   text: string;
   startDateISO: string;
   endDateISO: string;
+  weekList: Array<string>;
 }) {
+  let position = {};
   const rect = square.htmlElement.getBoundingClientRect();
   const startDate = new Date(startDateISO);
   const endDate = new Date(endDateISO);
-  const position = {
+  let days = Math.abs(startDate.getUTCDate() - endDate.getUTCDate()) + 1;
+  if (endDate > new Date(weekList[weekList.length - 1]))
+    days -= Math.abs(new Date(weekList[weekList.length - 1]).getDate() - endDate.getDate()) + 1;
+  let tempTop = rect['top'] + (rect['height'] * startDate.getUTCMinutes()) / 60;
+  if (startDate.toLocaleDateString() !== endDate.toLocaleDateString()) {
+    let tempEndDate = new Date(endDate);
+    tempEndDate.setUTCHours(23, 59, 0, 0);
+    let tempStartDate = new Date(startDate);
+    let leftMargin = rect['left'];
+
+    const eventSquares = Array.from({ length: days }, (_, i) => {
+      if (i === days - 1 && tempEndDate.getDate() === endDate.getDate() + 1) {
+        tempEndDate = new Date(endDate);
+      }
+      if (i === 0) {
+        tempStartDate = new Date(startDate);
+      }
+      position = Position(rect['height'], rect['width'], tempTop, leftMargin, tempStartDate, tempEndDate);
+      leftMargin += rect['width'];
+      tempEndDate.setUTCDate(startDate.getUTCDate() + i + 1);
+      tempStartDate.setUTCDate(startDate.getUTCDate() + i + 1);
+      tempStartDate.setUTCHours(0, 1, 0, 0);
+      tempTop = rect['top'] - startDate.getUTCHours() * rect['height'];
+      return (
+        <div className={style.event} style={position} key={i}>
+          {text}
+        </div>
+      );
+    });
+    return eventSquares;
+  } else {
+    position = Position(rect['height'], rect['width'], rect['top'], rect['left'], startDate, endDate);
+    return (
+      <div className={style.event} style={position}>
+        {text}
+      </div>
+    );
+  }
+}
+function Position(
+  rectHeight: number,
+  rectWidth: number,
+  rectTop: number,
+  rectLeft: number,
+  startDate: Date,
+  endDate: Date,
+) {
+  return {
     height:
-      (rect['height'] * endDate.getUTCMinutes()) / 60 +
-      rect['height'] * (endDate.getUTCHours() - startDate.getUTCHours()) -
-      (rect['height'] * startDate.getUTCMinutes()) / 60,
-    width: rect['width'],
-    top: rect['top'] + (rect['height'] * startDate.getUTCMinutes()) / 60,
-    left: rect['left'],
+      (rectHeight * endDate.getUTCMinutes()) / 60 +
+      rectHeight * (endDate.getUTCHours() - startDate.getUTCHours()) -
+      (rectHeight * startDate.getUTCMinutes()) / 60,
+    width: rectWidth - 15,
+    top: rectTop,
+    left: rectLeft,
   };
-  return (
-    <div className={style.event} style={position}>
-      {text}
-    </div>
-  );
 }

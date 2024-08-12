@@ -23,6 +23,10 @@ export function Modal(props: props) {
     if (props.eventDate) return `${props.eventDate.substring(0, 10)}`;
     return '';
   });
+  const [endDateinput, setEndDateInput] = useState(() => {
+    if (props.eventDate) return `${props.eventDate.substring(0, 10)}`;
+    return '';
+  });
   const [descriptionInput, setDescriptionInput] = useState('');
   const [locationInput, setLocationInput] = useState('');
   function openAlerts() {
@@ -49,7 +53,7 @@ export function Modal(props: props) {
     }
     const startDate = new Date(dateInput);
     startDate.setUTCHours(parseInt(startInput.substring(0, 2)), parseInt(startInput.substring(3, 5)), 0, 0);
-    const endDate = new Date(dateInput);
+    const endDate = new Date(endDateinput);
     endDate.setUTCHours(parseInt(endInput.substring(0, 2)), parseInt(endInput.substring(3, 5)), 0, 0); //sudeti i utils
     console.log(endDate);
     // console.log(startDate);
@@ -104,6 +108,13 @@ export function Modal(props: props) {
               onChange={(e) => setStartInput(e.target.value)}
             />
             <p>-</p>
+            <input
+              className={styles['modal-time-date']}
+              type="date"
+              id="date-input-end"
+              value={endDateinput}
+              onChange={(e) => setEndDateInput(e.target.value)}
+            />
             <input
               className={styles['modal-time-end']}
               type="time"

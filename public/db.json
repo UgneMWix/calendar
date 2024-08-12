@@ -1,3 +1,26 @@
 {
-  "events": []
+  "events": [
+    {
+      "id": "a584",
+      "title": "adaw",
+      "date": "2024-08-11",
+      "eventStart": "2024-08-11T11:00:00.000Z",
+      "eventEnd": "2024-08-11T11:30:00.000Z",
+      "startTime": "11:00",
+      "endTime": "11:30",
+      "description": "",
+      "location": ""
+    },
+    {
+      "id": "f6e3",
+      "title": "dawd",
+      "date": "2024-08-13",
+      "eventStart": "2024-08-13T06:00:00.000Z",
+      "eventEnd": "2024-08-16T06:30:00.000Z",
+      "startTime": "06:00",
+      "endTime": "06:30",
+      "description": "",
+      "location": ""
+    }
+  ]
 }
