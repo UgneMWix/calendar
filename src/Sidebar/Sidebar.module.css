@@ -3,11 +3,12 @@
   border-radius: 35px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   background-color: transparent;
-  color: gray;
+  color: var(--font-color-primary);
   font-weight: 500;
   margin: 10px;
+  border: var(--rounded-button-border) solid;
 }
 .event-button:hover {
-  background-color: #d0d4d7;
+  background-color: var(--bg-color-hover);
   cursor: pointer;
 }

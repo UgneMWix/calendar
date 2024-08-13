@@ -1,16 +1,20 @@
 import Header from './Header/Header';
-import MainScreen from './MainScreen/MainScreen';
 import './stylesheets/reset.css';
 import './stylesheets/global.css';
 import { useCallback, useEffect, useState } from 'react';
 import { Modal } from './Modal/Modal';
 import EventObject from './dbObject';
+import { isInChosenWeek, getFirstDayOfWeek } from './utils/date';
+import Sidebar from './Sidebar/Sidebar';
+import { Calendar } from './Calendar/Calendar';
+import cn from 'classnames';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [refDateISO, setRefDateISO] = useState<string | undefined>();
   const [events, setEvents] = useState<EventObject[]>([]);
-
+  const [chosenDay, setChosenDay] = useState(new Date().toISOString());
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const toggleModal = useCallback(() => {
     setIsOpen((currentValue) => !currentValue);
   }, []);
@@ -24,18 +28,37 @@ function App() {
   }, []);
   useEffect(() => {
     getEvents().then((events) => setEvents(events));
-  }, []);
+  }, [chosenDay]);
 
+  const toggleDarkmode = useCallback(() => {
+    setIsDarkMode((currentValue) => !currentValue);
+  }, []);
   const clearServer = useCallback(() => {
     clearEvents();
     setEvents([]);
   }, []);
   return (
-    <>
-      <Header clearEvents={clearServer} />
-      <MainScreen openModal={openModal} toggleModal={toggleModal} events={events} />
+    <div className={cn('root', { darkmode: isDarkMode })}>
+      <Header
+        clearEvents={clearServer}
+        chosenDay={chosenDay}
+        setChosenDay={setChosenDay}
+        toggleDarkmode={toggleDarkmode}
+      />
+      <main>
+        <Sidebar toggleModal={toggleModal} setChosenDay={setChosenDay} />
+        <Calendar
+          openModal={openModal}
+          events={events.filter(
+            (event) =>
+              isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventStart) ||
+              isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventEnd),
+          )}
+          chosenDay={chosenDay}
+        />
+      </main>
       {isOpen && <Modal toggleModal={toggleModal} eventDate={refDateISO} saveToStorage={saveToStorage} />}
-    </>
+    </div>
   );
 }
 

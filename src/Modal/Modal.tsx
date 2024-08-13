@@ -23,6 +23,10 @@ export function Modal(props: props) {
     if (props.eventDate) return `${props.eventDate.substring(0, 10)}`;
     return '';
   });
+  const [endDateinput, setEndDateInput] = useState(() => {
+    if (props.eventDate) return `${props.eventDate.substring(0, 10)}`;
+    return '';
+  });
   const [descriptionInput, setDescriptionInput] = useState('');
   const [locationInput, setLocationInput] = useState('');
   function openAlerts() {
@@ -36,7 +40,14 @@ export function Modal(props: props) {
     }
   }
   function validateTimeInput() {
-    if (startInput === '' || endInput === '' || dateInput === '' || startInput >= endInput) {
+    if (
+      startInput === '' ||
+      endInput === '' ||
+      dateInput === '' ||
+      endDateinput === '' ||
+      (dateInput === endDateinput && startInput >= endInput) ||
+      dateInput > endDateinput
+    ) {
       return false;
     }
     return true;
@@ -49,7 +60,7 @@ export function Modal(props: props) {
     }
     const startDate = new Date(dateInput);
     startDate.setUTCHours(parseInt(startInput.substring(0, 2)), parseInt(startInput.substring(3, 5)), 0, 0);
-    const endDate = new Date(dateInput);
+    const endDate = new Date(endDateinput);
     endDate.setUTCHours(parseInt(endInput.substring(0, 2)), parseInt(endInput.substring(3, 5)), 0, 0); //sudeti i utils
     console.log(endDate);
     // console.log(startDate);
@@ -83,7 +94,7 @@ export function Modal(props: props) {
               value={eventTitle}
               onChange={(e) => setEventTitle(e.target.value)}
             />
-            <label className={styles['input-label']}>Enter</label>
+            <label className={styles['input-label']}>Enter Title</label>
             <span className={styles['input-highlight']}></span>
           </div>
           {alertIsOpen && <Alert text="Please enter a title" />}
@@ -103,7 +114,14 @@ export function Modal(props: props) {
               value={startInput}
               onChange={(e) => setStartInput(e.target.value)}
             />
-            <p>-</p>
+            <p className={styles.dash}>-</p>
+            <input
+              className={styles['modal-time-date']}
+              type="date"
+              id="date-input-end"
+              value={endDateinput}
+              onChange={(e) => setEndDateInput(e.target.value)}
+            />
             <input
               className={styles['modal-time-end']}
               type="time"

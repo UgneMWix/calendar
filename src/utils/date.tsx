@@ -38,3 +38,11 @@ export function getYearFromDate(dateISO: string) {
   const date = new Date(dateISO);
   return date.getUTCFullYear();
 }
+export function isInChosenWeek(startDateISO: string, dateISO: string) {
+  const date = new Date(dateISO);
+  const startDate = new Date(startDateISO);
+  const endDate = new Date(startDateISO);
+  endDate.setUTCDate(startDate.getUTCDate() + 7);
+  if (date > startDate && date < endDate) return true;
+  return false;
+}

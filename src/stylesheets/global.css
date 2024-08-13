@@ -1,9 +1,42 @@
-#root {
+.root {
   font-family: 'Montserrat', sans-serif;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  /* background-color: blue; */
+
+  --bg-stripes: repeating-linear-gradient(
+    45deg,
+    rgb(242, 237, 237),
+    rgb(242, 237, 237) 3px,
+    rgba(255, 255, 255, 0.593) 3px,
+    rgba(255, 255, 255, 0.5) 6px
+  );
+  --bg-color-hover: #d0d4d7;
+
+  --font-color-primary: gray;
+  --font-color-secondary: black;
+  --font-color-inverted: gray;
+
+  --accent-color: #4a7fb5;
+  --accent-color-hover: #3a6fa5;
+
+  --bg-color: white;
+  --rounded-button-border: transparent;
+  --button-bg: transparent;
+  --border-color-light: #e3e6e7;
+}
+.darkmode {
+  --bg-stripes: repeating-linear-gradient(45deg, black, black 3px, black 3px, black 6px);
+  --bg-color-hover: white;
+  --font-color-primary: rgb(2, 209, 255);
+  --font-color-secondary: white;
+  --font-color-inverted: white;
+  --accent-color: rgb(2, 209, 255);
+  --bg-color: black;
+  background-color: var(--bg-color);
+  --rounded-button-border: white;
+  --button-bg: rgb(2, 209, 255);
+  --border-color-light: rgb(2, 209, 255);
 }
 span {
   color: gray;
@@ -12,8 +45,6 @@ main {
   display: flex;
   flex-grow: 1;
   flex-direction: row;
-  /* height: 100vh; */
-  /* background-color: red; */
 }
 aside {
   width: 15vw;
