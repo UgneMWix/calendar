@@ -7,6 +7,7 @@ import EventObject from './dbObject';
 import { isInChosenWeek, getFirstDayOfWeek } from './utils/date';
 import Sidebar from './Sidebar/Sidebar';
 import { Calendar } from './Calendar/Calendar';
+import cn from 'classnames';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,15 +31,14 @@ function App() {
   }, [chosenDay]);
 
   const toggleDarkmode = useCallback(() => {
-    document.getElementById('root')!.classList.toggle('darkmode', isDarkMode);
     setIsDarkMode((currentValue) => !currentValue);
-  }, [isDarkMode]);
+  }, []);
   const clearServer = useCallback(() => {
     clearEvents();
     setEvents([]);
   }, []);
   return (
-    <>
+    <div className={cn('root', { darkmode: isDarkMode })}>
       <Header
         clearEvents={clearServer}
         chosenDay={chosenDay}
@@ -58,7 +58,7 @@ function App() {
         />
       </main>
       {isOpen && <Modal toggleModal={toggleModal} eventDate={refDateISO} saveToStorage={saveToStorage} />}
-    </>
+    </div>
   );
 }
 

@@ -40,7 +40,14 @@ export function Modal(props: props) {
     }
   }
   function validateTimeInput() {
-    if (startInput === '' || endInput === '' || dateInput === '' || startInput >= endInput) {
+    if (
+      startInput === '' ||
+      endInput === '' ||
+      dateInput === '' ||
+      endDateinput === '' ||
+      (dateInput === endDateinput && startInput >= endInput) ||
+      dateInput > endDateinput
+    ) {
       return false;
     }
     return true;

@@ -127,7 +127,7 @@ function Event({
   if (startDate.toLocaleDateString() !== endDate.toLocaleDateString()) {
     //fix locale string
     let tempEndDate = new Date(endDate);
-    tempEndDate.setUTCHours(23, 59, 0, 0);
+    tempEndDate.setUTCHours(23, 59, 59, 99);
     let tempStartDate = new Date(startDate);
     let leftMargin = rect['left'];
 

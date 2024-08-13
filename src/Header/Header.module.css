@@ -78,10 +78,10 @@
   cursor: pointer;
 }
 .darkmode-button {
-  width: 3vw;
-  height: 3vw;
+  width: 2vw;
+  height: 2vw;
   border-radius: 100%;
-  justify-self: flex-end;
+  justify-self: center;
   align-self: flex-end;
   background-color: var(--button-bg);
 }
