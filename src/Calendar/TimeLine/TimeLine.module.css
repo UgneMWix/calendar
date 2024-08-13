@@ -1,7 +1,7 @@
 .label {
   text-align: right;
   font-size: 10px;
-  color: var(--font-color);
+  color: var(--font-color-primary);
   position: relative;
   margin-top: -2.2vh;
 }

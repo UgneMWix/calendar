@@ -3,10 +3,10 @@
   border-radius: 35px;
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
   background-color: transparent;
-  color: var(--font-color);
+  color: var(--font-color-primary);
   font-weight: 500;
   margin: 10px;
-  border: var(--button-border) solid;
+  border: var(--rounded-button-border) solid;
 }
 .event-button:hover {
   background-color: var(--bg-color-hover);

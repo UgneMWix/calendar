@@ -3,7 +3,7 @@
   height: 80px;
   align-items: center;
   padding: 10px 20px 10px 20px;
-  border-bottom: var(--soft-font-color) solid;
+  border-bottom: var(--border-color-light) solid;
 }
 
 .header-buttons {
@@ -15,7 +15,7 @@
   align-items: center;
   background-color: var(--button-bg);
   margin-right: 10px;
-  border: var(--button-border) solid;
+  border: var(--rounded-button-border) solid;
 }
 
 .menu-button-image {
@@ -27,17 +27,17 @@
   font-size: 25px;
   margin-right: 60px;
   font-weight: 500;
-  color: var(--font-color-third);
+  color: var(--font-color-inverted);
 }
 
 .today-button {
   background-color: transparent;
   font-size: 15px;
   border-radius: 5%;
-  border: var(--soft-font-color) solid;
+  border: var(--border-color-light) solid;
   border-width: 1px;
   padding: 10px;
-  color: var(--font-color);
+  color: var(--font-color-primary);
   font-weight: 500;
   margin-right: 20px;
 }
@@ -56,17 +56,17 @@
 .mon-year-text {
   font-size: 25px;
   margin-right: 20px;
-  color: var(--font-color-third);
+  color: var(--font-color-inverted);
 }
 
 .week-menu-button {
   background-color: transparent;
   font-size: 15px;
   border-radius: 5%;
-  border: var(--soft-font-color) solid;
+  border: var(--border-color-light) solid;
   border-width: 1px;
   padding: 10px;
-  color: var(--font-color);
+  color: var(--font-color-primary);
   font-weight: 500;
   margin-left: auto;
   margin-right: 10px;
@@ -82,7 +82,7 @@
   height: 2vw;
   border-radius: 100%;
   justify-self: center;
-  align-self: flex-end;
+  align-self: center;
   background-color: var(--button-bg);
 }
 .darkmode-button:hover {

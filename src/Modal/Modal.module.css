@@ -6,7 +6,7 @@
   position: fixed;
   top: 35vh;
   left: 30vw;
-  background-color: var(--modal-bg-color);
+  background-color: var(--bg-color);
   border-radius: 15px;
   z-index: 2;
 }
@@ -46,7 +46,7 @@
   border-bottom: 2px solid #ccc;
   outline: none;
   background-color: transparent;
-  color: var(--font-color);
+  color: var(--font-color-primary);
 }
 .input-label {
   position: absolute;
@@ -70,7 +70,7 @@
 .input-field:focus + .input-label {
   top: -20px;
   font-size: 12px;
-  color: var(--font-color);
+  color: var(--font-color-primary);
 }
 
 .input-field:focus + .input-label + .input-highlight {
@@ -88,21 +88,21 @@
   padding: 10px;
   border-radius: 10px;
   background-color: var(--button-bg);
-  color: var(--font-color-third);
+  color: var(--font-color-inverted);
 }
 
 .modal-time-start {
   padding: 10px;
   border-radius: 10px;
   background-color: var(--button-bg);
-  color: var(--font-color-third);
+  color: var(--font-color-inverted);
 }
 
 .modal-time-end {
   padding: 10px;
   border-radius: 10px;
   background-color: var(--button-bg);
-  color: var(--font-color-third);
+  color: var(--font-color-inverted);
 }
 
 .modal-location-flex-box {
@@ -110,7 +110,7 @@
 }
 
 .modal-location-text {
-  color: var(--modal-font-color);
+  color: var(--font-color-primary);
   padding: 0.15rem 0.5rem;
   height: 40px;
   border-radius: 4px;
@@ -120,18 +120,18 @@
   box-shadow: 0px 10px 20px -18px;
   margin-left: 10px;
   background-color: transparent;
-  color: var(--font-color);
+  color: var(--font-color-primary);
 }
 
 .modal-location-text:focus {
   border-bottom: 2px solid #5b5fc7;
   border-radius: 4px 4px 2px 2px;
   background-color: transparent;
-  color: var(--font-color);
+  color: var(--font-color-primary);
 }
 
 .modal-description-text {
-  color: var(--modal-font-color);
+  color: var(--font-color-primary);
   padding: 0.15rem 0.5rem;
   height: 40px;
   border-radius: 4px;
@@ -141,14 +141,14 @@
   box-shadow: 0px 10px 20px -18px;
   margin-left: 10px;
   background-color: transparent;
-  color: var(--font-color);
+  color: var(--font-color-primary);
 }
 
 .modal-description-text:focus {
   border-bottom: 2px solid #5b5fc7;
   border-radius: 4px 4px 2px 2px;
   background-color: transparent;
-  color: var(--font-color);
+  color: var(--font-color-primary);
 }
 
 .modal-footer {
@@ -161,14 +161,14 @@
 }
 
 .modal-save-button {
-  background-color: var(--bg-color-div);
+  background-color: var(--accent-color);
   padding: 10px 20px 10px 20px;
   border-radius: 10px;
   color: white;
 }
 
 .modal-save-button:hover {
-  background-color: var(--bg-color-div-hover);
+  background-color: var(--accent-color-hover);
   cursor: pointer;
 }
 
@@ -197,5 +197,5 @@
   cursor: pointer;
 }
 .dash {
-  color: var(--font-color);
+  color: var(--font-color-primary);
 }
