@@ -18,7 +18,7 @@
   align-items: center;
 }
 .modal-close-button {
-  background-color: transparent;
+  background-color: var(--button-bg);
   padding: 5px;
   width: 1.5vw;
   height: 1.5vw;
@@ -46,13 +46,14 @@
   border-bottom: 2px solid #ccc;
   outline: none;
   background-color: transparent;
+  color: var(--font-color);
 }
 .input-label {
   position: absolute;
   top: 0;
   left: 0;
   font-size: 16px;
-  color: var(--label-font-color);
+  color: transparent;
   pointer-events: none;
   transition: all 0.3s ease;
 }
@@ -69,7 +70,7 @@
 .input-field:focus + .input-label {
   top: -20px;
   font-size: 12px;
-  color: #007bff;
+  color: var(--font-color);
 }
 
 .input-field:focus + .input-label + .input-highlight {
@@ -86,22 +87,22 @@
 .modal-time-date {
   padding: 10px;
   border-radius: 10px;
-  background-color: transparent;
-  color: var(--font-color);
+  background-color: var(--button-bg);
+  color: var(--font-color-third);
 }
 
 .modal-time-start {
   padding: 10px;
   border-radius: 10px;
-  background-color: transparent;
-  color: var(--font-color);
+  background-color: var(--button-bg);
+  color: var(--font-color-third);
 }
 
 .modal-time-end {
   padding: 10px;
   border-radius: 10px;
-  background-color: transparent;
-  color: var(--font-color);
+  background-color: var(--button-bg);
+  color: var(--font-color-third);
 }
 
 .modal-location-flex-box {
@@ -185,10 +186,16 @@
 }
 
 .modal-icons {
-  width: 1vw;
-  height: 1vw;
+  width: 1.5vw;
+  height: 1.5vw;
+  background-color: var(--button-bg);
+  border-radius: 100%;
+  padding: 3px;
 }
 .modal-close-button:hover {
   background-color: var(--bg-color-hover);
   cursor: pointer;
+}
+.dash {
+  color: var(--font-color);
 }

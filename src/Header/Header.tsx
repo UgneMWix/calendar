@@ -4,16 +4,18 @@ function Header({
   clearEvents,
   chosenDay,
   setChosenDay,
+  toggleDarkmode,
 }: {
   clearEvents: () => void;
   chosenDay: string;
   setChosenDay: (date: string) => void;
+  toggleDarkmode: () => void;
 }) {
   const day = new Date(chosenDay);
   return (
     <header className={styles['page-header']}>
       <button className={styles['header-buttons']}>
-        <img src="/menu-dashes.png" className={styles['menu-button-image']} />
+        <img src="/menu.png" className={styles['menu-button-image']} />
       </button>
       <span className={styles['header-title']}>Calendar</span>
       <button className={styles['today-button']} onClick={clearEvents}>
@@ -41,6 +43,9 @@ function Header({
         Today
       </button>
       <button className={styles['week-menu-button']}>Week ▾</button>
+      <button className={styles['darkmode-button']} onClick={() => toggleDarkmode()}>
+        🌙
+      </button>
     </header>
   );
 }

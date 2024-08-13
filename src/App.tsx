@@ -13,6 +13,7 @@ function App() {
   const [refDateISO, setRefDateISO] = useState<string | undefined>();
   const [events, setEvents] = useState<EventObject[]>([]);
   const [chosenDay, setChosenDay] = useState(new Date().toISOString());
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const toggleModal = useCallback(() => {
     setIsOpen((currentValue) => !currentValue);
   }, []);
@@ -28,14 +29,22 @@ function App() {
     getEvents().then((events) => setEvents(events));
   }, [chosenDay]);
 
+  const toggleDarkmode = useCallback(() => {
+    document.getElementById('root')!.classList.toggle('darkmode', isDarkMode);
+    setIsDarkMode((currentValue) => !currentValue);
+  }, [isDarkMode]);
   const clearServer = useCallback(() => {
     clearEvents();
     setEvents([]);
   }, []);
-
   return (
     <>
-      <Header clearEvents={clearServer} chosenDay={chosenDay} setChosenDay={setChosenDay} />
+      <Header
+        clearEvents={clearServer}
+        chosenDay={chosenDay}
+        setChosenDay={setChosenDay}
+        toggleDarkmode={toggleDarkmode}
+      />
       <main>
         <Sidebar toggleModal={toggleModal} setChosenDay={setChosenDay} />
         <Calendar

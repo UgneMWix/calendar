@@ -24,13 +24,13 @@
   background-color: var(--calander-square-bg);
   background-image: repeating-linear-gradient(
     45deg,
-    transparent,
-    transparent 3px,
+    var(--calendar-bg),
+    var(--calendar-bg) 3px,
     var(--calendar-square-primary) 3px,
     var(--calendar-square-secondary) 6px
   );
-  border-right: 3px #e3e6e7 solid;
-  border-top: 3px #e3e6e7 solid;
+  border-right: 1px var(--calendar-border) solid;
+  border-top: 1px var(--calendar-border) solid;
 }
 
 .calendar-square:nth-child(7n) {

@@ -27,6 +27,7 @@
   font-size: 25px;
   margin-right: 60px;
   font-weight: 500;
+  color: var(--font-color-third);
 }
 
 .today-button {
@@ -55,6 +56,7 @@
 .mon-year-text {
   font-size: 25px;
   margin-right: 20px;
+  color: var(--font-color-third);
 }
 
 .week-menu-button {
@@ -72,6 +74,17 @@
 .header-buttons:hover,
 .today-button:hover,
 .week-menu-button:hover {
-  background-color: #d0d4d7;
+  background-color: var(--bg-color-hover);
   cursor: pointer;
+}
+.darkmode-button {
+  width: 3vw;
+  height: 3vw;
+  border-radius: 100%;
+  justify-self: flex-end;
+  align-self: flex-end;
+  background-color: var(--button-bg);
+}
+.darkmode-button:hover {
+  background-color: var(--bg-color-hover);
 }

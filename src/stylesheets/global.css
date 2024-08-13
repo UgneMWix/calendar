@@ -12,18 +12,34 @@
   --label-font-color: rgba(204, 204, 204, 0);
   --modal-bg-color: white;
   --font-color-secondary: black;
+  --font-color-third: gray;
   --soft-font-color: #e3e6e7;
   --calander-square-bg: rgb(242, 237, 237);
   --calendar-square-primary: rgba(255, 255, 255, 0.593);
   --calendar-square-secondary: rgba(255, 255, 255, 0.5);
   --button-border: transparent;
   --button-bg: transparent;
+  --today-bg: #4a7fb5;
+  --calendar-border: #e3e6e7;
+  --calendar-bg: transparent;
 }
 .darkmode {
   background-color: black;
-  --button-border: gray;
-  --bg-color-hover: whitesmoke;
-  --button-bg: #54a0ec;
+  --button-border: white;
+  --bg-color-hover: white;
+  --button-bg: rgb(2, 209, 255);
+  --font-color-secondary: white;
+  --font-color-third: white;
+  --font-color: rgb(2, 209, 255);
+  --today-bg: rgb(2, 209, 255);
+  --bg-color-div: rgb(2, 209, 255);
+  --calendar-border: rgb(2, 209, 255);
+  --calendar-square-primary: black;
+  --calendar-square-secondary: black;
+  --calendar-bg: black;
+  --modal-font-color: rgb(2, 209, 255);
+  --modal-bg-color: black;
+  --label-font-color: rgb(2, 209, 255);
 }
 span {
   color: gray;

@@ -87,7 +87,7 @@ export function Modal(props: props) {
               value={eventTitle}
               onChange={(e) => setEventTitle(e.target.value)}
             />
-            <label className={styles['input-label']}>Enter</label>
+            <label className={styles['input-label']}>Enter Title</label>
             <span className={styles['input-highlight']}></span>
           </div>
           {alertIsOpen && <Alert text="Please enter a title" />}
@@ -107,7 +107,7 @@ export function Modal(props: props) {
               value={startInput}
               onChange={(e) => setStartInput(e.target.value)}
             />
-            <p>-</p>
+            <p className={styles.dash}>-</p>
             <input
               className={styles['modal-time-date']}
               type="date"
