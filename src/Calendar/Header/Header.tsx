@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { FC } from 'react';
 import {
   areDaysTheSame,
-  generateWeek,
+  generateNDays,
   getComponentsFromDate,
   getDayOfWeekName,
   getFirstDayOfWeek,
@@ -24,7 +24,7 @@ const HeaderElement: FC<{ day: string }> = ({ day }) => {
   );
 };
 export function Header({ chosenDay }: { chosenDay: string }) {
-  const week = generateWeek(getFirstDayOfWeek(chosenDay));
+  const week = generateNDays(7, getFirstDayOfWeek(chosenDay));
   return (
     <header className={styles['main-calendar-header']}>
       {week.map((dayFull) => (

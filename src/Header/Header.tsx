@@ -1,5 +1,5 @@
 import styles from './Header.module.css';
-import { getMonthFromDate, getYearFromDate, getToday, dayArithmetic } from '../utils/date';
+import { getToday, incrementDateByDays, getComponentsFromDate } from '../utils/date';
 function Header({
   clearEvents,
   chosenDay,
@@ -21,19 +21,19 @@ function Header({
         {' '}
         Clear
       </button>
-      <button className={styles['header-buttons']} onClick={() => setChosenDay(dayArithmetic(chosenDay, -7))}>
+      <button className={styles['header-buttons']} onClick={() => setChosenDay(incrementDateByDays(chosenDay, -7))}>
         <img src="/arrow.png" alt="arrow to the left" className={styles['arrow-image-1']} />
       </button>
       <button
         className={styles['header-buttons']}
         onClick={() => {
-          setChosenDay(dayArithmetic(chosenDay, 7));
+          setChosenDay(incrementDateByDays(chosenDay, 7));
         }}
       >
         <img src="/arrow.png" alt="arrow to the right" className={styles['arrow-image-2']} />
       </button>
       <span className={styles['mon-year-text']}>
-        {getMonthFromDate(chosenDay)} {getYearFromDate(chosenDay)}
+        {getComponentsFromDate(chosenDay).month} {getComponentsFromDate(chosenDay).year}
       </span>{' '}
       <button className={styles['today-button']} onClick={() => setChosenDay(getToday())}>
         Today

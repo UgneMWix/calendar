@@ -4,15 +4,12 @@ import {
   areDaysTheSame,
   areMonthsTheSame,
   generateNDays,
-  generateWeek,
   getComponentsFromDate,
   getDayOfWeekName,
   getFirstDayOfTheMonth,
   getFirstDayOfWeek,
-  getMonthFromDate,
   getToday,
-  getYearFromDate,
-  monthArithmetic,
+  incrementMonth,
 } from '../utils/date';
 import { useState } from 'react';
 export function MiniCalendar({ setChosenDay }: { setChosenDay: (date: string) => void }) {
@@ -20,13 +17,13 @@ export function MiniCalendar({ setChosenDay }: { setChosenDay: (date: string) =>
   const firstDayOfWeek = getFirstDayOfWeek(getFirstDayOfTheMonth(refDate));
 
   function handleClick(direction: number) {
-    setRefDate(monthArithmetic(refDate, direction));
+    setRefDate(incrementMonth(refDate, direction));
   }
   return (
     <div>
       <header className={styles['calendar-header']}>
         <p className={styles['calendar-text']}>
-          {getMonthFromDate(refDate)} {getYearFromDate(refDate)}
+          {getComponentsFromDate(refDate).month} {getComponentsFromDate(refDate).year}
         </p>
         <section className={styles['calendar-button-group']}>
           <button className={styles['calendar-buttons']} id="arrow-prev" onClick={() => handleClick(-1)}>
@@ -38,7 +35,7 @@ export function MiniCalendar({ setChosenDay }: { setChosenDay: (date: string) =>
         </section>
       </header>
       <div className={styles.calendar}>
-        {generateWeek(getFirstDayOfWeek(refDate)).map((day) => {
+        {generateNDays(7, getFirstDayOfWeek(refDate)).map((day) => {
           return (
             <div key={day} className={styles['day']}>
               {getDayOfWeekName(day, 'narrow')}

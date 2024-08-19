@@ -1,16 +1,14 @@
 import {
-  getYearFromDate,
   generateNDays,
   getFirstDayOfWeek,
   generateHoursOfTheDay,
   getFirstDayOfTheMonth,
-  getMonthFromDate,
   isInTheSameWeek,
   getDayOfWeekName,
   areDaysTheSame,
   areMonthsTheSame,
-  dayArithmetic,
-  monthArithmetic,
+  incrementDateByDays,
+  incrementMonth,
   howManyDaysUntilEndOfWeek,
   getLengthOfEvent,
   getDifferenceInHours,
@@ -20,13 +18,6 @@ import {
 } from './date';
 import { test, expect, describe } from 'vitest';
 
-describe(getYearFromDate, () => {
-  test('should return correct year from ISO date', () => {
-    expect(getYearFromDate('2024-08-13T10:54:50.395Z')).toBe(2024);
-    expect(getYearFromDate('2024-01-01T00:00:00.000Z')).toBe(2024);
-    expect(getYearFromDate('2024-12-31T23:59:59.999Z')).toBe(2024);
-  });
-});
 describe(generateNDays, () => {
   test('should return 7 days starting with the given date', () => {
     expect(generateNDays(7, '2024-08-13T10:54:50.395Z')).toEqual([
@@ -153,13 +144,6 @@ describe(getFirstDayOfTheMonth, () => {
     expect(getFirstDayOfTheMonth('2024-12-31T23:59:59.999Z')).toBe('2024-12-01T00:00:00.000Z');
   });
 });
-describe(getMonthFromDate, () => {
-  test('should return the month name from the date', () => {
-    expect(getMonthFromDate('2024-08-13T10:54:50.395Z')).toBe('August');
-    expect(getMonthFromDate('2024-01-01T00:00:00.000Z')).toBe('January');
-    expect(getMonthFromDate('2024-12-31T23:59:59.999Z')).toBe('December');
-  });
-});
 describe(isInTheSameWeek, () => {
   test('should return true if the date is in the same week as the start date', () => {
     const sunday = '2024-08-11T10:54:50.395Z';
@@ -220,26 +204,26 @@ describe(setTime, () => {
     ).toBe('2024-08-13T23:59:59.999Z');
   });
 });
-describe(dayArithmetic, () => {
+describe(incrementDateByDays, () => {
   test('should return the date of the previous or next day', () => {
     const date = '2024-08-13T10:54:50.395Z';
     const newYearsEve = '2024-12-31T10:54:50.395Z';
     const newYears = '2025-01-01T10:54:50.395Z';
-    expect(dayArithmetic(date, -1)).toBe('2024-08-12T10:54:50.395Z');
-    expect(dayArithmetic(date, 1)).toBe('2024-08-14T10:54:50.395Z');
-    expect(dayArithmetic(newYearsEve, 1)).toBe('2025-01-01T10:54:50.395Z');
-    expect(dayArithmetic(newYearsEve, -1)).toBe('2024-12-30T10:54:50.395Z');
-    expect(dayArithmetic(newYears, -1)).toBe('2024-12-31T10:54:50.395Z');
-    expect(dayArithmetic(newYears, 1)).toBe('2025-01-02T10:54:50.395Z');
+    expect(incrementDateByDays(date, -1)).toBe('2024-08-12T10:54:50.395Z');
+    expect(incrementDateByDays(date, 1)).toBe('2024-08-14T10:54:50.395Z');
+    expect(incrementDateByDays(newYearsEve, 1)).toBe('2025-01-01T10:54:50.395Z');
+    expect(incrementDateByDays(newYearsEve, -1)).toBe('2024-12-30T10:54:50.395Z');
+    expect(incrementDateByDays(newYears, -1)).toBe('2024-12-31T10:54:50.395Z');
+    expect(incrementDateByDays(newYears, 1)).toBe('2025-01-02T10:54:50.395Z');
   });
 });
-describe(monthArithmetic, () => {
+describe(incrementMonth, () => {
   test('should return the date of the previous or next month', () => {
     const date = '2024-08-13T10:54:50.395Z';
-    expect(monthArithmetic(date, -1)).toBe('2024-07-13T10:54:50.395Z');
-    expect(monthArithmetic(date, 1)).toBe('2024-09-13T10:54:50.395Z');
-    expect(monthArithmetic(date, 2)).toBe('2024-10-13T10:54:50.395Z');
-    expect(monthArithmetic(date, -2)).toBe('2024-06-13T10:54:50.395Z');
+    expect(incrementMonth(date, -1)).toBe('2024-07-13T10:54:50.395Z');
+    expect(incrementMonth(date, 1)).toBe('2024-09-13T10:54:50.395Z');
+    expect(incrementMonth(date, 2)).toBe('2024-10-13T10:54:50.395Z');
+    expect(incrementMonth(date, -2)).toBe('2024-06-13T10:54:50.395Z');
   });
 });
 describe(howManyDaysUntilEndOfWeek, () => {

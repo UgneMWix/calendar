@@ -2,16 +2,16 @@ import styles from './Calendar.module.css';
 import style from './Events.module.css';
 import {
   generateHoursOfTheDay,
-  generateWeek,
   getFirstDayOfWeek,
   setTime,
   areDaysTheSame,
-  dayArithmetic,
+  incrementDateByDays,
   getLengthOfEvent,
   howManyDaysUntilEndOfWeek,
   getDifferenceInHours,
   getComponentsFromDate,
   isLaterThan,
+  generateNDays,
 } from '../utils/date';
 import { Header } from './Header/Header';
 import { TimeLine } from './TimeLine/TimeLine';
@@ -37,7 +37,8 @@ export function Calendar({
   const [isLoaded, setIsLoaded] = useState(false);
 
   const dateList = useMemo(() => {
-    return generateWeek(
+    return generateNDays(
+      7,
       getFirstDayOfWeek(
         setTime(chosenDay, {
           hours: 0,
@@ -166,7 +167,7 @@ function MultiDayEvent({
   if (isLaterThan(endDateISO, weekList[weekList.length - 1])) days = days - howManyDaysUntilEndOfWeek(startDateISO) + 1;
   const EVENT_WIDTH = rect.width - EVENT_WIDTH_PADDING;
   const eventSquares = Array.from({ length: days }, (_, i) => {
-    const currentEventDay = dayArithmetic(startDateISO, i);
+    const currentEventDay = incrementDateByDays(startDateISO, i);
 
     if (areDaysTheSame(startDateISO, currentEventDay)) {
       const height =
