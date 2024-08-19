@@ -102,7 +102,7 @@ export function areMonthsTheSame(date1ISO: string, date2ISO: string) {
   const date2 = new Date(date2ISO);
   return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth();
 }
-export function setHours(dateISO: string, hours: number, minutes: number, seconds = 0, milliseconds = 0) {
+export function setTime(dateISO: string, hours: number, minutes: number, seconds = 0, milliseconds = 0) {
   const date = new Date(dateISO);
   date.setUTCHours(hours, minutes, seconds, milliseconds);
   return date.toISOString();

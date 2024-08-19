@@ -4,7 +4,7 @@ import {
   generateHoursOfTheDay,
   generateWeek,
   getFirstDayOfWeek,
-  setHours,
+  setTime,
   areDaysTheSame,
   getDateObjectFromString,
   dayArithmetic,
@@ -35,7 +35,7 @@ export function Calendar({
   const [isLoaded, setIsLoaded] = useState(false);
 
   const dateList = useMemo(() => {
-    return generateWeek(getFirstDayOfWeek(setHours(chosenDay, 0, 0, 0, 0))).flatMap((value) =>
+    return generateWeek(getFirstDayOfWeek(setTime(chosenDay, 0, 0, 0, 0))).flatMap((value) =>
       generateHoursOfTheDay(value),
     );
   }, [chosenDay]);
@@ -167,7 +167,7 @@ function MultiDayEvent({
     const currentEventDay = dayArithmetic(startDateISO, i);
 
     if (areDaysTheSame(startDateISO, currentEventDay)) {
-      const height = rect.height * getDifferenceInHours(startDateISO, startDateISO.substring(0, 10) + 'T23:59:00Z');
+      const height = rect.height * getDifferenceInHours(startDateISO, setTime(startDateISO, 23, 59, 59, 999));
       const top = rect['top'] + (rect['height'] * getTimeFromDate(startDateISO).hours) / 60;
       const left = rect['left'];
       return (
@@ -176,7 +176,7 @@ function MultiDayEvent({
         </div>
       );
     } else if (areDaysTheSame(endDateISO, currentEventDay)) {
-      const height = rect.height * getDifferenceInHours(endDateISO.substring(0, 10) + 'T00:00:00Z', endDateISO);
+      const height = rect.height * getDifferenceInHours(setTime(endDateISO, 0, 0, 0, 0), endDateISO);
       const top = rect.top - rect.height * startDate.getUTCHours();
       const left = rect.left + rect.width * i;
       return (

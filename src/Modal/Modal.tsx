@@ -2,7 +2,7 @@ import { Alert } from './Alert/Alert';
 import styles from './Modal.module.css';
 import { useState } from 'react';
 import dbObject from '../dbObject';
-import { getDateObjectFromString, setHours } from '../utils/date';
+import { getDateObjectFromString, setTime } from '../utils/date';
 interface props {
   toggleModal: () => void;
   eventDate?: string;
@@ -63,8 +63,8 @@ export function Modal(props: props) {
     const newEvent: dbObject = {
       title: eventTitle,
       date: dateInput,
-      eventStart: setHours(dateInput, parseInt(startInput.substring(0, 2)), parseInt(startInput.substring(3, 5))),
-      eventEnd: setHours(endDateInput, parseInt(endInput.substring(0, 2)), parseInt(endInput.substring(3, 5))),
+      eventStart: setTime(dateInput, parseInt(startInput.substring(0, 2)), parseInt(startInput.substring(3, 5))),
+      eventEnd: setTime(endDateInput, parseInt(endInput.substring(0, 2)), parseInt(endInput.substring(3, 5))),
       startTime: startInput,
       endTime: endInput,
       description: descriptionInput,

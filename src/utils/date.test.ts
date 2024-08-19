@@ -10,12 +10,12 @@ import {
   areDaysTheSame,
   getDayOfMonthNumber,
   areMonthsTheSame,
-  setHours,
   dayArithmetic,
   monthArithmetic,
   howManyDaysUntilEndOfWeek,
   getLengthOfEvent,
   getDifferenceInHours,
+  setTime,
 } from './date';
 import { test, expect, describe } from 'vitest';
 
@@ -204,11 +204,11 @@ describe(areMonthsTheSame, () => {
     expect(areMonthsTheSame(date1, date3)).toBe(false);
   });
 });
-describe(setHours, () => {
+describe(setTime, () => {
   test('should return a date with the given hours and minutes', () => {
-    expect(setHours('2024-08-13T10:54:50.395Z', 12, 30, 0, 0)).toBe('2024-08-13T12:30:00.000Z');
-    expect(setHours('2024-08-13T10:54:50.395Z', 0, 0, 0, 0)).toBe('2024-08-13T00:00:00.000Z');
-    expect(setHours('2024-08-13T10:54:50.395Z', 23, 59, 59, 999)).toBe('2024-08-13T23:59:59.999Z');
+    expect(setTime('2024-08-13T10:54:50.395Z', 12, 30, 0, 0)).toBe('2024-08-13T12:30:00.000Z');
+    expect(setTime('2024-08-13T10:54:50.395Z', 0, 0, 0, 0)).toBe('2024-08-13T00:00:00.000Z');
+    expect(setTime('2024-08-13T10:54:50.395Z', 23, 59, 59, 999)).toBe('2024-08-13T23:59:59.999Z');
   });
 });
 describe(dayArithmetic, () => {
