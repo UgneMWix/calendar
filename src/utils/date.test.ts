@@ -8,7 +8,6 @@ import {
   isInTheSameWeek,
   getDayOfWeekName,
   areDaysTheSame,
-  getDayOfMonthNumber,
   areMonthsTheSame,
   dayArithmetic,
   monthArithmetic,
@@ -16,6 +15,8 @@ import {
   getLengthOfEvent,
   getDifferenceInHours,
   setTime,
+  isLaterThan,
+  getComponentsFromDate,
 } from './date';
 import { test, expect, describe } from 'vitest';
 
@@ -187,14 +188,6 @@ describe(areDaysTheSame, () => {
     expect(areDaysTheSame(tuesday, tuesdayButLater)).toBe(true);
   });
 });
-describe(getDayOfMonthNumber, () => {
-  test('should return the day of the month', () => {
-    const thirteenth = '2024-08-13T10:54:50.395Z';
-    const fourteenth = '2025-09-14T10:54:50.395Z';
-    expect(getDayOfMonthNumber(thirteenth)).toBe(13);
-    expect(getDayOfMonthNumber(fourteenth)).toBe(14);
-  });
-});
 describe(areMonthsTheSame, () => {
   test('should return true if the two dates are in the same month', () => {
     const date1 = '2024-08-13T10:54:50.395Z';
@@ -206,9 +199,25 @@ describe(areMonthsTheSame, () => {
 });
 describe(setTime, () => {
   test('should return a date with the given hours and minutes', () => {
-    expect(setTime('2024-08-13T10:54:50.395Z', 12, 30, 0, 0)).toBe('2024-08-13T12:30:00.000Z');
-    expect(setTime('2024-08-13T10:54:50.395Z', 0, 0, 0, 0)).toBe('2024-08-13T00:00:00.000Z');
-    expect(setTime('2024-08-13T10:54:50.395Z', 23, 59, 59, 999)).toBe('2024-08-13T23:59:59.999Z');
+    expect(setTime('2024-08-13T10:54:50.395Z', { hours: 12, minutes: 30, seconds: 0, milliseconds: 0 })).toBe(
+      '2024-08-13T12:30:00.000Z',
+    );
+    expect(
+      setTime('2024-08-13T10:54:50.395Z', {
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        milliseconds: 0,
+      }),
+    ).toBe('2024-08-13T00:00:00.000Z');
+    expect(
+      setTime('2024-08-13T10:54:50.395Z', {
+        hours: 23,
+        minutes: 59,
+        seconds: 59,
+        milliseconds: 999,
+      }),
+    ).toBe('2024-08-13T23:59:59.999Z');
   });
 });
 describe(dayArithmetic, () => {
@@ -262,15 +271,37 @@ describe(getLengthOfEvent, () => {
   });
 });
 describe(getDifferenceInHours, () => {
-  test('should return the difference in hours between two dates', () => {
-    const startDate = '2024-08-13T10:54:50.395Z';
-    const endDate = '2024-08-13T11:54:50.395Z';
-    expect(getDifferenceInHours(startDate, endDate)).toBe(1);
-    const startDate2 = '2024-08-13T10:00:50.395Z';
-    const endDate2 = '2024-08-13T20:30:59.999Z';
-    expect(getDifferenceInHours(startDate2, endDate2)).toBe(10.5);
-    const startDate3 = '2024-08-13T10:30:50.395Z';
-    const endDate3 = '2024-08-14T11:00:50.395Z';
-    expect(getDifferenceInHours(startDate3, endDate3)).toBe(0.5);
+  test.each`
+    startDate                     | endDate                       | expected
+    ${'2024-08-13T10:54:50.395Z'} | ${'2024-08-13T11:54:50.395Z'} | ${1}
+    ${'2024-08-13T10:00:50.395Z'} | ${'2024-08-13T20:30:59.999Z'} | ${10.5}
+    ${'2024-08-13T10:30:50.395Z'} | ${'2024-08-14T11:00:50.395Z'} | ${0.5}
+    ${'2024-08-14T11:00:50.395Z'} | ${'2024-08-13T10:30:50.395Z'} | ${-0.5}
+  `(
+    'should return $expected when start date is $startDate and end date is $endDate',
+    ({ startDate, endDate, expected }) => {
+      expect(getDifferenceInHours(startDate, endDate)).toBe(expected);
+    },
+  );
+});
+describe(isLaterThan, () => {
+  test.each`
+    date1                         | date2                         | expected
+    ${'2024-08-13T10:54:50.395Z'} | ${'2024-08-13T11:54:50.395Z'} | ${false}
+    ${'2024-09-13T10:00:50.395Z'} | ${'2024-08-13T10:00:50.395Z'} | ${true}
+    ${'2025-08-13T10:30:50.395Z'} | ${'2024-08-13T10:30:50.395Z'} | ${true}
+    ${'2024-08-14T11:00:50.395Z'} | ${'2024-08-15T10:30:50.395Z'} | ${false}
+  `('should return $expected when date1 is $date1 and date2 is $date2', ({ date1, date2, expected }) => {
+    expect(isLaterThan(date1, date2)).toBe(expected);
+  });
+});
+describe(getComponentsFromDate, () => {
+  test.each`
+    date                          | expected
+    ${'2024-08-13T10:54:50.395Z'} | ${{ year: 2024, month: 7, day: 13, hour: 10, minutes: 54, seconds: 50, milliseconds: 395 }}
+    ${'2024-08-13T00:00:00.000Z'} | ${{ year: 2024, month: 7, day: 13, hour: 0, minutes: 0, seconds: 0, milliseconds: 0 }}
+    ${'2024-08-13T23:59:59.999Z'} | ${{ year: 2024, month: 7, day: 13, hour: 23, minutes: 59, seconds: 59, milliseconds: 999 }}
+  `('should return $expected when date is $date', ({ date, expected }) => {
+    expect(getComponentsFromDate(date)).toEqual(expected);
   });
 });

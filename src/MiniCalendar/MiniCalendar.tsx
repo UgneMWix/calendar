@@ -5,7 +5,7 @@ import {
   areMonthsTheSame,
   generateNDays,
   generateWeek,
-  getDayOfMonthNumber,
+  getComponentsFromDate,
   getDayOfWeekName,
   getFirstDayOfTheMonth,
   getFirstDayOfWeek,
@@ -55,7 +55,7 @@ export function MiniCalendar({ setChosenDay }: { setChosenDay: (date: string) =>
               key={dayISO}
               onClick={() => setChosenDay(dayISO)}
             >
-              {getDayOfMonthNumber(dayISO)}
+              {getComponentsFromDate(dayISO).day}
             </div>
           );
         })}

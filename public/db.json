@@ -1,3 +1,37 @@
 {
-  "events": []
+  "events": [
+    {
+      "id": "3c82",
+      "title": "ever",
+      "date": "2024-08-19",
+      "eventStart": "2024-08-19T05:00:00.000Z",
+      "eventEnd": "2024-08-20T05:30:00.000Z",
+      "startTime": "05:00",
+      "endTime": "05:30",
+      "description": "",
+      "location": ""
+    },
+    {
+      "id": "00df",
+      "title": "everve",
+      "date": "2024-08-21",
+      "eventStart": "2024-08-21T08:00:00.000Z",
+      "eventEnd": "2024-08-24T08:30:00.000Z",
+      "startTime": "08:00",
+      "endTime": "08:30",
+      "description": "",
+      "location": ""
+    },
+    {
+      "id": "89e0",
+      "title": "awdawd",
+      "date": "2024-08-18",
+      "eventStart": "2024-08-18T05:00:00.000Z",
+      "eventEnd": "2024-08-18T09:30:00.000Z",
+      "startTime": "05:00",
+      "endTime": "09:30",
+      "description": "",
+      "location": ""
+    }
+  ]
 }

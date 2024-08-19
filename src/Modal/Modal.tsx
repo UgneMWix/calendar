@@ -2,7 +2,7 @@ import { Alert } from './Alert/Alert';
 import styles from './Modal.module.css';
 import { useState } from 'react';
 import dbObject from '../dbObject';
-import { getDateObjectFromString, setTime } from '../utils/date';
+import { getComponentsFromDate, setTime } from '../utils/date';
 interface props {
   toggleModal: () => void;
   eventDate?: string;
@@ -13,8 +13,7 @@ export function Modal(props: props) {
   const [eventTitle, setEventTitle] = useState('');
   const [alertIsOpen, setAlertIsOpen] = useState(false);
   const [startInput, setStartInput] = useState(() => {
-    if (props.eventDate)
-      return `${getDateObjectFromString(props.eventDate).getUTCHours().toString().padStart(2, '0')}:00`;
+    if (props.eventDate) return `${getComponentsFromDate(props.eventDate).hour.toString().padStart(2, '0')}:00`;
     return '';
   });
   const [endInput, setEndInput] = useState(() => {
@@ -63,8 +62,14 @@ export function Modal(props: props) {
     const newEvent: dbObject = {
       title: eventTitle,
       date: dateInput,
-      eventStart: setTime(dateInput, parseInt(startInput.substring(0, 2)), parseInt(startInput.substring(3, 5))),
-      eventEnd: setTime(endDateInput, parseInt(endInput.substring(0, 2)), parseInt(endInput.substring(3, 5))),
+      eventStart: setTime(dateInput, {
+        hours: parseInt(startInput.substring(0, 2)),
+        minutes: parseInt(startInput.substring(3, 5)),
+      }),
+      eventEnd: setTime(endDateInput, {
+        hours: parseInt(endInput.substring(0, 2)),
+        minutes: parseInt(endInput.substring(3, 5)),
+      }),
       startTime: startInput,
       endTime: endInput,
       description: descriptionInput,

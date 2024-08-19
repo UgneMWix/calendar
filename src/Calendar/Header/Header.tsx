@@ -4,7 +4,7 @@ import { FC } from 'react';
 import {
   areDaysTheSame,
   generateWeek,
-  getDayOfMonthNumber,
+  getComponentsFromDate,
   getDayOfWeekName,
   getFirstDayOfWeek,
   getToday,
@@ -18,7 +18,7 @@ const HeaderElement: FC<{ day: string }> = ({ day }) => {
           [styles['main-calendar-today']]: areDaysTheSame(day, getToday()),
         })}
       >
-        {getDayOfMonthNumber(day)}
+        {getComponentsFromDate(day).day}
       </p>
     </div>
   );
