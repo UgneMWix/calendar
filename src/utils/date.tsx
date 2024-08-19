@@ -110,8 +110,8 @@ export function incrementMonth(dateISO: string, months: number) {
   return date.toISOString();
 }
 export function howManyDaysUntilEndOfWeek(day: string) {
-  const date = getComponentsFromDate(day);
-  return 6 - date.day;
+  const date = new Date(day);
+  return 6 - date.getDay();
 }
 export function getLengthOfEvent(startDateISO: string, endDateISO: string) {
   const startDate = new Date(startDateISO);
@@ -139,4 +139,13 @@ export function isLaterThan(date1ISO: string, date2ISO: string) {
   const date1 = getComponentsFromDate(date1ISO);
   const date2 = getComponentsFromDate(date2ISO);
   return date1.year > date2.year || date1.month > date2.month || date1.day > date2.day;
+}
+export function isEarlierThan(date1ISO: string, date2ISO: string) {
+  const date1 = getComponentsFromDate(date1ISO);
+  const date2 = getComponentsFromDate(date2ISO);
+  return date1.year < date2.year || date1.month < date2.month || date1.day < date2.day;
+}
+export function getMonthName(month: number, format: 'long' | 'short') {
+  const date = new Date(Date.UTC(2024, month, 1));
+  return date.toLocaleDateString(undefined, { month: format, timeZone: 'UTC' });
 }

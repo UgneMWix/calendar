@@ -10,6 +10,7 @@ import {
   getFirstDayOfWeek,
   getToday,
   incrementMonth,
+  getMonthName,
 } from '../utils/date';
 import { useState } from 'react';
 export function MiniCalendar({ setChosenDay }: { setChosenDay: (date: string) => void }) {
@@ -23,7 +24,7 @@ export function MiniCalendar({ setChosenDay }: { setChosenDay: (date: string) =>
     <div>
       <header className={styles['calendar-header']}>
         <p className={styles['calendar-text']}>
-          {getComponentsFromDate(refDate).month} {getComponentsFromDate(refDate).year}
+          {getMonthName(getComponentsFromDate(refDate).month, 'long')} {getComponentsFromDate(refDate).year}
         </p>
         <section className={styles['calendar-button-group']}>
           <button className={styles['calendar-buttons']} id="arrow-prev" onClick={() => handleClick(-1)}>

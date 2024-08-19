@@ -15,6 +15,7 @@ import {
   setTime,
   isLaterThan,
   getComponentsFromDate,
+  getMonthName,
 } from './date';
 import { test, expect, describe } from 'vitest';
 
@@ -287,5 +288,15 @@ describe(getComponentsFromDate, () => {
     ${'2024-08-13T23:59:59.999Z'} | ${{ year: 2024, month: 7, day: 13, hour: 23, minutes: 59, seconds: 59, milliseconds: 999 }}
   `('should return $expected when date is $date', ({ date, expected }) => {
     expect(getComponentsFromDate(date)).toEqual(expected);
+  });
+});
+describe(getMonthName, () => {
+  test.each`
+    month | format     | expected
+    ${0}  | ${'long'}  | ${'January'}
+    ${0}  | ${'short'} | ${'Jan'}
+    ${1}  | ${'long'}  | ${'February'}
+  `('should return $expected when month is $month and format is $format', ({ month, format, expected }) => {
+    expect(getMonthName(month, format)).toBe(expected);
   });
 });
