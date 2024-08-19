@@ -1,37 +1,3 @@
 {
-  "events": [
-    {
-      "id": "6084",
-      "title": "sefsef",
-      "date": "2024-08-19",
-      "eventStart": "2024-08-19T04:00:00.000Z",
-      "eventEnd": "2024-08-19T04:30:00.000Z",
-      "startTime": "04:00",
-      "endTime": "04:30",
-      "description": "",
-      "location": ""
-    },
-    {
-      "id": "ef20",
-      "title": "adawd",
-      "date": "2024-08-20",
-      "eventStart": "2024-08-20T10:00:00.000Z",
-      "eventEnd": "2024-08-21T10:30:00.000Z",
-      "startTime": "10:00",
-      "endTime": "10:30",
-      "description": "",
-      "location": ""
-    },
-    {
-      "id": "3d6c",
-      "title": "awdawd",
-      "date": "2024-08-22",
-      "eventStart": "2024-08-22T10:00:00.000Z",
-      "eventEnd": "2024-08-23T10:00:00.000Z",
-      "startTime": "10:00",
-      "endTime": "10:00",
-      "description": "",
-      "location": ""
-    }
-  ]
+  "events": []
 }

@@ -13,6 +13,9 @@ import {
   setHours,
   dayArithmetic,
   monthArithmetic,
+  howManyDaysUntilEndOfWeek,
+  getLengthOfEvent,
+  getDifferenceInHours,
 } from './date';
 import { test, expect, describe } from 'vitest';
 
@@ -203,9 +206,9 @@ describe(areMonthsTheSame, () => {
 });
 describe(setHours, () => {
   test('should return a date with the given hours and minutes', () => {
-    expect(setHours('2024-08-13T10:54:50.395Z', 12, 30)).toBe('2024-08-13T12:30:00.000Z');
-    expect(setHours('2024-08-13T10:54:50.395Z', 0, 0)).toBe('2024-08-13T00:00:00.000Z');
-    expect(setHours('2024-08-13T10:54:50.395Z', 23, 59)).toBe('2024-08-13T23:59:00.000Z');
+    expect(setHours('2024-08-13T10:54:50.395Z', 12, 30, 0, 0)).toBe('2024-08-13T12:30:00.000Z');
+    expect(setHours('2024-08-13T10:54:50.395Z', 0, 0, 0, 0)).toBe('2024-08-13T00:00:00.000Z');
+    expect(setHours('2024-08-13T10:54:50.395Z', 23, 59, 59, 999)).toBe('2024-08-13T23:59:59.999Z');
   });
 });
 describe(dayArithmetic, () => {
@@ -228,5 +231,46 @@ describe(monthArithmetic, () => {
     expect(monthArithmetic(date, 1)).toBe('2024-09-13T10:54:50.395Z');
     expect(monthArithmetic(date, 2)).toBe('2024-10-13T10:54:50.395Z');
     expect(monthArithmetic(date, -2)).toBe('2024-06-13T10:54:50.395Z');
+  });
+});
+describe(howManyDaysUntilEndOfWeek, () => {
+  test('should return the number of days until the end of the week', () => {
+    const sunday = '2024-08-11T10:54:50.395Z';
+    const monday = '2024-08-12T10:54:50.395Z';
+    const tuesday = '2024-08-13T10:54:50.395Z';
+    const saturday = '2024-08-17T10:54:50.395Z';
+    expect(howManyDaysUntilEndOfWeek(sunday)).toBe(6);
+    expect(howManyDaysUntilEndOfWeek(monday)).toBe(5);
+    expect(howManyDaysUntilEndOfWeek(tuesday)).toBe(4);
+    expect(howManyDaysUntilEndOfWeek(saturday)).toBe(0);
+  });
+});
+describe(getLengthOfEvent, () => {
+  test('should return the length of the event in days', () => {
+    const startDate = '2024-08-13T10:54:50.395Z';
+    const endDate = '2024-08-15T10:54:50.395Z';
+    expect(getLengthOfEvent(startDate, endDate)).toBe(3);
+    const startDate2 = '2024-08-13T10:54:50.395Z';
+    const endDate2 = '2024-08-13T23:59:59.999Z';
+    expect(getLengthOfEvent(startDate2, endDate2)).toBe(1);
+    const startDate3 = '2024-08-13T10:54:50.395Z';
+    const endDate3 = '2024-09-13T10:54:50.395Z';
+    expect(getLengthOfEvent(startDate3, endDate3)).toBe(32);
+    const startDate4 = '2024-08-13T10:54:50.395Z';
+    const endDate4 = '2025-08-13T10:54:50.395Z';
+    expect(getLengthOfEvent(startDate4, endDate4)).toBe(366);
+  });
+});
+describe(getDifferenceInHours, () => {
+  test('should return the difference in hours between two dates', () => {
+    const startDate = '2024-08-13T10:54:50.395Z';
+    const endDate = '2024-08-13T11:54:50.395Z';
+    expect(getDifferenceInHours(startDate, endDate)).toBe(1);
+    const startDate2 = '2024-08-13T10:00:50.395Z';
+    const endDate2 = '2024-08-13T20:30:59.999Z';
+    expect(getDifferenceInHours(startDate2, endDate2)).toBe(10.5);
+    const startDate3 = '2024-08-13T10:30:50.395Z';
+    const endDate3 = '2024-08-14T11:00:50.395Z';
+    expect(getDifferenceInHours(startDate3, endDate3)).toBe(0.5);
   });
 });

@@ -8,6 +8,10 @@ import {
   areDaysTheSame,
   getDateObjectFromString,
   dayArithmetic,
+  getLengthOfEvent,
+  howManyDaysUntilEndOfWeek,
+  getDifferenceInHours,
+  getTimeFromDate,
 } from '../utils/date';
 import { Header } from './Header/Header';
 import { TimeLine } from './TimeLine/TimeLine';
@@ -31,7 +35,9 @@ export function Calendar({
   const [isLoaded, setIsLoaded] = useState(false);
 
   const dateList = useMemo(() => {
-    return generateWeek(getFirstDayOfWeek(setHours(chosenDay, 0, 0))).flatMap((value) => generateHoursOfTheDay(value));
+    return generateWeek(getFirstDayOfWeek(setHours(chosenDay, 0, 0, 0, 0))).flatMap((value) =>
+      generateHoursOfTheDay(value),
+    );
   }, [chosenDay]);
   const onSquareClick = (dateISO: string) => {
     openModal(dateISO);
@@ -112,47 +118,85 @@ function Event({
   weekList: Array<string>;
 }) {
   const rect = square.htmlElement.getBoundingClientRect();
+
   const startDate = getDateObjectFromString(startDateISO);
   const endDate = getDateObjectFromString(endDateISO);
-  let days = Math.abs(startDate.getUTCDate() - endDate.getUTCDate()) + 1; //what if month different
-  if (endDate > new Date(weekList[weekList.length - 1]))
-    days -= Math.abs(new Date(weekList[weekList.length - 1]).getDate() - endDate.getDate()) + 1;
-  let tempTop = rect['top'] + (rect['height'] * startDate.getUTCMinutes()) / 60;
-  if (startDate.toLocaleDateString() !== endDate.toLocaleDateString()) {
-    let tempEndDate = getDateObjectFromString(endDateISO);
-    tempEndDate.setUTCHours(23, 59, 59, 99);
-    let tempStartDate = getDateObjectFromString(startDateISO);
-    let leftMargin = rect['left'];
+  if (getLengthOfEvent(startDateISO, endDateISO) > 1)
+    return (
+      <MultiDayEvent
+        text={text}
+        startDateISO={startDateISO}
+        endDateISO={endDateISO}
+        rect={rect}
+        startDate={startDate}
+        endDate={endDate}
+        weekList={weekList}
+      />
+    );
 
-    const eventSquares = Array.from({ length: days }, (_, i) => {
-      if (i === days - 1 && tempEndDate.getDate() === endDate.getDate() + 1) {
-        tempEndDate = getDateObjectFromString(endDateISO);
-      }
-      if (i === 0) {
-        tempStartDate = getDateObjectFromString(startDateISO);
-      }
-      const position = getPosition(rect['height'], rect['width'], tempTop, leftMargin, tempStartDate, tempEndDate);
-      leftMargin += rect['width'];
+  const position = getPosition(rect['height'], rect['width'], rect['top'], rect['left'], startDate, endDate);
+  return (
+    <div className={style.event} style={position}>
+      {text}
+    </div>
+  );
+}
 
-      dayArithmetic(tempEndDate.toISOString(), i + 1);
-      dayArithmetic(tempStartDate.toISOString(), i + 1);
-      tempStartDate = getDateObjectFromString(setHours(tempStartDate.toISOString(), 0, 0));
-      tempTop = rect['top'] - startDate.getUTCHours() * rect['height'];
+function MultiDayEvent({
+  text,
+  startDateISO,
+  endDateISO,
+  rect,
+  startDate,
+  endDate,
+  weekList,
+}: {
+  text: string;
+  startDateISO: string;
+  endDateISO: string;
+  rect: DOMRect;
+  startDate: Date;
+  endDate: Date;
+  weekList: Array<string>;
+}) {
+  let days = getLengthOfEvent(startDateISO, endDateISO);
+  if (endDate > new Date(weekList[weekList.length - 1])) days = days - howManyDaysUntilEndOfWeek(startDateISO) + 1;
+  const DAY_LENGTH_HOURS = 24;
+  const EVENT_WIDTH = rect.width - 15;
+  const eventSquares = Array.from({ length: days }, (_, i) => {
+    const currentEventDay = dayArithmetic(startDateISO, i);
+
+    if (areDaysTheSame(startDateISO, currentEventDay)) {
+      const height = rect.height * getDifferenceInHours(startDateISO, startDateISO.substring(0, 10) + 'T23:59:00Z');
+      const top = rect['top'] + (rect['height'] * getTimeFromDate(startDateISO).hours) / 60;
+      const left = rect['left'];
       return (
-        <div className={style.event} style={position} key={i}>
+        <div className={style.event} style={{ height, width: EVENT_WIDTH, top, left }} key={i}>
           {text}
         </div>
       );
-    });
-    return eventSquares;
-  } else {
-    const position = getPosition(rect['height'], rect['width'], rect['top'], rect['left'], startDate, endDate);
-    return (
-      <div className={style.event} style={position}>
-        {text}
-      </div>
-    );
-  }
+    } else if (areDaysTheSame(endDateISO, currentEventDay)) {
+      const height = rect.height * getDifferenceInHours(endDateISO.substring(0, 10) + 'T00:00:00Z', endDateISO);
+      const top = rect.top - rect.height * startDate.getUTCHours();
+      const left = rect.left + rect.width * i;
+      return (
+        <div className={style.event} style={{ height, width: EVENT_WIDTH, top, left }} key={i}>
+          {text}
+        </div>
+      );
+    } else {
+      const height = DAY_LENGTH_HOURS * rect.height;
+      const top = rect.top - rect.height * startDate.getUTCHours();
+      const left = rect.left + rect.width * i;
+
+      return (
+        <div className={style.event} style={{ height, width: EVENT_WIDTH, top, left }} key={i}>
+          {text}
+        </div>
+      );
+    }
+  });
+  return eventSquares;
 }
 function getPosition(
   rectHeight: number,
