@@ -10,12 +10,12 @@ import {
   areDaysTheSame,
   getDayOfMonthNumber,
   areMonthsTheSame,
+  setTime,
   dayArithmetic,
   monthArithmetic,
   howManyDaysUntilEndOfWeek,
   getLengthOfEvent,
   getDifferenceInHours,
-  setTime,
 } from './date';
 import { test, expect, describe } from 'vitest';
 
@@ -206,9 +206,25 @@ describe(areMonthsTheSame, () => {
 });
 describe(setTime, () => {
   test('should return a date with the given hours and minutes', () => {
-    expect(setTime('2024-08-13T10:54:50.395Z', 12, 30, 0, 0)).toBe('2024-08-13T12:30:00.000Z');
-    expect(setTime('2024-08-13T10:54:50.395Z', 0, 0, 0, 0)).toBe('2024-08-13T00:00:00.000Z');
-    expect(setTime('2024-08-13T10:54:50.395Z', 23, 59, 59, 999)).toBe('2024-08-13T23:59:59.999Z');
+    expect(setTime('2024-08-13T10:54:50.395Z', { hours: 12, minutes: 30, seconds: 0, milliseconds: 0 })).toBe(
+      '2024-08-13T12:30:00.000Z',
+    );
+    expect(
+      setTime('2024-08-13T10:54:50.395Z', {
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        milliseconds: 0,
+      }),
+    ).toBe('2024-08-13T00:00:00.000Z');
+    expect(
+      setTime('2024-08-13T10:54:50.395Z', {
+        hours: 23,
+        minutes: 59,
+        seconds: 59,
+        milliseconds: 999,
+      }),
+    ).toBe('2024-08-13T23:59:59.999Z');
   });
 });
 describe(dayArithmetic, () => {
@@ -262,15 +278,16 @@ describe(getLengthOfEvent, () => {
   });
 });
 describe(getDifferenceInHours, () => {
-  test('should return the difference in hours between two dates', () => {
-    const startDate = '2024-08-13T10:54:50.395Z';
-    const endDate = '2024-08-13T11:54:50.395Z';
-    expect(getDifferenceInHours(startDate, endDate)).toBe(1);
-    const startDate2 = '2024-08-13T10:00:50.395Z';
-    const endDate2 = '2024-08-13T20:30:59.999Z';
-    expect(getDifferenceInHours(startDate2, endDate2)).toBe(10.5);
-    const startDate3 = '2024-08-13T10:30:50.395Z';
-    const endDate3 = '2024-08-14T11:00:50.395Z';
-    expect(getDifferenceInHours(startDate3, endDate3)).toBe(0.5);
-  });
+  test.each`
+    startDate                     | endDate                       | expected
+    ${'2024-08-13T10:54:50.395Z'} | ${'2024-08-13T11:54:50.395Z'} | ${1}
+    ${'2024-08-13T10:00:50.395Z'} | ${'2024-08-13T20:30:59.999Z'} | ${10.5}
+    ${'2024-08-13T10:30:50.395Z'} | ${'2024-08-14T11:00:50.395Z'} | ${0.5}
+    ${'2024-08-14T11:00:50.395Z'} | ${'2024-08-13T10:30:50.395Z'} | ${-0.5}
+  `(
+    'should return $expected when start date is $startDate and end date is $endDate',
+    ({ startDate, endDate, expected }) => {
+      expect(getDifferenceInHours(startDate, endDate)).toBe(expected);
+    },
+  );
 });

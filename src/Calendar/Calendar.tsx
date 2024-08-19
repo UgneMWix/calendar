@@ -11,7 +11,7 @@ import {
   getLengthOfEvent,
   howManyDaysUntilEndOfWeek,
   getDifferenceInHours,
-  getTimeFromDate,
+  getComponentsFromDate,
 } from '../utils/date';
 import { Header } from './Header/Header';
 import { TimeLine } from './TimeLine/TimeLine';
@@ -35,9 +35,16 @@ export function Calendar({
   const [isLoaded, setIsLoaded] = useState(false);
 
   const dateList = useMemo(() => {
-    return generateWeek(getFirstDayOfWeek(setTime(chosenDay, 0, 0, 0, 0))).flatMap((value) =>
-      generateHoursOfTheDay(value),
-    );
+    return generateWeek(
+      getFirstDayOfWeek(
+        setTime(chosenDay, {
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+          milliseconds: 0,
+        }),
+      ),
+    ).flatMap((value) => generateHoursOfTheDay(value));
   }, [chosenDay]);
   const onSquareClick = (dateISO: string) => {
     openModal(dateISO);
@@ -77,7 +84,7 @@ export function Calendar({
       {isLoaded &&
         events.map((value) => {
           const square = squareRefs.current.find((square) => {
-            return areDaysTheSame(value.eventStart, square.date, true);
+            return areDaysTheSame(value.eventStart, square.date, { checkTime: true });
           });
           console.log(!!square);
           if (!square) return null;
@@ -155,6 +162,7 @@ function MultiDayEvent({
   startDateISO: string;
   endDateISO: string;
   rect: DOMRect;
+  // TODO: Remove usage of Date object
   startDate: Date;
   endDate: Date;
   weekList: Array<string>;
@@ -167,8 +175,18 @@ function MultiDayEvent({
     const currentEventDay = dayArithmetic(startDateISO, i);
 
     if (areDaysTheSame(startDateISO, currentEventDay)) {
-      const height = rect.height * getDifferenceInHours(startDateISO, setTime(startDateISO, 23, 59, 59, 999));
-      const top = rect['top'] + (rect['height'] * getTimeFromDate(startDateISO).hours) / 60;
+      const height =
+        rect.height *
+        getDifferenceInHours(
+          startDateISO,
+          setTime(startDateISO, {
+            hours: 23,
+            minutes: 59,
+            seconds: 59,
+            milliseconds: 999,
+          }),
+        );
+      const top = rect['top'] + (rect['height'] * getComponentsFromDate(startDateISO).hour) / 60;
       const left = rect['left'];
       return (
         <div className={style.event} style={{ height, width: EVENT_WIDTH, top, left }} key={i}>
@@ -176,7 +194,17 @@ function MultiDayEvent({
         </div>
       );
     } else if (areDaysTheSame(endDateISO, currentEventDay)) {
-      const height = rect.height * getDifferenceInHours(setTime(endDateISO, 0, 0, 0, 0), endDateISO);
+      const height =
+        rect.height *
+        getDifferenceInHours(
+          setTime(endDateISO, {
+            hours: 0,
+            minutes: 0,
+            seconds: 0,
+            milliseconds: 0,
+          }),
+          endDateISO,
+        );
       const top = rect.top - rect.height * startDate.getUTCHours();
       const left = rect.left + rect.width * i;
       return (
@@ -198,6 +226,7 @@ function MultiDayEvent({
   });
   return eventSquares;
 }
+// TODO: Remove
 function getPosition(
   rectHeight: number,
   rectWidth: number,

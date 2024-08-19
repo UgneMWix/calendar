@@ -57,10 +57,10 @@ export function getDayOfWeekName(day: string, format: 'long' | 'short' | 'narrow
   const date = new Date(day);
   return date.toLocaleDateString(undefined, { weekday: format, timeZone: 'UTC' });
 }
-export function areDaysTheSame(day1: string, day2: string, checkTime = false) {
+export function areDaysTheSame(day1: string, day2: string, options?: { checkTime: boolean }) {
   const date1 = new Date(day1);
   const date2 = new Date(day2);
-  if (checkTime) {
+  if (options?.checkTime) {
     return (
       date1.getFullYear() === date2.getFullYear() &&
       date1.getMonth() === date2.getMonth() &&
@@ -74,6 +74,7 @@ export function areDaysTheSame(day1: string, day2: string, checkTime = false) {
     date1.getDate() === date2.getDate()
   );
 }
+// TODO: Remove in favor of getComponentsFromDate
 export function getDayOfMonthNumber(day: string) {
   const date = new Date(day);
   return date.getDate();
@@ -81,6 +82,7 @@ export function getDayOfMonthNumber(day: string) {
 export function getDateObjectFromString(dateISO: string) {
   return new Date(dateISO);
 }
+// TODO: Write tests
 export function getComponentsFromDate(dateISO: string): {
   year: number;
   month: number;
@@ -92,7 +94,7 @@ export function getComponentsFromDate(dateISO: string): {
   return {
     year: date.getFullYear(),
     month: date.getMonth(),
-    day: getDayOfMonthNumber(dateISO),
+    day: date.getDate(),
     hour: date.getHours(),
     minutes: date.getMinutes(),
   };
@@ -102,9 +104,22 @@ export function areMonthsTheSame(date1ISO: string, date2ISO: string) {
   const date2 = new Date(date2ISO);
   return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth();
 }
-export function setTime(dateISO: string, hours: number, minutes: number, seconds = 0, milliseconds = 0) {
+export function setTime(
+  dateISO: string,
+  time: {
+    hours?: number;
+    minutes?: number;
+    seconds?: number;
+    milliseconds?: number;
+  },
+) {
   const date = new Date(dateISO);
-  date.setUTCHours(hours, minutes, seconds, milliseconds);
+  date.setUTCHours(
+    time.hours ?? date.getUTCHours(),
+    time.minutes ?? date.getUTCMinutes(),
+    time.seconds ?? date.getUTCSeconds(),
+    time.milliseconds ?? date.getUTCMilliseconds(),
+  );
   return date.toISOString();
 }
 export function dayArithmetic(dateISO: string, days: number) {
@@ -142,11 +157,4 @@ export function getDifferenceInHours(startDateISO: string, endDateISO: string) {
   const hoursSpan = endDate.getUTCHours() - startDate.getUTCHours();
   const minutesSpan = (endDate.getUTCMinutes() - startDate.getUTCMinutes()) / 60;
   return hoursSpan + minutesSpan;
-}
-export function getTimeFromDate(dateISO: string) {
-  const date = new Date(dateISO);
-  return {
-    hours: date.getUTCHours(),
-    minutes: date.getUTCMinutes(),
-  };
 }
