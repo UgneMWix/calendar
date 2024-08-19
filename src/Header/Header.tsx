@@ -1,5 +1,5 @@
 import styles from './Header.module.css';
-import { getMonthFromDate, getYearFromDate } from '../utils/date';
+import { getMonthFromDate, getYearFromDate, getToday, dayArithmetic } from '../utils/date';
 function Header({
   clearEvents,
   chosenDay,
@@ -11,7 +11,6 @@ function Header({
   setChosenDay: (date: string) => void;
   toggleDarkmode: () => void;
 }) {
-  const day = new Date(chosenDay);
   return (
     <header className={styles['page-header']}>
       <button className={styles['header-buttons']}>
@@ -22,16 +21,13 @@ function Header({
         {' '}
         Clear
       </button>
-      <button
-        className={styles['header-buttons']}
-        onClick={() => setChosenDay(new Date(day.getFullYear(), day.getMonth(), day.getDate() - 7).toISOString())}
-      >
+      <button className={styles['header-buttons']} onClick={() => setChosenDay(dayArithmetic(chosenDay, -7))}>
         <img src="/arrow.png" alt="arrow to the left" className={styles['arrow-image-1']} />
       </button>
       <button
         className={styles['header-buttons']}
         onClick={() => {
-          setChosenDay(new Date(day.getFullYear(), day.getMonth(), day.getDate() + 7).toISOString());
+          setChosenDay(dayArithmetic(chosenDay, 7));
         }}
       >
         <img src="/arrow.png" alt="arrow to the right" className={styles['arrow-image-2']} />
@@ -39,7 +35,7 @@ function Header({
       <span className={styles['mon-year-text']}>
         {getMonthFromDate(chosenDay)} {getYearFromDate(chosenDay)}
       </span>{' '}
-      <button className={styles['today-button']} onClick={() => setChosenDay(new Date().toISOString())}>
+      <button className={styles['today-button']} onClick={() => setChosenDay(getToday())}>
         Today
       </button>
       <button className={styles['week-menu-button']}>Week ▾</button>

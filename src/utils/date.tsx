@@ -32,17 +32,84 @@ export function getFirstDayOfTheMonth(dateISO: string) {
 
 export function getMonthFromDate(dateISO: string) {
   const date = new Date(dateISO);
-  return date.toLocaleDateString(undefined, { month: 'long' });
+  return date.toLocaleDateString(undefined, { month: 'long', timeZone: 'UTC' });
 }
 export function getYearFromDate(dateISO: string) {
   const date = new Date(dateISO);
   return date.getUTCFullYear();
 }
-export function isInChosenWeek(startDateISO: string, dateISO: string) {
+export function isInTheSameWeek(startDateISO: string, dateISO: string) {
   const date = new Date(dateISO);
   const startDate = new Date(startDateISO);
   const endDate = new Date(startDateISO);
   endDate.setUTCDate(startDate.getUTCDate() + 7);
   if (date > startDate && date < endDate) return true;
   return false;
+}
+export function getToday() {
+  return new Date().toISOString();
+}
+export function getDayOfWeekName(day: string, format: 'long' | 'short' | 'narrow') {
+  const date = new Date(day);
+  return date.toLocaleDateString(undefined, { weekday: format, timeZone: 'UTC' });
+}
+export function areDaysTheSame(day1: string, day2: string, checkTime = false) {
+  const date1 = new Date(day1);
+  const date2 = new Date(day2);
+  if (checkTime) {
+    return (
+      date1.getFullYear() === date2.getFullYear() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getDate() === date2.getDate() &&
+      date1.getHours() === date2.getHours()
+    );
+  }
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  );
+}
+export function getDayOfMonthNumber(day: string) {
+  const date = new Date(day);
+  return date.getDate();
+}
+export function getDateObjectFromString(dateISO: string) {
+  return new Date(dateISO);
+}
+export function getComponentsFromDate(dateISO: string): {
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  minutes: number;
+} {
+  const date = new Date(dateISO);
+  return {
+    year: date.getFullYear(),
+    month: date.getMonth(),
+    day: getDayOfMonthNumber(dateISO),
+    hour: date.getHours(),
+    minutes: date.getMinutes(),
+  };
+}
+export function areMonthsTheSame(date1ISO: string, date2ISO: string) {
+  const date1 = new Date(date1ISO);
+  const date2 = new Date(date2ISO);
+  return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth();
+}
+export function setHours(dateISO: string, hours: number, minutes: number) {
+  const date = new Date(dateISO);
+  date.setUTCHours(hours, minutes, 0, 0);
+  return date.toISOString();
+}
+export function dayArithmetic(dateISO: string, days: number) {
+  const date = new Date(dateISO);
+  date.setDate(date.getDate() + days);
+  return date.toISOString();
+}
+export function monthArithmetic(dateISO: string, months: number) {
+  const date = new Date(dateISO);
+  date.setMonth(date.getMonth() + months);
+  return date.toISOString();
 }

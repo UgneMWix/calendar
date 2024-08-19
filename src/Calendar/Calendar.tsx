@@ -1,6 +1,14 @@
 import styles from './Calendar.module.css';
 import style from './Events.module.css';
-import { generateHoursOfTheDay, generateWeek, getFirstDayOfWeek } from '../utils/date';
+import {
+  generateHoursOfTheDay,
+  generateWeek,
+  getFirstDayOfWeek,
+  setHours,
+  areDaysTheSame,
+  getDateObjectFromString,
+  dayArithmetic,
+} from '../utils/date';
 import { Header } from './Header/Header';
 import { TimeLine } from './TimeLine/TimeLine';
 import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
@@ -23,10 +31,7 @@ export function Calendar({
   const [isLoaded, setIsLoaded] = useState(false);
 
   const dateList = useMemo(() => {
-    const initialDate = new Date(chosenDay);
-    console.log(initialDate);
-    initialDate.setUTCHours(0, 0, 0, 0);
-    return generateWeek(getFirstDayOfWeek(initialDate.toISOString())).flatMap((value) => generateHoursOfTheDay(value));
+    return generateWeek(getFirstDayOfWeek(setHours(chosenDay, 0, 0))).flatMap((value) => generateHoursOfTheDay(value));
   }, [chosenDay]);
   const onSquareClick = (dateISO: string) => {
     openModal(dateISO);
@@ -65,18 +70,8 @@ export function Calendar({
       </section>
       {isLoaded &&
         events.map((value) => {
-          const date = new Date(value.eventStart);
-          const year = date.getUTCFullYear();
-          const month = date.getUTCMonth();
-          const day = date.getUTCDate();
-          const hour = date.getUTCHours();
           const square = squareRefs.current.find((square) => {
-            const dateSquare = new Date(square.date);
-            const yearSquare = dateSquare.getUTCFullYear();
-            const monthSquare = dateSquare.getUTCMonth();
-            const daySquare = dateSquare.getUTCDate();
-            const hourSquare = dateSquare.getUTCHours();
-            return year === yearSquare && month === monthSquare && day === daySquare && hour === hourSquare;
+            return areDaysTheSame(value.eventStart, square.date, true);
           });
           console.log(!!square);
           if (!square) return null;
@@ -116,33 +111,32 @@ function Event({
   endDateISO: string;
   weekList: Array<string>;
 }) {
-  // let position = {};
   const rect = square.htmlElement.getBoundingClientRect();
-  const startDate = new Date(startDateISO);
-  const endDate = new Date(endDateISO);
-  let days = Math.abs(startDate.getUTCDate() - endDate.getUTCDate()) + 1; //what is month different
+  const startDate = getDateObjectFromString(startDateISO);
+  const endDate = getDateObjectFromString(endDateISO);
+  let days = Math.abs(startDate.getUTCDate() - endDate.getUTCDate()) + 1; //what if month different
   if (endDate > new Date(weekList[weekList.length - 1]))
     days -= Math.abs(new Date(weekList[weekList.length - 1]).getDate() - endDate.getDate()) + 1;
   let tempTop = rect['top'] + (rect['height'] * startDate.getUTCMinutes()) / 60;
   if (startDate.toLocaleDateString() !== endDate.toLocaleDateString()) {
-    //fix locale string
-    let tempEndDate = new Date(endDate);
+    let tempEndDate = getDateObjectFromString(endDateISO);
     tempEndDate.setUTCHours(23, 59, 59, 99);
-    let tempStartDate = new Date(startDate);
+    let tempStartDate = getDateObjectFromString(startDateISO);
     let leftMargin = rect['left'];
 
     const eventSquares = Array.from({ length: days }, (_, i) => {
       if (i === days - 1 && tempEndDate.getDate() === endDate.getDate() + 1) {
-        tempEndDate = new Date(endDate);
+        tempEndDate = getDateObjectFromString(endDateISO);
       }
       if (i === 0) {
-        tempStartDate = new Date(startDate);
+        tempStartDate = getDateObjectFromString(startDateISO);
       }
       const position = getPosition(rect['height'], rect['width'], tempTop, leftMargin, tempStartDate, tempEndDate);
       leftMargin += rect['width'];
-      tempEndDate.setUTCDate(startDate.getUTCDate() + i + 1);
-      tempStartDate.setUTCDate(startDate.getUTCDate() + i + 1);
-      tempStartDate.setUTCHours(0, 0, 0, 0);
+
+      dayArithmetic(tempEndDate.toISOString(), i + 1);
+      dayArithmetic(tempStartDate.toISOString(), i + 1);
+      tempStartDate = getDateObjectFromString(setHours(tempStartDate.toISOString(), 0, 0));
       tempTop = rect['top'] - startDate.getUTCHours() * rect['height'];
       return (
         <div className={style.event} style={position} key={i}>

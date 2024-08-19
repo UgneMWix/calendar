@@ -2,6 +2,7 @@ import { Alert } from './Alert/Alert';
 import styles from './Modal.module.css';
 import { useState } from 'react';
 import dbObject from '../dbObject';
+import { getDateObjectFromString, setHours } from '../utils/date';
 interface props {
   toggleModal: () => void;
   eventDate?: string;
@@ -12,7 +13,8 @@ export function Modal(props: props) {
   const [eventTitle, setEventTitle] = useState('');
   const [alertIsOpen, setAlertIsOpen] = useState(false);
   const [startInput, setStartInput] = useState(() => {
-    if (props.eventDate) return `${new Date(props.eventDate).getUTCHours().toString().padStart(2, '0')}:00`;
+    if (props.eventDate)
+      return `${getDateObjectFromString(props.eventDate).getUTCHours().toString().padStart(2, '0')}:00`;
     return '';
   });
   const [endInput, setEndInput] = useState(() => {
@@ -23,7 +25,7 @@ export function Modal(props: props) {
     if (props.eventDate) return `${props.eventDate.substring(0, 10)}`;
     return '';
   });
-  const [endDateinput, setEndDateInput] = useState(() => {
+  const [endDateInput, setEndDateInput] = useState(() => {
     if (props.eventDate) return `${props.eventDate.substring(0, 10)}`;
     return '';
   });
@@ -44,31 +46,25 @@ export function Modal(props: props) {
       startInput === '' ||
       endInput === '' ||
       dateInput === '' ||
-      endDateinput === '' ||
-      (dateInput === endDateinput && startInput >= endInput) ||
-      dateInput > endDateinput
+      endDateInput === '' ||
+      (dateInput === endDateInput && startInput >= endInput) ||
+      dateInput > endDateInput
     ) {
       return false;
     }
     return true;
   }
   function handleClick() {
-    // validateTitleInput() && validateTimeInput() ? props.toggleModal() : openAlerts();
     if (!validateTitleInput() || !validateTimeInput()) {
       openAlerts();
       return;
     }
-    const startDate = new Date(dateInput);
-    startDate.setUTCHours(parseInt(startInput.substring(0, 2)), parseInt(startInput.substring(3, 5)), 0, 0);
-    const endDate = new Date(endDateinput);
-    endDate.setUTCHours(parseInt(endInput.substring(0, 2)), parseInt(endInput.substring(3, 5)), 0, 0); //sudeti i utils
-    console.log(endDate);
-    // console.log(startDate);
+
     const newEvent: dbObject = {
       title: eventTitle,
       date: dateInput,
-      eventStart: startDate.toISOString(),
-      eventEnd: endDate.toISOString(),
+      eventStart: setHours(dateInput, parseInt(startInput.substring(0, 2)), parseInt(startInput.substring(3, 5))),
+      eventEnd: setHours(endDateInput, parseInt(endInput.substring(0, 2)), parseInt(endInput.substring(3, 5))),
       startTime: startInput,
       endTime: endInput,
       description: descriptionInput,
@@ -119,7 +115,7 @@ export function Modal(props: props) {
               className={styles['modal-time-date']}
               type="date"
               id="date-input-end"
-              value={endDateinput}
+              value={endDateInput}
               onChange={(e) => setEndDateInput(e.target.value)}
             />
             <input

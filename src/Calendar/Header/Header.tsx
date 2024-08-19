@@ -1,30 +1,30 @@
 import styles from './Header.module.css';
 import cn from 'classnames';
 import { FC } from 'react';
-import { generateWeek, getFirstDayOfWeek } from '../../utils/date';
+import {
+  areDaysTheSame,
+  generateWeek,
+  getDayOfMonthNumber,
+  getDayOfWeekName,
+  getFirstDayOfWeek,
+  getToday,
+} from '../../utils/date';
 const HeaderElement: FC<{ day: string }> = ({ day }) => {
-  const date = new Date(day);
-  const dayName = date.toLocaleDateString(undefined, { weekday: 'short' });
-  const isToday =
-    date.getDate() === new Date().getDate() &&
-    date.getFullYear() === new Date().getFullYear() &&
-    date.getMonth() === new Date().getMonth();
-
   return (
     <div className={styles['main-calendar-day']}>
-      <p className={styles['main-calendar-day-name']}>{dayName}</p>
+      <p className={styles['main-calendar-day-name']}>{getDayOfWeekName(day, 'short')}</p>
       <p
         className={cn(styles['main-calendar-number'], {
-          [styles['main-calendar-today']]: isToday,
+          [styles['main-calendar-today']]: areDaysTheSame(day, getToday()),
         })}
       >
-        {date.getDate().toString()}
+        {getDayOfMonthNumber(day)}
       </p>
     </div>
   );
 };
 export function Header({ chosenDay }: { chosenDay: string }) {
-  const week = generateWeek(getFirstDayOfWeek(new Date(chosenDay).toISOString()));
+  const week = generateWeek(getFirstDayOfWeek(chosenDay));
   return (
     <header className={styles['main-calendar-header']}>
       {week.map((dayFull) => (
