@@ -10,15 +10,13 @@ import {
   howManyDaysUntilEndOfWeek,
   getDifferenceInHours,
   getComponentsFromDate,
-  isLaterThan,
   generateNDays,
-  isEarlierThan,
   howManyDaysUntilStartOfWeek,
   isInTheSameWeek,
 } from '../utils/date';
 import { Header } from './Header/Header';
 import { TimeLine } from './TimeLine/TimeLine';
-import { forwardRef, startTransition, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
 import EventObject from '../dbObject';
 const DAY_LENGTH_HOURS = 24;
 const EVENT_WIDTH_PADDING = 15;
