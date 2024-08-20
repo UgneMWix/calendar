@@ -149,3 +149,7 @@ export function getMonthName(month: number, format: 'long' | 'short') {
   const date = new Date(Date.UTC(2024, month, 1));
   return date.toLocaleDateString(undefined, { month: format, timeZone: 'UTC' });
 }
+export function howManyDaysUntilStartOfWeek(day: string) {
+  const date = new Date(day);
+  return date.getDay();
+}

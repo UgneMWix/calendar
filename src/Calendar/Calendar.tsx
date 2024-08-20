@@ -12,6 +12,9 @@ import {
   getComponentsFromDate,
   isLaterThan,
   generateNDays,
+  isEarlierThan,
+  howManyDaysUntilStartOfWeek,
+  isInTheSameWeek,
 } from '../utils/date';
 import { Header } from './Header/Header';
 import { TimeLine } from './TimeLine/TimeLine';
@@ -87,9 +90,13 @@ export function Calendar({
       {isLoaded &&
         events.map((value) => {
           const square = squareRefs.current.find((square) => {
-            return areDaysTheSame(value.eventStart, square.date, { checkTime: true });
+            if (isInTheSameWeek(dateList[0], value.eventStart)) {
+              return areDaysTheSame(value.eventStart, square.date, { checkTime: true });
+            } else if (isInTheSameWeek(dateList[0], value.eventEnd)) {
+              return areDaysTheSame(value.eventEnd, square.date, { checkTime: true });
+            }
           });
-          console.log(!!square);
+          // console.log(!!square);
           if (!square) return null;
 
           return (
@@ -164,10 +171,16 @@ function MultiDayEvent({
   weekList: Array<string>;
 }) {
   let days = getLengthOfEvent(startDateISO, endDateISO);
-  if (isLaterThan(endDateISO, weekList[weekList.length - 1])) days = days - howManyDaysUntilEndOfWeek(startDateISO) + 1;
+  if (isLaterThan(endDateISO, weekList[weekList.length - 1])) days = days - howManyDaysUntilEndOfWeek(startDateISO) - 1;
+  if (isEarlierThan(startDateISO, weekList[0])) days = days - howManyDaysUntilStartOfWeek(endDateISO) - 1;
+  // console.log(days);
   const EVENT_WIDTH = rect.width - EVENT_WIDTH_PADDING;
   const eventSquares = Array.from({ length: days }, (_, i) => {
-    const currentEventDay = incrementDateByDays(startDateISO, i);
+    let currentEventDay = incrementDateByDays(startDateISO, i);
+    if (isEarlierThan(startDateISO, weekList[0])) {
+      currentEventDay = incrementDateByDays(startDateISO, i + howManyDaysUntilStartOfWeek(endDateISO) + 1);
+      // console.log(currentEventDay);
+    }
 
     if (areDaysTheSame(startDateISO, currentEventDay)) {
       const height =
