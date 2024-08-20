@@ -93,7 +93,13 @@ export function Calendar({
             if (isInTheSameWeek(dateList[0], value.eventStart)) {
               return areDaysTheSame(value.eventStart, square.date, { checkTime: true });
             } else if (isInTheSameWeek(dateList[0], value.eventEnd)) {
-              return areDaysTheSame(value.eventEnd, square.date, { checkTime: true });
+              return areDaysTheSame(
+                incrementDateByDays(value.eventEnd, -howManyDaysUntilStartOfWeek(value.eventEnd)),
+                square.date,
+                {
+                  checkTime: true,
+                },
+              );
             }
           });
           // console.log(!!square);
