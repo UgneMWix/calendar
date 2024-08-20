@@ -18,7 +18,7 @@ import {
 } from '../utils/date';
 import { Header } from './Header/Header';
 import { TimeLine } from './TimeLine/TimeLine';
-import { forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import { forwardRef, startTransition, useEffect, useMemo, useRef, useState } from 'react';
 import EventObject from '../dbObject';
 const DAY_LENGTH_HOURS = 24;
 const EVENT_WIDTH_PADDING = 15;
@@ -171,17 +171,18 @@ function MultiDayEvent({
   weekList: Array<string>;
 }) {
   let days = getLengthOfEvent(startDateISO, endDateISO);
-  if (isLaterThan(endDateISO, weekList[weekList.length - 1])) days = days - howManyDaysUntilEndOfWeek(startDateISO) - 1;
-  if (isEarlierThan(startDateISO, weekList[0])) days = days - howManyDaysUntilStartOfWeek(endDateISO) - 1;
+  if (isInTheSameWeek(weekList[0], startDateISO)) days = howManyDaysUntilEndOfWeek(startDateISO) + 1;
+  else if (isInTheSameWeek(weekList[0], endDateISO)) days = howManyDaysUntilStartOfWeek(endDateISO) + 1;
   // console.log(days);
+  // console.log(howManyDaysUntilEndOfWeek(startDateISO));
   const EVENT_WIDTH = rect.width - EVENT_WIDTH_PADDING;
   const eventSquares = Array.from({ length: days }, (_, i) => {
     let currentEventDay = incrementDateByDays(startDateISO, i);
-    if (isEarlierThan(startDateISO, weekList[0])) {
-      currentEventDay = incrementDateByDays(startDateISO, i + howManyDaysUntilStartOfWeek(endDateISO) + 1);
-      // console.log(currentEventDay);
+    if (isInTheSameWeek(weekList[0], endDateISO) && !isInTheSameWeek(weekList[0], startDateISO)) {
+      currentEventDay = incrementDateByDays(startDateISO, i + howManyDaysUntilEndOfWeek(startDateISO) + 1);
+      console.log(currentEventDay);
     }
-
+    // console.log(currentEventDay, days);
     if (areDaysTheSame(startDateISO, currentEventDay)) {
       const height =
         rect.height *

@@ -16,6 +16,7 @@ import {
   isLaterThan,
   getComponentsFromDate,
   getMonthName,
+  howManyDaysUntilStartOfWeek,
 } from './date';
 import { test, expect, describe } from 'vitest';
 
@@ -298,5 +299,17 @@ describe(getMonthName, () => {
     ${1}  | ${'long'}  | ${'February'}
   `('should return $expected when month is $month and format is $format', ({ month, format, expected }) => {
     expect(getMonthName(month, format)).toBe(expected);
+  });
+});
+describe(howManyDaysUntilStartOfWeek, () => {
+  test('should return the number of days until the start of the week', () => {
+    const sunday = '2024-08-11T10:54:50.395Z';
+    const monday = '2024-08-12T10:54:50.395Z';
+    const tuesday = '2024-08-13T10:54:50.395Z';
+    const saturday = '2024-08-17T10:54:50.395Z';
+    expect(howManyDaysUntilStartOfWeek(sunday)).toBe(0);
+    expect(howManyDaysUntilStartOfWeek(monday)).toBe(1);
+    expect(howManyDaysUntilStartOfWeek(tuesday)).toBe(2);
+    expect(howManyDaysUntilStartOfWeek(saturday)).toBe(6);
   });
 });
