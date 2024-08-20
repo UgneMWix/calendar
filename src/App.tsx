@@ -4,7 +4,7 @@ import './stylesheets/global.css';
 import { useCallback, useEffect, useState } from 'react';
 import { Modal } from './Modal/Modal';
 import EventObject from './dbObject';
-import { isInChosenWeek, getFirstDayOfWeek } from './utils/date';
+import { isInTheSameWeek, getFirstDayOfWeek, getToday } from './utils/date';
 import Sidebar from './Sidebar/Sidebar';
 import { Calendar } from './Calendar/Calendar';
 import cn from 'classnames';
@@ -13,7 +13,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [refDateISO, setRefDateISO] = useState<string | undefined>();
   const [events, setEvents] = useState<EventObject[]>([]);
-  const [chosenDay, setChosenDay] = useState(new Date().toISOString());
+  const [chosenDay, setChosenDay] = useState(getToday());
   const [isDarkMode, setIsDarkMode] = useState(false);
   const toggleModal = useCallback(() => {
     setIsOpen((currentValue) => !currentValue);
@@ -51,8 +51,8 @@ function App() {
           openModal={openModal}
           events={events.filter(
             (event) =>
-              isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventStart) ||
-              isInChosenWeek(getFirstDayOfWeek(chosenDay), event.eventEnd),
+              isInTheSameWeek(getFirstDayOfWeek(chosenDay), event.eventStart) ||
+              isInTheSameWeek(getFirstDayOfWeek(chosenDay), event.eventEnd),
           )}
           chosenDay={chosenDay}
         />
